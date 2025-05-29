@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Ingresos (Firebase Integrado)</title> <!-- Título actualizado -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS COMPLETO de la versión anterior */
+        /* ... (TODO TU CSS ANTERIOR ESTARÍA AQUÍ) ... */
+        :root {
+            --bg-dark: #181a1f; 
+            --bg-card: #22252e; 
+            --bg-card-light: #2a2e37;
+            --text-primary: #f0f0f0; 
+            --text-secondary: #b0b0b0; 
+            
+            --accent-green-medium: #50fa7b; 
+            --accent-green-neon: #39ff14;   
+            --accent-yellow-pale: #f1fa8c;  
+            --accent-yellow-green: #c3e08d; 
+            --accent-blue-info: #8be9fd;    
+            --accent-red-clear: #ff5555;    
+            --accent-gold: #ffd700;         
+
+            --quartile1-color-general: var(--accent-yellow-pale);
+            --quartile2-color-general: var(--accent-yellow-green);
+            --quartile3-color-general: var(--accent-green-medium);
+            --quartile4-color-general: var(--accent-green-neon);
+            --celebration-overall-bg: linear-gradient(135deg, #60d394, #50fa7b, #8aff8a); 
+            --celebration-overall-text-color: #1a3a1f; 
+            --celebration-overall-glow: #77dd77;
+
+            --monthly-time-progress-color: var(--accent-blue-info); 
+
+
+            --glow-color-blue-rgb: 139, 233, 253; 
+            --glow-color-green-rgb: 80, 250, 123; 
+            --glow-color-neutral-rgb: 70, 75, 85; 
+            --accent-red-clear-rgb: 255, 85, 85; 
+            --accent-green-neon-rgb: 57, 255, 20; 
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family: 'Rubik', Arial, sans-serif;
+            min-height:100vh;
+            padding:15px;
+            overflow-x: hidden; 
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .container{
+            background: var(--bg-card); 
+            border: 1px solid #3a3f4b; 
+            border-radius:25px;
+            padding:30px;
+            box-shadow: 0 0 25px rgba(var(--glow-color-neutral-rgb), 0.2), 0 10px 30px rgba(0,0,0,0.25); 
+            max-width:650px;
+            margin:30px auto; 
+            text-align:center;
+            position: relative;
+            z-index: 10;
+            animation: fadeInContainer 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInContainer { to { opacity: 1; transform: translateY(0); } }
+        .container { transform: translateY(20px); }
+
+        .current-month-display {
+            color: var(--accent-blue-info);
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background-color: var(--bg-card-light);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.15);
+        }
+
+        .title{
+            color: var(--text-primary);
+            font-size:2em;
+            margin-bottom:10px;
+            font-weight:700;
+            text-shadow: 0 0 8px rgba(240,240,240, 0.3); 
+            animation: slideInDown 0.6s ease-out 0.2s backwards;
+        }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .subtitle{ 
+            color: var(--text-secondary);
+            font-size:1.1em;
+            margin-bottom:25px;
+            font-weight: 500;
+            animation: slideInUp 0.6s ease-out 0.4s backwards;
+        }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .input-section{
+            margin-bottom:25px;
+            padding:20px;
+            background: var(--bg-card-light);
+            border-radius:20px;
+            border:1px solid #383e4a;
+            box-shadow: 0 0 15px rgba(var(--glow-color-neutral-rgb), 0.2);
+        }
+        .money-input{
+            width:100%; padding:14px; border:2px solid #4a505e; 
+            border-radius:12px; font-size:1.15em; text-align:center; margin-bottom:12px;
+            background: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .money-input::placeholder { color: #888; } 
+        .money-input:focus{
+            outline:none; border-color: var(--accent-blue-info);
+            box-shadow:0 0 12px rgba(var(--glow-color-blue-rgb), 0.5), 0 0 2px rgba(var(--glow-color-blue-rgb), 0.7); 
+        }
+        .add-btn{
+            background:linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-neon));
+            color: #111; 
+            border:none; padding:14px 30px; border-radius:12px;
+            font-size:1.05em; cursor:pointer; font-weight:700;
+            transition:all 0.3s ease;
+            animation: pulseButton 2s infinite ease-in-out 1s;
+            box-shadow: 0 0 10px rgba(var(--accent-green-neon-rgb), 0.3); 
+        }
+        .add-btn:hover{
+            transform:translateY(-3px) scale(1.08);
+            box-shadow:0 8px 20px rgba(var(--accent-green-neon-rgb), 0.4), 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5) ;
+            animation-play-state: paused;
+        }
+        .add-btn:disabled {
+            background: #4a4a4a; color: #888; cursor: not-allowed; animation: none; box-shadow: none;
+        }
+        @keyframes pulseButton { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+        .progress-container{margin:25px 0}
+        .progress-container.monthly { margin-top: 15px; } 
+
+        .progress-bar-bg{
+            width:100%; height:22px; background: #3a3f4b;
+            border-radius:22px; overflow:hidden;
+            box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); 
+        }
+        .progress-bar{ 
+            height:100%; border-radius:22px; width:0%;
+            transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease;
+            position:relative; overflow:hidden;
+        }
+        .progress-bar.monthly-bar { 
+             background: var(--monthly-time-progress-color); 
+        }
+        .progress-bar::before{
+            content:''; position:absolute; top:0;left:0; height:100%; width:100%;
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); 
+            animation:shimmer 2.5s infinite linear;
+        }
+        @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} }
+        
+        .progress-text{ 
+             margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); 
+        }
+        .progress-text.monthly-text { 
+            font-size: 1.1em;
+            color: var(--text-secondary);
+        }
+        
+        .money-display{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:25px 0; }
+        .money-card{
+            padding:18px; background:var(--bg-card-light); border:1px solid #4a505e;
+            border-radius:15px; transition: transform 0.35s ease, box-shadow 0.35s ease;
+            animation: popIn 0.5s ease-out backwards;
+            box-shadow: 0 0 12px rgba(var(--glow-color-neutral-rgb), 0.15); 
+        }
+        .money-card:nth-child(1) { animation-delay: 0.5s; } 
+        .money-card:nth-child(2) { animation-delay: 0.6s; } 
+        .money-card:nth-child(3) { animation-delay: 0.7s; } 
+        .money-card:nth-child(4) { animation-delay: 0.8s; } 
+        .money-card:nth-child(5) { animation-delay: 0.9s; }
+
+
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .money-card:hover{ 
+            transform: translateY(-5px) scale(1.02); 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25); 
+        }
+        
+        .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; }
+        .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; }
+        .total-accumulated-cop .money-value {color: var(--accent-green-medium)} 
+        .overall-target-cop .money-value {color: var(--accent-blue-info)} 
+        .overall-remaining-cop .money-value {color: var(--accent-yellow-green)} 
+        .current-month-usd-total .money-value {color: var(--accent-blue-info)} 
+        .overall-usd-total .money-value {color: var(--accent-gold)} 
+
+        .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;}
+        .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; }
+        
+        .celebration-overall{ 
+            display:none; margin:20px 0; padding:20px;
+            background: var(--celebration-overall-bg); 
+            border-radius:15px; font-size:1.4em; 
+            color: var(--celebration-overall-text-color); 
+            font-weight:700;
+            animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate;
+            text-shadow: 0 0 8px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px var(--celebration-overall-glow); 
+        }
+        @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}}
+        @keyframes celebrateGlowOverallAnim { 
+            0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); } 
+            100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; } 
+        }
+        
+        .history, .monthly-goals-section { 
+            margin-top:25px; text-align:left; background: var(--bg-card-light); 
+            padding: 20px; border-radius: 15px; border:1px solid #383e4a;
+            box-shadow: 0 0 15px rgba(var(--glow-color-neutral-rgb), 0.18); 
+        }
+        .history-title, .monthly-goals-title {
+            color:var(--text-primary); font-size:1.15em; font-weight:700;
+            margin-bottom:15px; text-align:center;
+        }
+        .history-list, .monthly-goals-list {
+            max-height:180px; 
+            overflow-y:auto;
+            background:var(--bg-dark); border-radius:12px; padding:15px; 
+            scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) var(--bg-card-light);
+            border: 1px solid #4a505e;
+        }
+        .history-list::-webkit-scrollbar, .monthly-goals-list::-webkit-scrollbar { width: 8px; }
+        .history-list::-webkit-scrollbar-track, .monthly-goals-list::-webkit-scrollbar-track { background: var(--bg-card-light); border-radius: 10px;}
+        .history-list::-webkit-scrollbar-thumb, .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid var(--bg-card-light);}
+
+        .history-item, .monthly-goal-item {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:12px 15px; margin:5px 0; background:var(--bg-card);
+            border-radius:10px; border-left:4px solid var(--accent-green-medium);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .history-item:hover, .monthly-goal-item:hover { background-color: #333945; transform: translateX(3px); }
+        .history-date, .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;}
+        .history-amount, .monthly-goal-status {font-weight:700;color:var(--text-primary)}
+        .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;}
+        .monthly-goal-status.achieved { color: var(--accent-green-neon); }
+        .monthly-goal-status.not-achieved { color: var(--accent-red-clear); }
+        .monthly-goal-status.pending { color: var(--text-secondary); }
+
+        .clear-btn{
+            background:linear-gradient(135deg, var(--accent-red-clear), #ff4040); 
+            color:var(--text-primary); border:none; padding:10px 18px;
+            border-radius:10px; font-size:0.95em; cursor:pointer;
+            margin-top:15px; transition:all 0.3s ease; font-weight: 700;
+            box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3);
+        }
+        .clear-btn:hover{
+            transform:translateY(-2px) scale(1.05); 
+            box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4);
+        }
+        
+        .floating-emoji {
+            position: fixed; font-size: 1.8rem; user-select: none;
+            animation: floatUp 12s infinite linear; opacity: 0;
+            z-index: 1; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(10vh) translateX(0vw) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.15; transform: scale(1); } 
+            80% { opacity: 0.15; }
+            100% { transform: translateY(-110vh) translateX(calc(5vw * var(--direction, 1))) rotate(360deg) scale(0.8); opacity: 0; }
+        }
+        .floating-emoji:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 14s; font-size: 2.2rem; --direction: 1; color: var(--accent-yellow-pale);}
+        .floating-emoji:nth-child(2) { left: 25%; animation-delay: 2.5s; animation-duration: 18s; font-size: 1.7rem; --direction: -1; color: var(--accent-green-medium);}
+        .floating-emoji:nth-child(3) { left: 75%; animation-delay: 5s; animation-duration: 11s; font-size: 2.5rem; --direction: 1; color: var(--accent-blue-info);}
+        .floating-emoji:nth-child(4) { left: 90%; animation-delay: 7.5s; animation-duration: 16s; font-size: 1.5rem; --direction: -1; color: var(--accent-red-clear);}
+        .floating-emoji:nth-child(5) { left: 45%; animation-delay: 1.5s; animation-duration: 20s; font-size: 2rem; --direction: 1; color: var(--accent-green-neon);}
+        .floating-emoji:nth-child(6) { left: 60%; animation-delay: 4s; animation-duration: 10s; font-size: 1.9rem; --direction: -1; color: var(--accent-yellow-green);}
+
+        @media (max-width:480px){
+            body { padding: 10px; }
+            .container{padding:20px;margin:15px auto;}
+            .money-display{grid-template-columns:1fr} 
+            .title{font-size:1.7em}
+            .floating-emoji { font-size: 1.5rem; opacity: 0.1; } 
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML ... -->
+    <div class="floating-emoji">💰</div> <div class="floating-emoji">💸</div> <div class="floating-emoji">📈</div>
+    <div class="floating-emoji">🎯</div> <div class="floating-emoji">✨</div> <div class="floating-emoji">🚀</div>
+
+    <div class="container">
+        <div class="current-month-display" id="currentMonthDisplay"></div>
+        <h1 class="title">🎯 Meta Ingresos Constantes 💰</h1>
+        <p class="subtitle" id="subtitleText">🚀 Progreso hacia tu meta general...</p>
+        
+        <div class="input-section">
+            <input type="number" class="money-input" id="moneyInput" placeholder="💵 Ingresa cantidad en USD..." min="0.01" step="0.01">
+            <button class="add-btn" id="addMoneyBtn">➕ Añadir Ingreso</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progressBarOverall"></div> 
+            </div>
+            <div class="progress-text" id="progressTextOverall">0% 📊</div> 
+        </div>
+
+        <div class="progress-container monthly">
+            <div class="progress-bar-bg">
+                <div class="progress-bar monthly-bar" id="progressBarMonthly"></div> 
+            </div>
+            <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> 
+        </div>
+
+        <div class="money-display">
+            <div class="money-card total-accumulated-cop"> 
+                <div class="money-label">💚 Total Ingresos Acumulados (COP)</div>
+                <div class="money-value" id="totalAccumulatedCOP">$0</div>
+            </div>
+            <div class="money-card overall-target-cop"> 
+                <div class="money-label">🏁 Meta General (COP)</div>
+                <div class="money-value" id="overallTargetCOPDisplay">$3,500,000</div>
+            </div>
+            <div class="money-card overall-remaining-cop"> 
+                <div class="money-label">📈 Restante Meta General (COP)</div>
+                <div class="money-value" id="overallRemainingCOP">$3,500,000</div>
+            </div>
+            <div class="money-card current-month-usd-total"> 
+                <div class="money-label">💵 Ingresos este Mes (USD)</div>
+                <div class="money-value" id="currentMonthUSDTotal">$0.00</div>
+            </div>
+        </div>
+        <div class="money-card" style="margin-top: 15px;"> 
+            <div class="money-label">🌍 Total Ingresos Histórico (USD)</div>
+            <div class="money-value" id="overallUSDTotal">$0.00</div>
+            <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div>
+            <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div>
+        </div>
+        
+        <div class="celebration-overall" id="celebrationOverall"> 
+            🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br>
+            🏆 ¡Eres un maestro del joseo! Te amo. 🏆
+        </div>
+        
+        <div class="history">
+            <div class="history-title">📝 Historial Detallado de Ingresos (Global)</div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+
+        <div class="monthly-goals-section">
+             <div class="monthly-goals-title">🎯 Progreso Ingresos Mensuales (vs Meta General)</div>
+            <div class="monthly-goals-list" id="monthlyGoalsList"></div>
+            <button class="clear-btn" id="clearHistoryBtn">🗑️ Limpiar Todo el Historial</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <!-- Si quieres autenticación más adelante, añade: -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script> -->
+
+    <!-- TU SCRIPT PRINCIPAL VA DESPUÉS -->
+    <script>
+        // --- CONFIGURACIÓN ---
+        const OVERALL_TARGET_COP = 3500000; 
+        const LOCAL_STORAGE_KEY = 'financialGoalMonthlyUSDReset_v19'; // Mantenemos esta clave por ahora para el LAST_RUN_MONTH_KEY
+        const LAST_RUN_MONTH_KEY = LOCAL_STORAGE_KEY + '_lastRunMonth';
+        const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; 
+        const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; 
+        const FALLBACK_RATE = 4000; 
+
+        // Tus credenciales de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCuJ4Xetzex0zQpnrOKx1bLihpfX-0KaI",
+            authDomain: "meta-ingresos-app.firebaseapp.com",
+            projectId: "meta-ingresos-app",
+            storageBucket: "meta-ingresos-app.appspot.com", // Corregido: .appspot.com, no .firebasestorage.app
+            messagingSenderId: "367840381632",
+            appId: "1:367840381632:web:8d124fc5ee24183445fb25",
+            measurementId: "G-SE63KFXXRS" // Opcional, pero está bien dejarlo
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(); 
+        const contributionsCollection = db.collection("ingresos_v2"); // Usar un nuevo nombre de colección para empezar limpio si es necesario
+        // --------------------
+
+        let contributions = []; 
+        let currentDailyExchangeRate = null;
+
+        const el = { 
+            currentMonthDisplay: document.getElementById('currentMonthDisplay'),
+            moneyInput: document.getElementById('moneyInput'),
+            addMoneyButton: document.getElementById('addMoneyBtn'),
+            clearHistoryButton: document.getElementById('clearHistoryBtn'),
+            subtitle: document.getElementById('subtitleText'),
+            progressBarOverall: document.getElementById('progressBarOverall'),
+            progressTextOverall: document.getElementById('progressTextOverall'),
+            progressBarMonthly: document.getElementById('progressBarMonthly'),
+            progressTextMonthly: document.getElementById('progressTextMonthly'),
+            totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'), 
+            overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'), 
+            overallRemainingCOP: document.getElementById('overallRemainingCOP'), 
+            currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), 
+            overallUSDTotal: document.getElementById('overallUSDTotal'), 
+            exchangeRateInfo: document.getElementById('exchangeRateInfo'),
+            exchangeRateSource: document.getElementById('exchangeRateSource'),
+            celebrationOverall: document.getElementById('celebrationOverall'), 
+            historyList: document.getElementById('historyList'),
+            monthlyGoalsList: document.getElementById('monthlyGoalsList')
+        };
+        
+        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); }
+        function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }
+        async function fetchAndUpdateDailyExchangeRateWithERAPI() {
+            el.exchangeRateInfo.textContent = "Tasa actual: Actualizando...";
+            el.exchangeRateSource.style.display = 'none'; 
+            el.addMoneyButton.disabled = true;
+            el.addMoneyButton.innerHTML = `🔄 Cargando Tasa...`;
+            let success = false;
+            try {
+                const response = await fetch(EXCHANGE_RATE_API_URL_ERAPI); 
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error HTTP ${response.status}: ${response.statusText}. Cuerpo: ${errorText}`);
+                }
+                const data = await response.json();
+                if (data && data.rates && typeof data.rates.COP === 'number') {
+                    currentDailyExchangeRate = data.rates.COP; 
+                    localStorage.setItem(LOCAL_STORAGE_KEY + '_daily_rate_erapi', JSON.stringify({ 
+                        rate: currentDailyExchangeRate, 
+                        timestamp: Date.now(), 
+                        dateFetched: new Date(data.time_last_update_unix * 1000).toLocaleDateString('es-CO') 
+                    }));
+                    el.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP`; 
+                    success = true;
+                } else {
+                    throw new Error("Formato API (ER-API) inesperado.");
+                }
+            } catch (error) {
+                console.error("FALLO al obtener tasa de ER-API:", error);
+                currentDailyExchangeRate = null; 
+            }
+            if (!success && currentDailyExchangeRate === null) { 
+                const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY + '_daily_rate_erapi');
+                const cached = cachedData ? JSON.parse(cachedData) : null;
+                if (cached && typeof cached.rate === 'number' && (Date.now() - cached.timestamp < RATE_CACHE_DURATION * 24 )) { 
+                    currentDailyExchangeRate = cached.rate; 
+                    el.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; 
+                    success = true;
+                }
+            }
+            if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { 
+                currentDailyExchangeRate = FALLBACK_RATE; 
+                el.exchangeRateInfo.textContent = `1 USD ≈ ${currentDailyExchangeRate.toFixed(2)} COP (Respaldo)`; 
+            }
+            el.addMoneyButton.disabled = false;
+            el.addMoneyButton.innerHTML = `➕ Añadir Ingreso`;
+            return currentDailyExchangeRate;
+        }
+        async function getDailyExchangeRate() { 
+            const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY + '_daily_rate_erapi');
+            const cached = cachedData ? JSON.parse(cachedData) : null;
+            if (cached && typeof cached.rate === 'number' && !isNaN(cached.rate) && (Date.now() - cached.timestamp < RATE_CACHE_DURATION)) {
+                currentDailyExchangeRate = cached.rate;
+                el.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`;
+                return currentDailyExchangeRate;
+            }
+            return await fetchAndUpdateDailyExchangeRateWithERAPI();
+        }
+        
+        // MODIFICADO: loadData para leer de Firestore
+        async function loadData() { 
+            el.addMoneyButton.disabled = true;
+            el.addMoneyButton.innerHTML = `🔄 Cargando Datos...`;
+            try {
+                const snapshot = await contributionsCollection.orderBy("timestampAdded", "asc").get();
+                contributions = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    // Convertir el timestamp de Firestore a un objeto Date de JS si existe
+                    let jsTimestampAdded = data.timestampAdded ? data.timestampAdded.toDate() : new Date(); 
+                    return {
+                        id: doc.id, 
+                        ...data,
+                        amountUSD: parseFloat(data.amountUSD) || 0,
+                        amountCOP: parseFloat(data.amountCOP) || 0,
+                        exchangeRate: parseFloat(data.exchangeRate) || 0,
+                        timestampAdded: jsTimestampAdded // Guardar como objeto Date
+                    };
+                });
+                console.log("Datos cargados de Firestore:", contributions.length, "registros.");
+            } catch (error) { 
+                console.error("Error loading data from Firestore:", error); 
+                alert("No se pudieron cargar los datos de la nube. Verifique la consola para más detalles.");
+                contributions = []; 
+            } finally {
+                // Ya no usamos localStorage para las contribuciones principales
+                el.addMoneyButton.disabled = false;
+                el.addMoneyButton.innerHTML = `➕ Añadir Ingreso`;
+                updateAllDisplays(); 
+            }
+        }
+
+        // MODIFICADO: saveData ya no es necesario para contributions, se guarda directo en Firestore
+        // function saveData() { /* Ya no se usa para localStorage de contributions */ }
+
+        function getCurrentMonthYear() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        // MODIFICADO: addMoney para escribir en Firestore
+        async function addMoney() {
+            const amountToAddUSD = parseFloat(el.moneyInput.value);
+            if (isNaN(amountToAddUSD) || amountToAddUSD <= 0) { alert('⚠️ Ingrese un monto válido en USD.'); return; }
+            if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { 
+                await getDailyExchangeRate(); 
+                if(currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate) || currentDailyExchangeRate === FALLBACK_RATE) { 
+                    if (currentDailyExchangeRate === FALLBACK_RATE && !confirm(`No se pudo obtener la tasa actual. ¿Desea continuar usando una tasa de respaldo de 1 USD = ${FALLBACK_RATE} COP?`)) {
+                        return; 
+                    } else if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) {
+                        alert('⏳ Tasa de cambio aún no disponible. No se puede añadir el ingreso.'); return;
+                    }
+                }
+            }
+            const now = new Date();
+            const amountToAddCOP = amountToAddUSD * currentDailyExchangeRate;
+            
+            const newContribution = { 
+                amountUSD: amountToAddUSD, 
+                amountCOP: amountToAddCOP,
+                exchangeRate: currentDailyExchangeRate, 
+                date: now.toLocaleDateString('es-CO'), 
+                time: now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
+                monthYear: getCurrentMonthYear(),
+                timestampAdded: firebase.firestore.FieldValue.serverTimestamp() // Importante para ordenar
+            };
+
+            try {
+                el.addMoneyButton.disabled = true;
+                el.addMoneyButton.innerHTML = `🔄 Guardando...`;
+                const docRef = await contributionsCollection.add(newContribution);
+                console.log("Ingreso añadido a Firestore con ID:", docRef.id);
+                
+                // Para actualización inmediata de la UI, añadimos al array local.
+                // Firestore tomará un momento en propagar, pero para la UI esto es más rápido.
+                // OJO: el serverTimestamp() será null localmente hasta que se resuelva.
+                // Para consistencia, podríamos recargar desde Firestore, pero es más lento.
+                // Esta es una simplificación común.
+                contributions.push({ id: docRef.id, ...newContribution, timestampAdded: new Date() }); 
+                contributions.sort((a,b) => a.timestampAdded - b.timestampAdded); // Mantener orden local
+
+                el.moneyInput.value = '';
+                updateAllDisplays();
+                // Ya no se llama a saveData() porque los datos están en Firestore
+            } catch (error) {
+                console.error("Error adding income to Firestore:", error);
+                alert("Error al guardar el ingreso en la nube. Intente de nuevo.");
+            } finally {
+                el.addMoneyButton.disabled = false;
+                el.addMoneyButton.innerHTML = `➕ Añadir Ingreso`;
+            }
+        }
+
+        function getTotalUSDSavedOverall() { return contributions.reduce((s, c) => s + c.amountUSD, 0); }
+        function getTotalCOPSavedOverall() { return contributions.reduce((s,c) => s + c.amountCOP, 0); }
+        function getTotalUSDSavedThisMonth() { 
+            const currentMonth = getCurrentMonthYear();
+            return contributions
+                .filter(c => c.monthYear === currentMonth)
+                .reduce((sum, contrib) => sum + contrib.amountUSD, 0);
+        }
+
+        function getProgressBarColor(percentage, type = 'general') { 
+            const rootStyles = getComputedStyle(document.documentElement);
+            if (type === 'general') {
+                if (percentage >= 100) return rootStyles.getPropertyValue('--celebration-overall-bg').trim();
+                if (percentage < 25) return rootStyles.getPropertyValue('--quartile1-color-general').trim();
+                if (percentage < 50) return rootStyles.getPropertyValue('--quartile2-color-general').trim();
+                if (percentage < 75) return rootStyles.getPropertyValue('--quartile3-color-general').trim();
+                return rootStyles.getPropertyValue('--quartile4-color-general').trim();
+            } else { 
+                return rootStyles.getPropertyValue('--monthly-time-progress-color').trim();
+            }
+        }
+
+        function updateDisplay() {
+            const totalCOPSavedOverall = getTotalCOPSavedOverall();
+            const totalUSDSavedOverall = getTotalUSDSavedOverall();
+            const totalUSDSavedThisMonth = getTotalUSDSavedThisMonth(); 
+
+            const percentageOverall = Math.min((totalCOPSavedOverall / OVERALL_TARGET_COP) * 100, 100);
+            const remainingOverallCOP = Math.max(OVERALL_TARGET_COP - totalCOPSavedOverall, 0);
+            el.subtitle.textContent = `🚀 Progreso hacia tu meta general de ${formatCOP(OVERALL_TARGET_COP)}`;
+            el.progressBarOverall.style.width = percentageOverall + '%';
+            el.progressBarOverall.style.background = getProgressBarColor(percentageOverall, 'general');
+            el.progressTextOverall.textContent = percentageOverall.toFixed(1) + '% 📊';
+            el.totalAccumulatedCOP.textContent = formatCOP(totalCOPSavedOverall); 
+            el.overallTargetCOPDisplay.textContent = formatCOP(OVERALL_TARGET_COP); 
+            el.overallRemainingCOP.textContent = formatCOP(remainingOverallCOP);
+            
+            el.currentMonthUSDTotal.textContent = formatUSD(totalUSDSavedThisMonth); 
+            el.overallUSDTotal.textContent = formatUSD(totalUSDSavedOverall); 
+
+            el.celebrationOverall.style.display = (totalCOPSavedOverall >= OVERALL_TARGET_COP && contributions.length > 0) ? 'block' : 'none';
+
+            const today = new Date();
+            const currentDayOfMonth = today.getDate();
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+            const percentageTimeOfMonth = Math.min((currentDayOfMonth / daysInMonth) * 100, 100);
+            el.progressBarMonthly.style.width = percentageTimeOfMonth + '%';
+            el.progressBarMonthly.style.background = getProgressBarColor(percentageTimeOfMonth, 'monthly_time'); 
+            el.progressTextMonthly.textContent = `🗓️ Tiempo del Mes: ${percentageTimeOfMonth.toFixed(0)}%`; 
+        }
+
+        function updateHistory() { 
+             if (contributions.length === 0) { el.historyList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">🌱 Sin ingresos aún.</div>'; return; }
+            el.historyList.innerHTML = '';
+            contributions.slice().reverse().forEach(c => { // Mostramos las más recientes primero
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                const rateDisplay = typeof c.exchangeRate === 'number' ? c.exchangeRate.toFixed(4) : 'N/A';
+                item.innerHTML = `
+                    <div>
+                        <div class="history-date">📅 ${c.date} - ${c.time} (${c.monthYear})</div>
+                        <div class="history-amount" style="font-size:0.9em;">+${formatUSD(c.amountUSD)} 
+                            <span class="history-rate">(a ${rateDisplay})</span> 
+                        </div>
+                    </div>
+                    <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
+                el.historyList.appendChild(item);
+            });
+        }
+        function updateMonthlyGoalsDisplay() { 
+            const savingsByMonth = {}; 
+            const currentMonth = getCurrentMonthYear();
+            contributions.forEach(c => {
+                savingsByMonth[c.monthYear] = (savingsByMonth[c.monthYear] || 0) + c.amountCOP;
+            });
+            el.monthlyGoalsList.innerHTML = '';
+            let uniquePastAndCurrentMonths = new Set(); 
+            contributions.forEach(c => uniquePastAndCurrentMonths.add(c.monthYear));
+            uniquePastAndCurrentMonths.add(currentMonth); 
+            if (contributions.length > 0) {
+                const firstContributionMonthYear = contributions.length ? contributions.reduce((oldest, current) => 
+                    new Date(current.monthYear + '-01') < new Date(oldest.monthYear + '-01') ? current : oldest).monthYear : null;
+                if (firstContributionMonthYear) {
+                    let datePointer = new Date(firstContributionMonthYear + '-01');
+                    const todayFirstOfMonth = new Date(currentMonth + '-01'); 
+                    while(datePointer <= todayFirstOfMonth) { 
+                        uniquePastAndCurrentMonths.add(`${datePointer.getFullYear()}-${String(datePointer.getMonth() + 1).padStart(2, '0')}`);
+                        datePointer.setMonth(datePointer.getMonth() + 1);
+                    }
+                }
+            }
+            if (uniquePastAndCurrentMonths.size === 0) {
+                 el.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>';
+                 return;
+            }
+            const sortedMonths = Array.from(uniquePastAndCurrentMonths).sort().reverse(); 
+            sortedMonths.forEach(monthYearKey => {
+                const [year, monthNum] = monthYearKey.split('-');
+                const monthName = new Date(parseInt(year), parseInt(monthNum) - 1, 1)
+                                 .toLocaleString('es-CO', { month: 'long', year: 'numeric' });
+                const monthNameCapitalized = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+                const savedThisMonthCOP = savingsByMonth[monthYearKey] || 0;
+                const item = document.createElement('div'); item.className = 'monthly-goal-item';
+                let statusText, statusClass;
+                const targetForThisListEntry = OVERALL_TARGET_COP; 
+                if (monthYearKey < currentMonth) { 
+                    statusText = `💰 Ingresado: ${formatCOP(savedThisMonthCOP)} / ${formatCOP(targetForThisListEntry)}`; 
+                    statusClass = (savedThisMonthCOP >= targetForThisListEntry) ? 'achieved' : 'pending';
+                } else { 
+                    if (savedThisMonthCOP >= targetForThisListEntry) {
+                         statusText = `🎉 ¡Superado General! (${formatCOP(savedThisMonthCOP)})`; statusClass = 'achieved';
+                    } else {
+                        statusText = `⏳ En Progreso (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'pending';
+                    }
+                }
+                item.innerHTML = `
+                    <div class="monthly-goal-month">${monthNameCapitalized}</div>
+                    <div class="monthly-goal-status ${statusClass}">${statusText}</div>`;
+                el.monthlyGoalsList.appendChild(item);
+            });
+        }
+        function updateCurrentMonthDisplayDOM() { 
+            const now = new Date();
+            const monthName = now.toLocaleString('es-CO', { month: 'long' });
+            const year = now.getFullYear();
+            el.currentMonthDisplay.textContent = `🗓️ ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`;
+        }
+        function checkForMonthlyResetLogic() { 
+            const currentMonth = getCurrentMonthYear();
+            const lastRunMonth = localStorage.getItem(LAST_RUN_MONTH_KEY);
+            if (currentMonth !== lastRunMonth) {
+                console.log(`Nuevo mes detectado: ${currentMonth}. El último mes registrado fue ${lastRunMonth || 'ninguno'}.`);
+                localStorage.setItem(LAST_RUN_MONTH_KEY, currentMonth);
+            }
+        }
+        function updateAllDisplays() { 
+            updateDisplay(); updateHistory(); updateMonthlyGoalsDisplay(); 
+        }
+
+        // MODIFICADO: clearHistory para borrar de Firestore
+        async function clearHistory() { 
+            if (confirm('🤔 ¿Limpiar TODO el historial de ingresos y reiniciar el progreso? Esta acción es irreversible.')) {
+                el.clearHistoryButton.disabled = true;
+                el.clearHistoryButton.textContent = "Borrando...";
+                try {
+                    const snapshot = await contributionsCollection.get();
+                    if (snapshot.empty) {
+                        console.log("No hay documentos que borrar en Firestore.");
+                    } else {
+                        const batch = db.batch();
+                        snapshot.docs.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+                        await batch.commit();
+                        console.log("Historial borrado de Firestore.");
+                    }
+                    contributions = []; // Limpiar el array local
+                    localStorage.removeItem(LAST_RUN_MONTH_KEY); 
+                    localStorage.removeItem(LOCAL_STORAGE_KEY + '_daily_rate_erapi'); 
+                    currentDailyExchangeRate = null; 
+                    checkForMonthlyResetLogic(); 
+                    updateCurrentMonthDisplayDOM(); 
+                    await getDailyExchangeRate(); // Esperar tasa
+                    updateAllDisplays(); // Refrescar UI
+                } catch (error) {
+                    console.error("Error clearing history from Firestore:", error);
+                    alert("Error al borrar el historial de la nube.");
+                } finally {
+                    el.clearHistoryButton.disabled = false;
+                    el.clearHistoryButton.textContent = "🗑️ Limpiar Todo el Historial";
+                }
+            }
+        }
+        
+        async function initializeApp() { 
+            updateCurrentMonthDisplayDOM();
+            checkForMonthlyResetLogic(); 
+            el.overallTargetCOPDisplay.textContent = formatCOP(OVERALL_TARGET_COP); 
+            el.subtitle.textContent = `🚀 Progreso hacia tu meta general de ${formatCOP(OVERALL_TARGET_COP)}`;
+            el.addMoneyButton.innerHTML = `➕ Añadir Ingreso`;
+            
+            await getDailyExchangeRate(); // Obtener tasa primero
+            await loadData(); // Luego cargar datos (que podrían usar la tasa si no está guardada)
+            
+            updateAllDisplays(); 
+            
+            el.addMoneyButton.addEventListener('click', addMoney);
+            el.moneyInput.addEventListener('keypress', e => { if (e.key === 'Enter') addMoney(); });
+            el.clearHistoryButton.addEventListener('click', clearHistory);
+        }
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>

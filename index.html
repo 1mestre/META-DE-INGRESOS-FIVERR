@@ -44,14 +44,14 @@
             --bg-card-light-rgb: 42, 46, 55;
             --bg-dark-rgb: 24, 26, 31;
             
-            --subject-default-event-bg: var(--accent-purple); /* Color por defecto para eventos nuevos */
+            --subject-default-event-bg: var(--accent-purple);
             --subject-default-text-color: var(--bg-dark);
         }
 
         *{margin:0;padding:0;box-sizing:border-box}
         body{ font-family: 'Rubik', Arial, sans-serif; min-height:100vh; padding:15px; overflow-x: hidden; background-color: var(--bg-dark); color: var(--text-primary); display: flex; flex-direction: column; align-items: center; }
-        .main-navigation { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.8); backdrop-filter: blur(8px); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 25px; width: 100%; max-width: 950px; /* Ajustado para más botones */ position: sticky; top: 15px; z-index: 1000; }
-        .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; /* Un poco menos padding si hay muchos botones */ border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        .main-navigation { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.8); backdrop-filter: blur(8px); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 25px; width: 100%; max-width: 800px; position: sticky; top: 15px; z-index: 1000; }
+        .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .nav-button:hover { background: var(--accent-blue-info); color: var(--bg-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(var(--glow-color-blue-rgb), 0.3); }
         .nav-button.active {  background: var(--accent-green-neon); color: var(--bg-dark); box-shadow: 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5); font-weight: 700; }
         .page-content { display: none; width: 100%; animation: fadeInPage 0.5s ease-out forwards; }
@@ -59,89 +59,176 @@
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         #ingresos-page .container, .placeholder-page, .university-timetable-widget { background: transparent; border: 1px solid rgba(var(--bg-card-light-rgb), 0.5); border-radius:25px; padding:30px; max-width:650px; margin: 0 auto 30px auto; text-align:center; position: relative; }
         #ingresos-page .container { max-width: 650px; }
-        .university-timetable-widget { max-width: 1100px; /* Más ancho para Sábado y Domingo */ padding: 20px; /* Hereda glass-section desde el CSS del modal */ }
+        .university-timetable-widget { max-width: 850px; padding: 20px; }
         .placeholder-page h2, .university-timetable-widget h2 { font-size: 1.8em; color: var(--accent-blue-info); margin-bottom: 20px; }
         .placeholder-page p { font-size: 1.1em; color: var(--text-secondary); }
         #ingresos-page .glass-section { background-color: rgba(var(--bg-card-light-rgb), 0.65); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); border: 1px solid rgba(var(--text-primary), 0.1); border-radius:20px; padding:20px; margin-bottom:25px; box-shadow: 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.15), 0 5px 15px rgba(0,0,0,0.2); position: relative; z-index: 12; }
         #ingresos-page .money-card.glass-section { padding: 18px; border-radius: 15px; margin-bottom: 0;  }
         #ingresos-page .current-month-display.glass-section { padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.15); margin-bottom: 15px; background-color: rgba(var(--bg-card-light-rgb), 0.75); }
-        #ingresos-page .current-month-display { color: var(--accent-blue-info); font-size: 1.1em; font-weight: 500; } #ingresos-page .title{ color: var(--text-primary); font-size:2em; margin-bottom:10px; font-weight:700; text-shadow: 0 0 8px rgba(240,240,240, 0.3); animation: slideInDown 0.6s ease-out 0.2s backwards; } @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } } #ingresos-page .subtitle{  color: var(--text-secondary); font-size:1.1em; margin-bottom:25px; font-weight: 500; animation: slideInUp 0.6s ease-out 0.4s backwards; } @keyframes slideInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } #ingresos-page .input-section { /* Hereda de glass-section */ }
+        #ingresos-page .current-month-display { color: var(--accent-blue-info); font-size: 1.1em; font-weight: 500; } 
+        #ingresos-page .title-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; flex-wrap: wrap; }
+        #ingresos-page .title{ color: var(--text-primary); font-size:1.8em; margin-bottom:0; font-weight:700; text-shadow: 0 0 8px rgba(240,240,240, 0.3); animation: slideInDown 0.6s ease-out 0.2s backwards; } 
+        #ingresos-page .target-input-group { display: flex; align-items: center; gap: 8px; background-color: rgba(var(--bg-card-light-rgb), 0.7); padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid rgba(var(--text-primary),0.1); }
+        #ingresos-page .target-input-group label { font-size: 0.9em; color: var(--text-secondary); }
+        #ingresos-page #overallTargetInput { width: 120px; padding: 6px 8px; border: 1px solid #4a505e; border-radius: 6px; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; text-align: right; font-size: 0.95em; }
+        #ingresos-page #overallTargetInput:focus { outline: none; border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb),0.3); }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } } 
+        #ingresos-page .subtitle{  color: var(--text-secondary); font-size:1.1em; margin-bottom:25px; margin-top: 5px; font-weight: 500; animation: slideInUp 0.6s ease-out 0.4s backwards; } 
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } 
         #ingresos-page .currency-selector-container { display: flex; align-items: center; justify-content: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; } #ingresos-page .currency-selector-container label { font-size: 0.95em; color: var(--text-secondary); margin-right: 5px; } #ingresos-page #currencySelectorIngresos {  padding: 8px 12px; border-radius: 8px; border: 1px solid #4a505e; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; font-size: 0.95em; cursor: pointer; outline: none; } #ingresos-page #currencySelectorIngresos:focus { border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb), 0.4); }
         #ingresos-page .money-input{ width:100%; padding:14px; border:2px solid #4a505e; border-radius:12px; font-size:1.15em; text-align:center; margin-bottom:12px; background: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; transition: border-color 0.3s ease, box-shadow 0.3s ease; } #ingresos-page .money-input::placeholder { color: #888; }  #ingresos-page .money-input:focus{ outline:none; border-color: var(--accent-blue-info); box-shadow:0 0 12px rgba(var(--glow-color-blue-rgb), 0.5), 0 0 2px rgba(var(--glow-color-blue-rgb), 0.7);  } #ingresos-page .add-btn{  background:linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-neon)); color: #111;  border:none; padding:14px 30px; border-radius:12px; font-size:1.05em; cursor:pointer; font-weight:700; transition:all 0.3s ease; animation: pulseButton 2s infinite ease-in-out 1s; box-shadow: 0 0 10px rgba(var(--accent-green-neon-rgb), 0.3);  width: 100%;  } #ingresos-page .add-btn:hover{ transform:translateY(-3px) scale(1.08); box-shadow:0 8px 20px rgba(var(--accent-green-neon-rgb), 0.4), 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5) ; animation-play-state: paused; } #ingresos-page .add-btn:disabled { background: #4a4a4a; color: #888; cursor: not-allowed; animation: none; box-shadow: none; } @keyframes pulseButton { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        /* ... (Resto de estilos de la página de ingresos sin cambios significativos en su lógica) ... */ #ingresos-page .progress-container{margin:25px 0} #ingresos-page .progress-container.monthly { margin-top: 15px; } #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; box-shadow: 0 0 8px 2px transparent, 0 0 15px 4px transparent; } #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} } #ingresos-page .progress-bar.monthly-bar { background: var(--monthly-time-progress-color); } #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } #ingresos-page .money-display{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:25px 0; } #ingresos-page .money-card{ transition: transform 0.35s ease, box-shadow 0.35s ease; animation: popIn 0.5s ease-out backwards; } #ingresos-page .money-card:nth-child(1) { animation-delay: 0.5s; }  #ingresos-page .money-card:nth-child(2) { animation-delay: 0.6s; }  #ingresos-page .money-card:nth-child(3) { animation-delay: 0.7s; }  #ingresos-page .money-card:nth-child(4) { animation-delay: 0.8s; }  #ingresos-page .money-card:nth-child(5) { animation-delay: 0.9s; } @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } } #ingresos-page .money-card:hover{  transform: translateY(-5px) scale(1.02);  box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25);  } #ingresos-page .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; } #ingresos-page .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; } #ingresos-page .total-accumulated-cop .money-value {color: var(--accent-green-medium)}  #ingresos-page .overall-target-cop .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-remaining-cop .money-value {color: var(--accent-yellow-green)}  #ingresos-page .current-month-usd-total .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-usd-total .money-value {color: var(--accent-gold)}  #ingresos-page .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;} #ingresos-page .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; } #ingresos-page .celebration-overall{ display:none; margin:20px 0; padding:20px; background: var(--celebration-overall-bg); border-radius:15px; font-size:1.4em; color: var(--celebration-overall-text-color); font-weight:700; animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate; text-shadow: 0 0 8px rgba(0,0,0,0.2); box-shadow: 0 0 20px var(--celebration-overall-glow); position: relative; z-index: 15; } @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: rgba(var(--bg-dark-rgb), 0.8);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: rgba(var(--bg-card-rgb), 0.7);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: rgba(var(--bg-card-rgb), 0.9); transform: translateX(3px); } #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
-        .floating-emoji { /* ... (sin cambios) ... */ position: fixed; font-size: 3.5rem; user-select: none; animation: floatUp 12s infinite linear; opacity: 0; z-index: 0; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));} @keyframes floatUp { 0% { transform: translateY(10vh) translateX(0vw) rotate(0deg) scale(0.9); opacity: 0; } 10% { opacity: 0.1; transform: scale(1.1); } 80% { opacity: 0.1; } 100% { transform: translateY(-110vh) translateX(calc(5vw * var(--direction, 1))) rotate(360deg) scale(0.9); opacity: 0; } } .floating-emoji:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 18s; font-size: 4rem; --direction: 1; color: var(--accent-yellow-pale);} .floating-emoji:nth-child(2) { left: 20%; animation-delay: 3s; animation-duration: 22s; font-size: 3rem; --direction: -1; color: var(--accent-green-medium);} .floating-emoji:nth-child(3) { left: 80%; animation-delay: 6s; animation-duration: 15s; font-size: 4.5rem; --direction: 1; color: var(--accent-blue-info);} .floating-emoji:nth-child(4) { left: 90%; animation-delay: 9s; animation-duration: 20s; font-size: 2.8rem; --direction: -1; color: var(--accent-red-clear);} .floating-emoji:nth-child(5) { left: 40%; animation-delay: 2s; animation-duration: 25s; font-size: 3.8rem; --direction: 1; color: var(--accent-green-neon);} .floating-emoji:nth-child(6) { left: 65%; animation-delay: 5s; animation-duration: 13s; font-size: 3.2rem; --direction: -1; color: var(--accent-yellow-green);}
+        #ingresos-page .progress-container{margin:25px 0} #ingresos-page .progress-container.monthly { margin-top: 15px; } #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; box-shadow: 0 0 8px 2px transparent, 0 0 15px 4px transparent; } #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} } #ingresos-page .progress-bar.monthly-bar { background: var(--monthly-time-progress-color); } #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } #ingresos-page .money-display{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:25px 0; } #ingresos-page .money-card{ transition: transform 0.35s ease, box-shadow 0.35s ease; animation: popIn 0.5s ease-out backwards; } #ingresos-page .money-card:nth-child(1) { animation-delay: 0.5s; }  #ingresos-page .money-card:nth-child(2) { animation-delay: 0.6s; }  #ingresos-page .money-card:nth-child(3) { animation-delay: 0.7s; }  #ingresos-page .money-card:nth-child(4) { animation-delay: 0.8s; } @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } } #ingresos-page .money-card:hover{  transform: translateY(-5px) scale(1.02);  box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25);  } #ingresos-page .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; } #ingresos-page .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; } #ingresos-page .total-accumulated-cop .money-value {color: var(--accent-green-medium)}  #ingresos-page .overall-target-cop .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-remaining-cop .money-value {color: var(--accent-yellow-green)}  #ingresos-page .current-month-usd-total .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-usd-total .money-value {color: var(--accent-gold)}  #ingresos-page .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;} #ingresos-page .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; } #ingresos-page .celebration-overall{ display:none; margin:20px 0; padding:20px; background: var(--celebration-overall-bg); border-radius:15px; font-size:1.4em; color: var(--celebration-overall-text-color); font-weight:700; animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate; text-shadow: 0 0 8px rgba(0,0,0,0.2); box-shadow: 0 0 20px var(--celebration-overall-glow); position: relative; z-index: 15; } @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: rgba(var(--bg-dark-rgb), 0.8);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: rgba(var(--bg-card-rgb), 0.7);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: rgba(var(--bg-card-rgb), 0.9); transform: translateX(3px); } #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
+        .floating-emoji { position: fixed; font-size: 3.5rem; user-select: none; animation: floatUp 12s infinite linear; opacity: 0; z-index: -1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));} 
+        @keyframes floatUp { 0% { transform: translateY(10vh) translateX(0vw) rotate(0deg) scale(0.9); opacity: 0; } 10% { opacity: 0.1; transform: scale(1.1); } 80% { opacity: 0.1; } 100% { transform: translateY(-110vh) translateX(calc(5vw * var(--direction, 1))) rotate(360deg) scale(0.9); opacity: 0; } } 
+        .floating-emoji:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 18s; font-size: 4rem; --direction: 1; color: var(--accent-yellow-pale);} 
+        .floating-emoji:nth-child(2) { left: 20%; animation-delay: 3s; animation-duration: 22s; font-size: 3rem; --direction: -1; color: var(--accent-green-medium);} 
+        .floating-emoji:nth-child(3) { left: 80%; animation-delay: 6s; animation-duration: 15s; font-size: 4.5rem; --direction: 1; color: var(--accent-blue-info);} 
+        .floating-emoji:nth-child(4) { left: 90%; animation-delay: 9s; animation-duration: 20s; font-size: 2.8rem; --direction: -1; color: var(--accent-red-clear);} 
+        .floating-emoji:nth-child(5) { left: 40%; animation-delay: 2s; animation-duration: 25s; font-size: 3.8rem; --direction: 1; color: var(--accent-green-neon);} 
+        .floating-emoji:nth-child(6) { left: 65%; animation-delay: 5s; animation-duration: 13s; font-size: 3.2rem; --direction: -1; color: var(--accent-yellow-green);}
 
-        /* --- ESTILOS HORARIO UNIVERSITARIO --- */
-        .timetable-container { overflow-x: auto; background-color: rgba(var(--bg-card-rgb),0.85); /* Un poco más opaco */ padding: 15px; border-radius: 15px; border: 1px solid rgba(var(--text-primary),0.1); }
-        .timetable { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 0.80em; /* Un poco más pequeño para más días */ }
-        .timetable th, .timetable td { border: 1px solid rgba(var(--text-secondary), 0.2); /* Bordes más sutiles */ padding: 0; text-align: center; min-width: 85px; /* Ajustar si es necesario */ height: 50px; vertical-align: top; }
-        .timetable th { background-color: rgba(var(--bg-card-light-rgb), 0.95); color: var(--accent-blue-info); font-weight: 600; position: sticky; top: 0; z-index: 10; padding: 8px; }
-        .timetable td.time-header { background-color: rgba(var(--bg-card-light-rgb), 0.95); color: var(--accent-yellow-green); font-weight: 600; min-width: 65px; position: sticky; left: 0; z-index: 5; padding: 8px; }
-        .timetable .class-slot, .timetable .empty-slot { height: 100%; width: 100%; padding: 4px; box-sizing: border-box; /* Importante para que el padding no aumente tamaño */ }
-        .timetable .empty-slot { cursor: pointer; transition: background-color 0.2s ease; }
-        .timetable .empty-slot:hover { background-color: rgba(var(--accent-green-neon-rgb), 0.1); }
-        .timetable .class-item { background-color: var(--subject-default-event-bg); color: var(--subject-default-text-color); padding: 6px; border-radius: 6px; height: calc(100% - 2px); /* Pequeño ajuste para borde */ width: calc(100% - 2px); /* Pequeño ajuste para borde */ margin: 1px; /* Para que se vea el borde de la celda */ display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 500; cursor: pointer; /* Cambiado de grab a pointer */ transition: background-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.2); overflow: hidden; }
-        /* Ya no se necesita .class-item.dragging o .drop-target-highlight */
-        .timetable .class-item:hover { transform: translateY(-1px) scale(1.01); box-shadow: 0 3px 8px rgba(var(--glow-color-neutral-rgb), 0.3); }
-        .timetable .class-item .subject-name { font-weight: 700; display: block; margin-bottom: 2px; font-size: 1.0em; word-break: break-word; }
-        .timetable .class-item .teacher-name { font-size: 0.85em; color: rgba(var(--subject-default-text-color), 0.85); display: block; word-break: break-word; }
-        #addTimetableEventBtn { background: linear-gradient(135deg, var(--accent-blue-info), var(--accent-purple)); color: var(--bg-dark); border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 20px; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.3); font-size: 1em; }
-        #addTimetableEventBtn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 5px 15px rgba(var(--glow-color-blue-rgb), 0.5), 0 0 15px rgba(var(--glow-color-blue-rgb), 0.4); }
+        /* --- ESTILOS HORARIO UNIVERSITARIO (GRID) --- */
+        #timetableGrid {
+            display: grid;
+            grid-template-columns: [times] 60px repeat(5, 1fr); /* Columna para horas, 5 columnas para días */
+            /* Las filas se determinarán por el contenido y grid-auto-rows, 
+               pero la primera fila (encabezados) y las filas de tiempo necesitan estar definidas.
+               Vamos a dejar que los elementos se coloquen y `grid-auto-rows` maneje la altura por defecto.
+            */
+            grid-auto-rows: minmax(40px, auto); /* Altura mínima para las filas de hora */
+            gap: 3px; 
+            background-color: rgba(var(--bg-card-rgb),0.75); /* Un poco más claro que el anterior */
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(var(--text-primary),0.08);
+            margin-top: 20px;
+            max-width: 100%;
+            overflow-x: auto; /* Para scroll horizontal si es necesario */
+        }
+
+        .timetable-grid-header, 
+        .timetable-grid-time-label,
+        .timetable-grid-corner {
+            background-color: rgba(var(--bg-card-light-rgb), 0.9);
+            color: var(--accent-blue-info);
+            font-weight: 600;
+            padding: 10px 5px;
+            text-align: center;
+            position: sticky; 
+            z-index: 20; /* Encima de los eventos */
+        }
+
+        .timetable-grid-header { /* Encabezados de día */
+            top: 0; 
+        }
+        .timetable-grid-time-label { /* Etiquetas de hora */
+            left: 0;
+            color: var(--accent-yellow-green);
+            text-align: right;
+            padding-right: 12px;
+            font-size: 0.85em;
+        }
+        .timetable-grid-corner { /* Esquina superior izquierda vacía */
+            top: 0;
+            left: 0;
+            z-index: 21; /* Encima de los otros headers */
+        }
+
+        .timetable-grid-event {
+            background-color: var(--subject-default-event-bg);
+            color: var(--subject-default-text-color);
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Alinear texto arriba */
+            align-items: stretch; /* Estirar para llenar */
+            font-size: 0.8em; /* Más pequeño para que quepa más texto */
+            line-height: 1.3;
+            min-height: 38px; 
+            position: relative; /* Para z-index en hover */
+        }
+
+        .timetable-grid-event:hover {
+            transform: scale(1.02); /* Sutil agrandamiento */
+            box-shadow: 0 4px 12px rgba(var(--glow-color-neutral-rgb), 0.4);
+            z-index: 5; 
+        }
+
+        .timetable-grid-event .subject-name {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 3px;
+            font-size: 1.05em; 
+            word-break: break-word;
+        }
+        .timetable-grid-event .teacher-name {
+            font-size: 0.9em; 
+            color: rgba(var(--subject-default-text-color), 0.8);
+            display: block;
+            word-break: break-word;
+        }
         
         /* --- MODAL --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.7); backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.7); backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
         .modal-overlay.active { display: flex; }
-        .modal-content { background-color: rgba(var(--bg-card-rgb), 0.85); /* Fondo más transparente */ padding: 25px 30px; border-radius: 20px; box-shadow: 0 0 25px rgba(var(--glow-color-neutral-rgb),0.2), 0 10px 30px rgba(0,0,0,0.3); width: 90%; max-width: 500px; border: 1px solid rgba(var(--text-primary),0.15); animation: popInModal 0.3s ease-out; }
-        @keyframes popInModal { from { opacity:0; transform: scale(0.9); } to { opacity:1; transform: scale(1); } }
+        @keyframes modalFadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .modal-content { background-color: rgba(var(--bg-card-rgb), 0.9); padding: 25px 30px; border-radius: 20px; box-shadow: 0 0 30px rgba(var(--glow-color-blue-rgb),0.25), 0 10px 40px rgba(0,0,0,0.35); width: 90%; max-width: 500px; border: 1px solid rgba(var(--text-primary),0.15); animation: popInModal 0.3s ease-out; }
+        @keyframes popInModal { from { opacity:0; transform: scale(0.9) translateY(10px); } to { opacity:1; transform: scale(1) translateY(0); } }
         .modal-content h3 { color: var(--accent-blue-info); margin-top: 0; margin-bottom: 20px; text-align: center; font-size: 1.5em; text-shadow: 0 0 5px rgba(var(--glow-color-blue-rgb), 0.3); }
         .modal-form-group { margin-bottom: 18px; }
         .modal-form-group label { display: block; color: var(--text-secondary); margin-bottom: 6px; font-size: 0.9em; text-align: left; }
         .modal-form-group input[type="text"], .modal-form-group select, .modal-form-group input[type="color"] { width: 100%; padding: 10px 12px; border: 1px solid #4a505e; border-radius: 8px; background-color: var(--bg-dark); color: var(--text-primary); font-size: 1em; font-family: 'Rubik', sans-serif; }
-        .modal-form-group input[type="color"] { padding: 5px; height: 45px; /* Altura similar a otros inputs */ } /* Estilo específico para input color */
+        .modal-form-group input[type="color"] { padding: 5px; height: 45px; cursor: pointer; } 
         .modal-form-group input[type="text"]:focus, .modal-form-group select:focus, .modal-form-group input[type="color"]:focus { outline: none; border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb), 0.3); }
-        .modal-actions { margin-top: 25px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; } /* flex-wrap para botones */
-        .modal-actions button { flex-grow: 1; min-width: 100px; /* Ancho mínimo para botones */ padding: 10px 15px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: 0.95em; }
+        .modal-actions { margin-top: 25px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; } 
+        .modal-actions button { flex-grow: 1; min-width: 100px; padding: 10px 15px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: 0.95em; }
         #saveTimetableEventBtn { background-color: var(--accent-green-medium); color: var(--bg-dark); } #saveTimetableEventBtn:hover { background-color: var(--accent-green-neon); }
         #cancelTimetableEventBtn { background-color: var(--bg-card-light); color: var(--text-primary); } #cancelTimetableEventBtn:hover { background-color: #3e4450; }
         #deleteTimetableEventBtn { background-color: var(--accent-red-clear); color: var(--text-primary); display: none; } #deleteTimetableEventBtn:hover { background-color: #d43f3f; }
 
-        @media (max-width:768px){ .main-navigation { padding: 10px; gap: 8px; top:10px; } .nav-button { padding: 8px 12px; font-size: 0.85em;} #ingresos-page .container, .placeholder-page, .university-timetable-widget {padding:20px;margin: 0 auto 20px auto;} #ingresos-page .money-display{grid-template-columns:1fr}  #ingresos-page .title{font-size:1.7em} .placeholder-page h2, .university-timetable-widget h2 {font-size: 1.5em;} .timetable { font-size: 0.75em; } .timetable th, .timetable td { padding: 0; min-width: 70px; } .timetable th, .timetable td.time-header {padding: 5px;} .timetable td.time-header { min-width: 50px; } }
-        @media (max-width:480px){ body { padding: 10px; } .floating-emoji { font-size: 2.5rem; opacity: 0.08; }  .glass-section, .university-timetable-widget, .modal-content { backdrop-filter: blur(5px) saturate(120%); -webkit-backdrop-filter: blur(5px) saturate(120%); } }
+        @media (max-width:768px){  .main-navigation { padding: 10px; gap: 8px; top:10px; } .nav-button { padding: 8px 12px; font-size: 0.85em;} #ingresos-page .container, .placeholder-page, .university-timetable-widget {padding:20px;margin: 0 auto 20px auto;} #ingresos-page .money-display{grid-template-columns:1fr}  #ingresos-page .title{font-size:1.7em} .placeholder-page h2, .university-timetable-widget h2 {font-size: 1.5em;} 
+            #timetableGrid { font-size: 0.9em; gap: 2px; padding:10px; grid-template-columns: [times] 45px repeat(5, 1fr); grid-auto-rows: minmax(35px, auto); }
+            .timetable-grid-event { font-size: 0.75em; padding: 5px; }
+            .timetable-grid-time-label { font-size: 0.75em; padding-right: 5px;}
+            .timetable-grid-header { padding: 8px 3px; }
+        }
+        @media (max-width:480px){ body { padding: 10px; } .floating-emoji { font-size: 2.5rem; opacity: 0.08; z-index:0; }  .glass-section, .university-timetable-widget, .modal-content { backdrop-filter: blur(5px) saturate(120%); -webkit-backdrop-filter: blur(5px) saturate(120%); } 
+            #timetableGrid { font-size: 0.8em; grid-template-columns: [times] 40px repeat(5, 1fr); grid-auto-rows: minmax(30px, auto); padding: 5px; }
+            .timetable-grid-event { font-size: 0.7em; padding: 4px; min-height: 28px;}
+            .timetable-grid-event .subject-name { margin-bottom: 1px; }
+            .timetable-grid-time-label { font-size: 0.7em; }
+        }
     </style>
 </head>
 <body>
-    <!-- ... (emojis y navegación principal) ... -->
     <div class="floating-emoji">💰</div> <div class="floating-emoji">💸</div> <div class="floating-emoji">📈</div> <div class="floating-emoji">🎯</div> <div class="floating-emoji">✨</div> <div class="floating-emoji">🚀</div>
     <div class="main-navigation"> <button class="nav-button" data-page="calendario-page">📅 Calendario</button> <button class="nav-button" data-page="ingresos-page">💰 Ingresos</button> <button class="nav-button" data-page="fiverr-page">💼 Fiverr</button> <button class="nav-button" data-page="freelancing-page"> Freelancing</button> <button class="nav-button active" data-page="universidad-page">🎓 Universidad</button> </div>
 
     <div id="ingresos-page" class="page-content">
         <div class="container"> 
             <div class="current-month-display glass-section" id="currentMonthDisplay"></div>
-            <h1 class="title">🎯 Meta Ingresos Constantes 💰</h1>
+            <div class="title-container"> <h1 class="title">🎯 Meta Ingresos</h1> <div class="target-input-group"> <label for="overallTargetInput">Meta (COP):</label> <input type="number" id="overallTargetInput" step="1000" placeholder="3,500,000"> </div> </div>
             <p class="subtitle" id="subtitleText">🚀 Progreso hacia tu meta general...</p>
-            <div class="input-section glass-section">
-                <div class="currency-selector-container"> <label for="currencySelectorIngresos">Moneda de Ingreso:</label> <select id="currencySelectorIngresos"> <option value="USD" selected>USD ($)</option> <option value="COP">COP ($)</option> </select> </div>
-                <input type="number" class="money-input" id="moneyInputIngresos" placeholder="💵 Ingresa cantidad en USD..." min="0.01" step="0.01">
-                <button class="add-btn" id="addMoneyBtnIngresos">➕ Añadir Ingreso</button>
-            </div>
-            <!-- ... (resto del HTML de la página de ingresos) ... -->
-            <div class="progress-container"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarOverall"></div> </div> <div class="progress-text" id="progressTextOverall">0% 📊</div> </div> <div class="progress-container monthly"> <div class="progress-bar-bg"> <div class="progress-bar monthly-bar" id="progressBarMonthly"></div> </div> <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> </div> <div class="money-display"> <div class="money-card total-accumulated-cop glass-section"> <div class="money-label">💚 Total Ingresos Netos Acumulados (COP)</div> <div class="money-value" id="totalAccumulatedCOP">$0</div> </div> <div class="money-card overall-target-cop glass-section"> <div class="money-label">🏁 Meta General (COP)</div> <div class="money-value" id="overallTargetCOPDisplay">$3,500,000</div> </div> <div class="money-card overall-remaining-cop glass-section"> <div class="money-label">📈 Restante Meta General (COP)</div> <div class="money-value" id="overallRemainingCOP">$3,500,000</div> </div> <div class="money-card current-month-usd-total glass-section"> <div class="money-label">💵 Ingresos Netos este Mes (USD)</div> <div class="money-value" id="currentMonthUSDTotal">$0.00</div> </div> </div> <div class="money-card glass-section" style="margin-top: 15px;"> <div class="money-label">🌍 Total Ingresos Netos Histórico (USD)</div> <div class="money-value" id="overallUSDTotal">$0.00</div> <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div> <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div> </div> <div class="celebration-overall" id="celebrationOverall"> 🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br> 🏆 ¡Eres un maestro del joseo! Te amo. 🏆 </div> <div class="history glass-section"> <div class="history-title">📝 Historial Detallado de Ingresos (Netos)</div> <div class="history-list" id="historyList"></div> </div> <div class="monthly-goals-section glass-section"> <div class="monthly-goals-title">🎯 Progreso Ingresos Mensuales (Netos vs Meta General)</div> <div class="monthly-goals-list" id="monthlyGoalsList"></div> <button class="clear-btn" id="clearHistoryBtnIngresos">🗑️ Limpiar Todo el Historial</button> </div>
+            <div class="input-section glass-section"> <div class="currency-selector-container"> <label for="currencySelectorIngresos">Moneda de Ingreso:</label> <select id="currencySelectorIngresos"> <option value="USD" selected>USD ($)</option> <option value="COP">COP ($)</option> </select> </div> <input type="number" class="money-input" id="moneyInputIngresos" placeholder="💵 Ingresa cantidad en USD..." min="0.01" step="0.01"> <button class="add-btn" id="addMoneyBtnIngresos">➕ Añadir Ingreso</button> </div>
+            <div class="progress-container"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarOverall"></div> </div> <div class="progress-text" id="progressTextOverall">0% 📊</div> </div> <div class="progress-container monthly"> <div class="progress-bar-bg"> <div class="progress-bar monthly-bar" id="progressBarMonthly"></div> </div> <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> </div> <div class="money-display"> <div class="money-card total-accumulated-cop glass-section"> <div class="money-label">💚 Total Ingresos Netos Acumulados (COP)</div> <div class="money-value" id="totalAccumulatedCOP">$0</div> </div> <div class="money-card overall-target-cop glass-section"> <div class="money-label">🏁 Meta General Actual (COP)</div> <div class="money-value" id="overallTargetCOPDisplay">$0</div> </div> <div class="money-card overall-remaining-cop glass-section"> <div class="money-label">📈 Restante Meta General (COP)</div> <div class="money-value" id="overallRemainingCOP">$0</div> </div> <div class="money-card current-month-usd-total glass-section"> <div class="money-label">💵 Ingresos Netos este Mes (USD)</div> <div class="money-value" id="currentMonthUSDTotal">$0.00</div> </div> </div> <div class="money-card glass-section" style="margin-top: 15px;"> <div class="money-label">🌍 Total Ingresos Netos Histórico (USD)</div> <div class="money-value" id="overallUSDTotal">$0.00</div> <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div> <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div> </div> <div class="celebration-overall" id="celebrationOverall"> 🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br> 🏆 ¡Eres un maestro del joseo! Te amo. 🏆 </div> <div class="history glass-section"> <div class="history-title">📝 Historial Detallado de Ingresos (Netos)</div> <div class="history-list" id="historyList"></div> </div> <div class="monthly-goals-section glass-section"> <div class="monthly-goals-title">🎯 Progreso Ingresos Mensuales (Netos vs Meta)</div> <div class="monthly-goals-list" id="monthlyGoalsList"></div> <button class="clear-btn" id="clearHistoryBtnIngresos">🗑️ Limpiar Todo el Historial</button> </div>
         </div>
     </div>
 
-    <!-- ... (Placeholders para Calendario, Fiverr, Freelancing) ... -->
     <div id="calendario-page" class="page-content"> <div class="placeholder-page"> <h2>📅 Calendario</h2> <p>Aquí se mostrará tu calendario y eventos.</p> </div> </div> <div id="fiverr-page" class="page-content"> <div class="placeholder-page"> <h2>💼 Gestión Fiverr</h2> <p>Organiza tus pedidos, finanzas y notas de Fiverr aquí.</p> </div> </div> <div id="freelancing-page" class="page-content"> <div class="placeholder-page"> <h2> Freelancing General</h2> <p>Herramientas y notas para tus proyectos freelance generales.</p> </div> </div>
 
     <div id="universidad-page" class="page-content active"> 
         <div class="university-timetable-widget glass-section"> 
             <h2>🎓 Horario Universitario</h2>
-            <div class="timetable-container">
-                <table class="timetable" id="universityTimetable">
-                    <thead> <tr> <th>Hora</th> <th>LUNES</th> <th>MARTES</th> <th>MIÉRCOLES</th> <th>JUEVES</th> <th>VIERNES</th> <th>SÁBADO</th> <th>DOMINGO</th> </tr> </thead>
-                    <tbody id="timetableBody"></tbody>
-                </table>
+            <div id="timetableGrid"> <!-- Contenedor para el CSS Grid -->
+                <!-- El contenido se generará por JavaScript -->
             </div>
-            <button id="addTimetableEventBtnGlobal">➕ Añadir Evento al Horario</button> <!-- Botón global para añadir -->
+             <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
         </div>
     </div>
 
@@ -155,203 +242,190 @@
                 <div class="modal-form-group"> <label for="eventDay">Día:</label> <select id="eventDay" required></select> </div>
                 <div class="modal-form-group"> <label for="eventStartTime">Hora Inicio:</label> <select id="eventStartTime" required></select> </div>
                 <div class="modal-form-group"> <label for="eventEndTime">Hora Fin:</label> <select id="eventEndTime" required></select> </div>
-                <div class="modal-form-group"> <label for="eventColor">Color del Evento:</label> <input type="color" id="eventColor" value="var(--subject-default-event-bg)"> </div>
+                <div class="modal-form-group"> <label for="eventColor">Color del Evento:</label> <input type="color" id="eventColor" value="#bd93f9"> </div>
                 <div class="modal-actions"> <button type="button" id="deleteTimetableEventBtn">Eliminar</button> <button type="button" id="cancelTimetableEventBtn">Cancelar</button> <button type="submit" id="saveTimetableEventBtn">Guardar</button> </div>
             </form>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURACIONES (Ingresos y Horario) ---
-        const OVERALL_TARGET_COP = 3500000; const LOCAL_STORAGE_KEY_INGRESOS = 'financialGoal_v26_modalTimetable'; const LAST_RUN_MONTH_KEY_INGRESOS = LOCAL_STORAGE_KEY_INGRESOS + '_lastRunMonth'; const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; const FALLBACK_RATE = 4000; const FIXED_FEE_USD = 3; const PERCENTAGE_FEE = 0.03; const MIN_USD_INPUT_FOR_NET_CALC = FIXED_FEE_USD + 0.01; 
-        const TIMETABLE_START_HOUR = 7; const TIMETABLE_END_HOUR = 20; 
-        const TIMETABLE_DAYS = ["LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO", "DOMINGO"]; // Añadido Sábado y Domingo
-        const LOCAL_STORAGE_KEY_TIMETABLE = 'universityTimetable_v4_fullEdit'; // v4 por modal completo y días extra
+        // --- CONFIGURACIONES ---
+        const DEFAULT_OVERALL_TARGET_COP = 3500000; 
+        const LOCAL_STORAGE_KEY_INGRESOS = 'financialGoal_v27_monthlyTarget'; 
+        const LAST_RUN_MONTH_KEY_INGRESOS = LOCAL_STORAGE_KEY_INGRESOS + '_lastRunMonth';
+        const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; const FALLBACK_RATE = 4000; const FIXED_FEE_USD = 3; const PERCENTAGE_FEE = 0.03; const MIN_USD_INPUT_FOR_NET_CALC = FIXED_FEE_USD + 0.01; 
+        
+        const TIMETABLE_START_HOUR = 5; 
+        const TIMETABLE_END_HOUR = 23;  // Eventos pueden ir hasta las 23:00 - 00:00
+        
+        const TIMETABLE_DAYS = ["LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
+        const LOCAL_STORAGE_KEY_TIMETABLE = 'universityTimetable_v6_gridSystem'; // Nueva key para la nueva estructura
         
         let contributions = []; let currentDailyExchangeRate = null; let selectedInputCurrencyIngresos = 'USD'; 
-        let timetableData = []; 
-        // let draggedEventId = null; // Ya no se necesita
-        let currentEditingEventId = null; 
+        let monthlyTargets = {}; let currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; 
+        let timetableData = []; let currentEditingEventId = null; 
 
         const navButtons = document.querySelectorAll('.nav-button'); const pageContents = document.querySelectorAll('.page-content'); const defaultPage = 'universidad-page'; 
-        const elIngresos = {  currentMonthDisplay: document.getElementById('currentMonthDisplay'), moneyInput: document.getElementById('moneyInputIngresos'),  addMoneyButton: document.getElementById('addMoneyBtnIngresos'),  clearHistoryButton: document.getElementById('clearHistoryBtnIngresos'),  subtitle: document.getElementById('subtitleText'), progressBarOverall: document.getElementById('progressBarOverall'), progressTextOverall: document.getElementById('progressTextOverall'), progressBarMonthly: document.getElementById('progressBarMonthly'), progressTextMonthly: document.getElementById('progressTextMonthly'), totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'),  overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'),  overallRemainingCOP: document.getElementById('overallRemainingCOP'),  currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), overallUSDTotal: document.getElementById('overallUSDTotal'),  exchangeRateInfo: document.getElementById('exchangeRateInfo'), exchangeRateSource: document.getElementById('exchangeRateSource'), celebrationOverall: document.getElementById('celebrationOverall'),  historyList: document.getElementById('historyList'), monthlyGoalsList: document.getElementById('monthlyGoalsList'), currencySelector: document.getElementById('currencySelectorIngresos')  };
-        
-        const timetableBody = document.getElementById('timetableBody');
-        const addTimetableEventBtnGlobal = document.getElementById('addTimetableEventBtnGlobal'); // Botón global
-        const timetableEventModalOverlay = document.getElementById('timetableEventModalOverlay'); const timetableEventForm = document.getElementById('timetableEventForm'); const modalTitle = document.getElementById('modalTitle'); const eventModalIdInput = document.getElementById('eventModalId'); const eventSubjectInput = document.getElementById('eventSubject'); const eventTeacherInput = document.getElementById('eventTeacher'); const eventDaySelect = document.getElementById('eventDay'); const eventStartTimeSelect = document.getElementById('eventStartTime'); const eventEndTimeSelect = document.getElementById('eventEndTime'); const eventColorInput = document.getElementById('eventColor'); /* NUEVO */ const saveTimetableEventBtn = document.getElementById('saveTimetableEventBtn'); const cancelTimetableEventBtn = document.getElementById('cancelTimetableEventBtn'); const deleteTimetableEventBtn = document.getElementById('deleteTimetableEventBtn');
+        const elIngresos = {  currentMonthDisplay: document.getElementById('currentMonthDisplay'), moneyInput: document.getElementById('moneyInputIngresos'),  addMoneyButton: document.getElementById('addMoneyBtnIngresos'),  clearHistoryButton: document.getElementById('clearHistoryBtnIngresos'), overallTargetInput: document.getElementById('overallTargetInput'), subtitle: document.getElementById('subtitleText'), progressBarOverall: document.getElementById('progressBarOverall'), progressTextOverall: document.getElementById('progressTextOverall'), progressBarMonthly: document.getElementById('progressBarMonthly'), progressTextMonthly: document.getElementById('progressTextMonthly'), totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'),  overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'),  overallRemainingCOP: document.getElementById('overallRemainingCOP'),  currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), overallUSDTotal: document.getElementById('overallUSDTotal'),  exchangeRateInfo: document.getElementById('exchangeRateInfo'), exchangeRateSource: document.getElementById('exchangeRateSource'), celebrationOverall: document.getElementById('celebrationOverall'),  historyList: document.getElementById('historyList'), monthlyGoalsList: document.getElementById('monthlyGoalsList'), currencySelector: document.getElementById('currencySelectorIngresos')  };
+        // timetableBody ya no se usa. El contenedor del grid es timetableGridElement.
+        const addTimetableEventBtnGlobal = document.getElementById('addTimetableEventBtnGlobal'); 
+        const timetableEventModalOverlay = document.getElementById('timetableEventModalOverlay'); 
+        const timetableEventForm = document.getElementById('timetableEventForm'); 
+        const modalTitle = document.getElementById('modalTitle'); 
+        const eventModalIdInput = document.getElementById('eventModalId'); 
+        const eventSubjectInput = document.getElementById('eventSubject'); 
+        const eventTeacherInput = document.getElementById('eventTeacher'); 
+        const eventDaySelect = document.getElementById('eventDay'); 
+        const eventStartTimeSelect = document.getElementById('eventStartTime'); 
+        const eventEndTimeSelect = document.getElementById('eventEndTime'); 
+        const eventColorInput = document.getElementById('eventColor'); 
+        const saveTimetableEventBtn = document.getElementById('saveTimetableEventBtn'); 
+        const cancelTimetableEventBtn = document.getElementById('cancelTimetableEventBtn'); 
+        const deleteTimetableEventBtn = document.getElementById('deleteTimetableEventBtn');
 
-        function showPage(pageId) { /* ... (sin cambios) ... */ pageContents.forEach(page => { page.classList.remove('active'); }); navButtons.forEach(button => { button.classList.remove('active'); if (button.dataset.page === pageId) { button.classList.add('active'); } }); const activePage = document.getElementById(pageId); if (activePage) { activePage.classList.add('active'); } }
+        function showPage(pageId) { pageContents.forEach(page => { page.classList.remove('active'); }); navButtons.forEach(button => { button.classList.remove('active'); if (button.dataset.page === pageId) { button.classList.add('active'); } }); const activePage = document.getElementById(pageId); if (activePage) { activePage.classList.add('active'); } }
         navButtons.forEach(button => { button.addEventListener('click', () => { showPage(button.dataset.page); }); });
 
-        // --- FUNCIONES DE LA PÁGINA DE INGRESOS (sin cambios en su lógica interna) ---
-        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); } function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); } async function fetchAndUpdateDailyExchangeRateWithERAPI_Ingresos() { elIngresos.exchangeRateInfo.textContent = "Tasa actual: Actualizando..."; elIngresos.exchangeRateSource.style.display = 'none'; elIngresos.addMoneyButton.disabled = true; elIngresos.addMoneyButton.innerHTML = `🔄 Cargando Tasa...`; let success = false; try { const response = await fetch(EXCHANGE_RATE_API_URL_ERAPI); if (!response.ok) { const errorText = await response.text(); throw new Error(`Error HTTP ${response.status}: ${response.statusText}. Cuerpo: ${errorText}`); } const data = await response.json(); if (data && data.rates && typeof data.rates.COP === 'number') { currentDailyExchangeRate = data.rates.COP; localStorage.setItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi', JSON.stringify({ rate: currentDailyExchangeRate, timestamp: Date.now(), dateFetched: new Date(data.time_last_update_unix * 1000).toLocaleDateString('es-CO') })); elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP`; success = true; } else { throw new Error("Formato API (ER-API) inesperado."); } } catch (error) { console.error("FALLO al obtener tasa de ER-API:", error); currentDailyExchangeRate = null; } if (!success && currentDailyExchangeRate === null) { const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); const cached = cachedData ? JSON.parse(cachedData) : null; if (cached && typeof cached.rate === 'number' && (Date.now() - cached.timestamp < RATE_CACHE_DURATION * 24 )) { currentDailyExchangeRate = cached.rate; elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; success = true; } } if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { currentDailyExchangeRate = FALLBACK_RATE; elIngresos.exchangeRateInfo.textContent = `1 USD ≈ ${currentDailyExchangeRate.toFixed(2)} COP (Respaldo)`; } elIngresos.addMoneyButton.disabled = false; elIngresos.addMoneyButton.innerHTML = `➕ Añadir Ingreso`; updateInputPlaceholder_Ingresos(); return currentDailyExchangeRate; } async function getDailyExchangeRate_Ingresos() { const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); const cached = cachedData ? JSON.parse(cachedData) : null; if (cached && typeof cached.rate === 'number' && !isNaN(cached.rate) && (Date.now() - cached.timestamp < RATE_CACHE_DURATION)) { currentDailyExchangeRate = cached.rate; elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; updateInputPlaceholder_Ingresos(); return currentDailyExchangeRate; } return await fetchAndUpdateDailyExchangeRateWithERAPI_Ingresos(); } function loadData_Ingresos() { try { const saved = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS); if (saved) { const data = JSON.parse(saved); contributions = Array.isArray(data.contributions) ? data.contributions.map(c => ({ ...c, amountUSD: parseFloat(c.amountUSD) || 0, amountCOP: parseFloat(c.amountCOP) || 0, originalAmountUSD: parseFloat(c.originalAmountUSD) || 0, exchangeRate: parseFloat(c.exchangeRate) || 0, })) : []; selectedInputCurrencyIngresos = data.selectedInputCurrencyIngresos || 'USD'; elIngresos.currencySelector.value = selectedInputCurrencyIngresos; } } catch (error) { console.error("Error loading data (Ingresos):", error); contributions = []; saveData_Ingresos(); } } function saveData_Ingresos() { try { localStorage.setItem(LOCAL_STORAGE_KEY_INGRESOS, JSON.stringify({ contributions, selectedInputCurrencyIngresos })); } catch (e) { console.error("Error saving (Ingresos):",e); alert("Error al guardar datos de ingresos.");} } function getCurrentMonthYear_Ingresos() { const now = new Date(); return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`; } function updateInputPlaceholder_Ingresos() { if (selectedInputCurrencyIngresos === 'USD') { elIngresos.moneyInput.placeholder = '💵 Ingresa cantidad BRUTA en USD...'; elIngresos.moneyInput.min = MIN_USD_INPUT_FOR_NET_CALC; } else { elIngresos.moneyInput.placeholder = '💰 Ingresa cantidad en COP...'; elIngresos.moneyInput.min = "0.01"; if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { elIngresos.moneyInput.placeholder = '💰 (Tasa COP no disponible)'; } } } async function addMoney_Ingresos() { const rawAmount = parseFloat(elIngresos.moneyInput.value); if (isNaN(rawAmount) || rawAmount <= 0) { alert(`⚠️ Ingrese un monto válido.`); return; } let netAmountUSD, netAmountCOP; let originalGrossAmountUSD = 0; if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { await getDailyExchangeRate_Ingresos(); if(currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate) || currentDailyExchangeRate === FALLBACK_RATE) { if (currentDailyExchangeRate === FALLBACK_RATE && !confirm(`No se pudo obtener la tasa actual. ¿Desea continuar usando una tasa de respaldo de 1 USD = ${FALLBACK_RATE} COP?`)) { return; } else if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { alert('⏳ Tasa de cambio aún no disponible. No se puede añadir el ingreso.'); return; } } } if (selectedInputCurrencyIngresos === 'USD') { originalGrossAmountUSD = rawAmount; if (originalGrossAmountUSD < MIN_USD_INPUT_FOR_NET_CALC) { alert(`⚠️ El monto bruto en USD debe ser al menos ${formatUSD(MIN_USD_INPUT_FOR_NET_CALC)} para cubrir la comisión fija de ${formatUSD(FIXED_FEE_USD)} y generar un valor neto positivo.`); return; } const amountAfterFixedFee = originalGrossAmountUSD - FIXED_FEE_USD; netAmountUSD = amountAfterFixedFee * (1 - PERCENTAGE_FEE); if (netAmountUSD <= 0) { alert(`⚠️ Después de las comisiones (fija: ${formatUSD(FIXED_FEE_USD)}, porcentual: ${PERCENTAGE_FEE*100}%), el monto neto en USD es ${formatUSD(netAmountUSD)} o menos. No se añadirá ningún ingreso.`); elIngresos.moneyInput.value = ''; return; } netAmountCOP = netAmountUSD * currentDailyExchangeRate; } else { netAmountCOP = rawAmount; if (currentDailyExchangeRate === 0) { alert('Error: Tasa de cambio es cero. No se puede convertir COP a USD.'); return; } netAmountUSD = netAmountCOP / currentDailyExchangeRate; originalGrossAmountUSD = netAmountUSD; } const now = new Date(); contributions.push({ amountUSD: netAmountUSD, amountCOP: netAmountCOP, originalAmountUSD: originalGrossAmountUSD, exchangeRate: currentDailyExchangeRate, date: now.toLocaleDateString('es-CO'), time: now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }), monthYear: getCurrentMonthYear_Ingresos() }); if (selectedInputCurrencyIngresos === 'USD') { const feedbackMsg = `Monto Bruto Ingresado: ${formatUSD(originalGrossAmountUSD)}\n` + `Comisión Fija Deducida: ${formatUSD(FIXED_FEE_USD)}\n`+ `Subtotal después de Fija: ${formatUSD(originalGrossAmountUSD - FIXED_FEE_USD)}\n`+ `Comisión Porcentual (${PERCENTAGE_FEE*100}%) Deducida: ${formatUSD((originalGrossAmountUSD - FIXED_FEE_USD) * PERCENTAGE_FEE)}\n`+ `Monto Neto USD Registrado: ${formatUSD(netAmountUSD)}\n`+ `Equivalente en COP Registrado: ${formatCOP(netAmountCOP)}`; console.log("Detalle del ingreso añadido (USD Bruto -> Neto):\n" + feedbackMsg); } elIngresos.moneyInput.value = ''; updateAllDisplays_Ingresos(); saveData_Ingresos(); } function getTotalUSDSavedOverall_Ingresos() { return contributions.reduce((s, c) => s + c.amountUSD, 0); } function getTotalCOPSavedOverall_Ingresos() { return contributions.reduce((s,c) => s + c.amountCOP, 0); } function getTotalUSDSavedThisMonth_Ingresos() { const currentMonth = getCurrentMonthYear_Ingresos(); return contributions .filter(c => c.monthYear === currentMonth) .reduce((sum, contrib) => sum + contrib.amountUSD, 0); } function getProgressBarColor_Ingresos(percentage, type = 'general') { const rootStyles = getComputedStyle(document.documentElement); if (type === 'general') { if (percentage >= 100) return rootStyles.getPropertyValue('--celebration-overall-bg').trim(); if (percentage < 25) return rootStyles.getPropertyValue('--quartile1-color-general').trim(); if (percentage < 50) return rootStyles.getPropertyValue('--quartile2-color-general').trim(); if (percentage < 75) return rootStyles.getPropertyValue('--quartile3-color-general').trim(); return rootStyles.getPropertyValue('--quartile4-color-general').trim(); } else { return rootStyles.getPropertyValue('--monthly-time-progress-color').trim(); } } function updateDisplay_Ingresos() { const totalCOPSavedOverall = getTotalCOPSavedOverall_Ingresos(); const totalUSDSavedOverall = getTotalUSDSavedOverall_Ingresos(); const totalUSDSavedThisMonth = getTotalUSDSavedThisMonth_Ingresos(); const percentageOverall = Math.min((totalCOPSavedOverall / OVERALL_TARGET_COP) * 100, 100); const remainingOverallCOP = Math.max(OVERALL_TARGET_COP - totalCOPSavedOverall, 0); elIngresos.subtitle.textContent = `🚀 Progreso hacia tu meta general de ${formatCOP(OVERALL_TARGET_COP)}`; const overallBarColor = getProgressBarColor_Ingresos(percentageOverall, 'general'); elIngresos.progressBarOverall.style.width = percentageOverall + '%'; elIngresos.progressBarOverall.style.background = overallBarColor; if (percentageOverall > 0) { let glowColorOverall = overallBarColor; if (overallBarColor.startsWith('linear-gradient')) { glowColorOverall = getComputedStyle(document.documentElement).getPropertyValue('--accent-green-neon').trim(); } elIngresos.progressBarOverall.style.boxShadow = ` 0 0 8px 2px ${glowColorOverall}, 0 0 15px 4px ${glowColorOverall} `; } else { elIngresos.progressBarOverall.style.boxShadow = 'none'; } elIngresos.progressTextOverall.textContent = percentageOverall.toFixed(1) + '% 📊'; elIngresos.totalAccumulatedCOP.textContent = formatCOP(totalCOPSavedOverall); elIngresos.overallTargetCOPDisplay.textContent = formatCOP(OVERALL_TARGET_COP); elIngresos.overallRemainingCOP.textContent = formatCOP(remainingOverallCOP); elIngresos.currentMonthUSDTotal.textContent = formatUSD(totalUSDSavedThisMonth); elIngresos.overallUSDTotal.textContent = formatUSD(totalUSDSavedOverall); elIngresos.celebrationOverall.style.display = (totalCOPSavedOverall >= OVERALL_TARGET_COP && contributions.length > 0) ? 'block' : 'none'; const today = new Date(); const currentDayOfMonth = today.getDate(); const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(); const percentageTimeOfMonth = Math.min((currentDayOfMonth / daysInMonth) * 100, 100); const monthlyBarColor = getProgressBarColor_Ingresos(percentageTimeOfMonth, 'monthly_time'); elIngresos.progressBarMonthly.style.width = percentageTimeOfMonth + '%'; elIngresos.progressBarMonthly.style.background = monthlyBarColor; if (percentageTimeOfMonth > 0) { elIngresos.progressBarMonthly.style.boxShadow = ` 0 0 8px 2px ${monthlyBarColor}, 0 0 15px 4px ${monthlyBarColor} `; } else { elIngresos.progressBarMonthly.style.boxShadow = 'none'; } elIngresos.progressTextMonthly.textContent = `🗓️ Tiempo del Mes: ${percentageTimeOfMonth.toFixed(0)}%`;  } function updateHistory_Ingresos() {  if (contributions.length === 0) { elIngresos.historyList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">🌱 Sin ingresos aún.</div>'; return; } elIngresos.historyList.innerHTML = ''; contributions.slice().reverse().forEach(c => { const item = document.createElement('div'); item.className = 'history-item'; const rateDisplay = typeof c.exchangeRate === 'number' ? c.exchangeRate.toFixed(4) : 'N/A'; let originalAmountDisplay = ''; if (c.originalAmountUSD && c.originalAmountUSD > 0 && c.originalAmountUSD.toFixed(2) !== c.amountUSD.toFixed(2)) { originalAmountDisplay = `<span class="history-original-amount">(Bruto: ${formatUSD(c.originalAmountUSD)})</span>`; } item.innerHTML = ` <div> <div class="history-date">📅 ${c.date} - ${c.time} (${c.monthYear})</div> <div class="history-amount" style="font-size:0.9em;"> +${formatUSD(c.amountUSD)} ${originalAmountDisplay} <span class="history-rate">(a ${rateDisplay})</span> </div> </div> <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`; elIngresos.historyList.appendChild(item); }); } function updateMonthlyGoalsDisplay_Ingresos() { const savingsByMonth = {}; const currentMonth = getCurrentMonthYear_Ingresos(); contributions.forEach(c => { savingsByMonth[c.monthYear] = (savingsByMonth[c.monthYear] || 0) + c.amountCOP; }); elIngresos.monthlyGoalsList.innerHTML = ''; let uniquePastAndCurrentMonths = new Set(); contributions.forEach(c => uniquePastAndCurrentMonths.add(c.monthYear)); uniquePastAndCurrentMonths.add(currentMonth); if (contributions.length > 0) { const firstContributionMonthYear = contributions.length ? contributions.reduce((oldest, current) => new Date(current.monthYear + '-01') < new Date(oldest.monthYear + '-01') ? current : oldest).monthYear : null; if (firstContributionMonthYear) { let datePointer = new Date(firstContributionMonthYear + '-01'); const todayFirstOfMonth = new Date(currentMonth + '-01'); while(datePointer <= todayFirstOfMonth) { uniquePastAndCurrentMonths.add(`${datePointer.getFullYear()}-${String(datePointer.getMonth() + 1).padStart(2, '0')}`); datePointer.setMonth(datePointer.getMonth() + 1); } } } if (uniquePastAndCurrentMonths.size === 0) { elIngresos.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>'; return; } const sortedMonths = Array.from(uniquePastAndCurrentMonths).sort().reverse(); sortedMonths.forEach(monthYearKey => { const [year, monthNum] = monthYearKey.split('-'); const monthName = new Date(parseInt(year), parseInt(monthNum) - 1, 1) .toLocaleString('es-CO', { month: 'long', year: 'numeric' }); const monthNameCapitalized = monthName.charAt(0).toUpperCase() + monthName.slice(1); const savedThisMonthCOP = savingsByMonth[monthYearKey] || 0; const item = document.createElement('div'); item.className = 'monthly-goal-item'; let statusText, statusClass; const targetForThisListEntry = OVERALL_TARGET_COP; if (monthYearKey < currentMonth) { if (savedThisMonthCOP >= targetForThisListEntry) { statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonthCOP)})`; statusClass = 'achieved'; } else { statusText = `❌ No Cumplido (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'not-achieved'; } } else { if (savedThisMonthCOP >= targetForThisListEntry) { statusText = `🎉 ¡Superado General! (${formatCOP(savedThisMonthCOP)})`; statusClass = 'achieved'; } else { statusText = `⏳ En Progreso (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'pending'; } } item.innerHTML = ` <div class="monthly-goal-month">${monthNameCapitalized}</div> <div class="monthly-goal-status ${statusClass}">${statusText}</div>`; elIngresos.monthlyGoalsList.appendChild(item); }); } function updateCurrentMonthDisplayDOM_Ingresos() { const now = new Date(); const monthName = now.toLocaleString('es-CO', { month: 'long' }); const year = now.getFullYear(); elIngresos.currentMonthDisplay.textContent = `🗓️ ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`; } function checkForMonthlyResetLogic_Ingresos() { const currentMonth = getCurrentMonthYear_Ingresos(); const lastRunMonth = localStorage.getItem(LAST_RUN_MONTH_KEY_INGRESOS); if (currentMonth !== lastRunMonth) { console.log(`Nuevo mes detectado (Ingresos): ${currentMonth}. El último mes registrado fue ${lastRunMonth || 'ninguno'}.`); localStorage.setItem(LAST_RUN_MONTH_KEY_INGRESOS, currentMonth); } } function updateAllDisplays_Ingresos() { updateDisplay_Ingresos(); updateHistory_Ingresos(); updateMonthlyGoalsDisplay_Ingresos(); } function clearHistory_Ingresos() { if (confirm('🤔 ¿Limpiar TODO el historial de ingresos y reiniciar el progreso? Esta acción es irreversible.')) { contributions = []; selectedInputCurrencyIngresos = 'USD'; elIngresos.currencySelector.value = 'USD'; saveData_Ingresos(); localStorage.removeItem(LAST_RUN_MONTH_KEY_INGRESOS); localStorage.removeItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); currentDailyExchangeRate = null; checkForMonthlyResetLogic_Ingresos(); updateCurrentMonthDisplayDOM_Ingresos(); getDailyExchangeRate_Ingresos().then(updateAllDisplays_Ingresos); } }
+        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); } function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }  async function fetchAndUpdateDailyExchangeRateWithERAPI_Ingresos() { elIngresos.exchangeRateInfo.textContent = "Tasa actual: Actualizando..."; elIngresos.exchangeRateSource.style.display = 'none'; elIngresos.addMoneyButton.disabled = true; elIngresos.addMoneyButton.innerHTML = `🔄 Cargando Tasa...`; let success = false; try { const response = await fetch(EXCHANGE_RATE_API_URL_ERAPI); if (!response.ok) { const errorText = await response.text(); throw new Error(`Error HTTP ${response.status}: ${response.statusText}. Cuerpo: ${errorText}`); } const data = await response.json(); if (data && data.rates && typeof data.rates.COP === 'number') { currentDailyExchangeRate = data.rates.COP; localStorage.setItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi', JSON.stringify({ rate: currentDailyExchangeRate, timestamp: Date.now(), dateFetched: new Date(data.time_last_update_unix * 1000).toLocaleDateString('es-CO') })); elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP`; success = true; } else { throw new Error("Formato API (ER-API) inesperado."); } } catch (error) { console.error("FALLO al obtener tasa de ER-API:", error); currentDailyExchangeRate = null; } if (!success && currentDailyExchangeRate === null) { const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); const cached = cachedData ? JSON.parse(cachedData) : null; if (cached && typeof cached.rate === 'number' && (Date.now() - cached.timestamp < RATE_CACHE_DURATION * 24 )) { currentDailyExchangeRate = cached.rate; elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; success = true; } } if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { currentDailyExchangeRate = FALLBACK_RATE; elIngresos.exchangeRateInfo.textContent = `1 USD ≈ ${currentDailyExchangeRate.toFixed(2)} COP (Respaldo)`; } elIngresos.addMoneyButton.disabled = false; elIngresos.addMoneyButton.innerHTML = `➕ Añadir Ingreso`; updateInputPlaceholder_Ingresos(); return currentDailyExchangeRate; }  async function getDailyExchangeRate_Ingresos() { const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); const cached = cachedData ? JSON.parse(cachedData) : null; if (cached && typeof cached.rate === 'number' && !isNaN(cached.rate) && (Date.now() - cached.timestamp < RATE_CACHE_DURATION)) { currentDailyExchangeRate = cached.rate; elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; updateInputPlaceholder_Ingresos(); return currentDailyExchangeRate; } return await fetchAndUpdateDailyExchangeRateWithERAPI_Ingresos(); } 
+        function loadData_Ingresos() {  try { const saved = localStorage.getItem(LOCAL_STORAGE_KEY_INGRESOS); if (saved) { const data = JSON.parse(saved); contributions = Array.isArray(data.contributions) ? data.contributions.map(c => ({ ...c, amountUSD: parseFloat(c.amountUSD) || 0, amountCOP: parseFloat(c.amountCOP) || 0, originalAmountUSD: parseFloat(c.originalAmountUSD) || 0, exchangeRate: parseFloat(c.exchangeRate) || 0, })) : []; selectedInputCurrencyIngresos = data.selectedInputCurrencyIngresos || 'USD'; elIngresos.currencySelector.value = selectedInputCurrencyIngresos; monthlyTargets = data.monthlyTargets || {};  const currentMonthKey = getCurrentMonthYear_Ingresos(); currentOverallTargetCOP = monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP; elIngresos.overallTargetInput.value = currentOverallTargetCOP; } else { monthlyTargets = {}; const currentMonthKey = getCurrentMonthYear_Ingresos(); currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; monthlyTargets[currentMonthKey] = currentOverallTargetCOP; elIngresos.overallTargetInput.value = currentOverallTargetCOP; } } catch (error) { console.error("Error loading data (Ingresos):", error); contributions = []; monthlyTargets = {}; currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; elIngresos.overallTargetInput.value = currentOverallTargetCOP; saveData_Ingresos(); }  }  
+        function saveData_Ingresos() {  try {  const currentMonthKey = getCurrentMonthYear_Ingresos(); monthlyTargets[currentMonthKey] = currentOverallTargetCOP;  localStorage.setItem(LOCAL_STORAGE_KEY_INGRESOS, JSON.stringify({  contributions, selectedInputCurrencyIngresos, monthlyTargets  }));  } catch (e) { console.error("Error saving (Ingresos):",e); alert("Error al guardar datos de ingresos.");}  }  
+        function getCurrentMonthYear_Ingresos() { const now = new Date(); return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`; }  
+        function updateInputPlaceholder_Ingresos() { if (selectedInputCurrencyIngresos === 'USD') { elIngresos.moneyInput.placeholder = '💵 Ingresa cantidad BRUTA en USD...'; elIngresos.moneyInput.min = MIN_USD_INPUT_FOR_NET_CALC; } else { elIngresos.moneyInput.placeholder = '💰 Ingresa cantidad en COP...'; elIngresos.moneyInput.min = "0.01"; if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { elIngresos.moneyInput.placeholder = '💰 (Tasa COP no disponible)'; } } }  
+        async function addMoney_Ingresos() { const rawAmount = parseFloat(elIngresos.moneyInput.value); if (isNaN(rawAmount) || rawAmount <= 0) { alert(`⚠️ Ingrese un monto válido.`); return; } let netAmountUSD, netAmountCOP; let originalGrossAmountUSD = 0; if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { await getDailyExchangeRate_Ingresos(); if(currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate) || currentDailyExchangeRate === FALLBACK_RATE) { if (currentDailyExchangeRate === FALLBACK_RATE && !confirm(`No se pudo obtener la tasa actual. ¿Desea continuar usando una tasa de respaldo de 1 USD = ${FALLBACK_RATE} COP?`)) { return; } else if (currentDailyExchangeRate === null || isNaN(currentDailyExchangeRate)) { alert('⏳ Tasa de cambio aún no disponible. No se puede añadir el ingreso.'); return; } } } if (selectedInputCurrencyIngresos === 'USD') { originalGrossAmountUSD = rawAmount; if (originalGrossAmountUSD < MIN_USD_INPUT_FOR_NET_CALC) { alert(`⚠️ El monto bruto en USD debe ser al menos ${formatUSD(MIN_USD_INPUT_FOR_NET_CALC)} para cubrir la comisión fija de ${formatUSD(FIXED_FEE_USD)} y generar un valor neto positivo.`); return; } const amountAfterFixedFee = originalGrossAmountUSD - FIXED_FEE_USD; netAmountUSD = amountAfterFixedFee * (1 - PERCENTAGE_FEE); if (netAmountUSD <= 0) { alert(`⚠️ Después de las comisiones (fija: ${formatUSD(FIXED_FEE_USD)}, porcentual: ${PERCENTAGE_FEE*100}%), el monto neto en USD es ${formatUSD(netAmountUSD)} o menos. No se añadirá ningún ingreso.`); elIngresos.moneyInput.value = ''; return; } netAmountCOP = netAmountUSD * currentDailyExchangeRate; } else { netAmountCOP = rawAmount; if (currentDailyExchangeRate === 0) { alert('Error: Tasa de cambio es cero. No se puede convertir COP a USD.'); return; } netAmountUSD = netAmountCOP / currentDailyExchangeRate; originalGrossAmountUSD = netAmountUSD; } const now = new Date(); contributions.push({ amountUSD: netAmountUSD, amountCOP: netAmountCOP, originalAmountUSD: originalGrossAmountUSD, exchangeRate: currentDailyExchangeRate, date: now.toLocaleDateString('es-CO'), time: now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }), monthYear: getCurrentMonthYear_Ingresos() }); if (selectedInputCurrencyIngresos === 'USD') { const feedbackMsg = `Monto Bruto Ingresado: ${formatUSD(originalGrossAmountUSD)}\n` + `Comisión Fija Deducida: ${formatUSD(FIXED_FEE_USD)}\n`+ `Subtotal después de Fija: ${formatUSD(originalGrossAmountUSD - FIXED_FEE_USD)}\n`+ `Comisión Porcentual (${PERCENTAGE_FEE*100}%) Deducida: ${formatUSD((originalGrossAmountUSD - FIXED_FEE_USD) * PERCENTAGE_FEE)}\n`+ `Monto Neto USD Registrado: ${formatUSD(netAmountUSD)}\n`+ `Equivalente en COP Registrado: ${formatCOP(netAmountCOP)}`; console.log("Detalle del ingreso añadido (USD Bruto -> Neto):\n" + feedbackMsg); } elIngresos.moneyInput.value = ''; updateAllDisplays_Ingresos(); saveData_Ingresos(); }  
+        function getTotalUSDSavedOverall_Ingresos() { return contributions.reduce((s, c) => s + c.amountUSD, 0); }  function getTotalCOPSavedOverall_Ingresos() { return contributions.reduce((s,c) => s + c.amountCOP, 0); }  function getTotalUSDSavedThisMonth_Ingresos() { const currentMonth = getCurrentMonthYear_Ingresos(); return contributions .filter(c => c.monthYear === currentMonth) .reduce((sum, contrib) => sum + contrib.amountUSD, 0); }  function getProgressBarColor_Ingresos(percentage, type = 'general') { const rootStyles = getComputedStyle(document.documentElement); if (type === 'general') { if (percentage >= 100) return rootStyles.getPropertyValue('--celebration-overall-bg').trim(); if (percentage < 25) return rootStyles.getPropertyValue('--quartile1-color-general').trim(); if (percentage < 50) return rootStyles.getPropertyValue('--quartile2-color-general').trim(); if (percentage < 75) return rootStyles.getPropertyValue('--quartile3-color-general').trim(); return rootStyles.getPropertyValue('--quartile4-color-general').trim(); } else { return rootStyles.getPropertyValue('--monthly-time-progress-color').trim(); } }  
+        function updateDisplay_Ingresos() { const totalCOPSavedOverall = getTotalCOPSavedOverall_Ingresos(); const totalUSDSavedOverall = getTotalUSDSavedOverall_Ingresos(); const totalUSDSavedThisMonth = getTotalUSDSavedThisMonth_Ingresos(); const percentageOverall = currentOverallTargetCOP > 0 ? Math.min((totalCOPSavedOverall / currentOverallTargetCOP) * 100, 100) : 0; const remainingOverallCOP = Math.max(currentOverallTargetCOP - totalCOPSavedOverall, 0); elIngresos.subtitle.textContent = `🚀 Progreso hacia tu meta de ${formatCOP(currentOverallTargetCOP)}`; const overallBarColor = getProgressBarColor_Ingresos(percentageOverall, 'general'); elIngresos.progressBarOverall.style.width = percentageOverall + '%'; elIngresos.progressBarOverall.style.background = overallBarColor; if (percentageOverall > 0) { let glowColorOverall = overallBarColor; if (overallBarColor.startsWith('linear-gradient')) { glowColorOverall = getComputedStyle(document.documentElement).getPropertyValue('--accent-green-neon').trim(); } elIngresos.progressBarOverall.style.boxShadow = ` 0 0 8px 2px ${glowColorOverall}, 0 0 15px 4px ${glowColorOverall} `; } else { elIngresos.progressBarOverall.style.boxShadow = 'none'; } elIngresos.progressTextOverall.textContent = percentageOverall.toFixed(1) + '% 📊'; elIngresos.totalAccumulatedCOP.textContent = formatCOP(totalCOPSavedOverall); elIngresos.overallTargetCOPDisplay.textContent = formatCOP(currentOverallTargetCOP); elIngresos.overallRemainingCOP.textContent = formatCOP(remainingOverallCOP); elIngresos.currentMonthUSDTotal.textContent = formatUSD(totalUSDSavedThisMonth); elIngresos.overallUSDTotal.textContent = formatUSD(totalUSDSavedOverall); elIngresos.celebrationOverall.style.display = (totalCOPSavedOverall >= currentOverallTargetCOP && currentOverallTargetCOP > 0 && contributions.length > 0) ? 'block' : 'none'; const today = new Date(); const currentDayOfMonth = today.getDate(); const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(); const percentageTimeOfMonth = Math.min((currentDayOfMonth / daysInMonth) * 100, 100); const monthlyBarColor = getProgressBarColor_Ingresos(percentageTimeOfMonth, 'monthly_time'); elIngresos.progressBarMonthly.style.width = percentageTimeOfMonth + '%'; elIngresos.progressBarMonthly.style.background = monthlyBarColor; if (percentageTimeOfMonth > 0) { elIngresos.progressBarMonthly.style.boxShadow = ` 0 0 8px 2px ${monthlyBarColor}, 0 0 15px 4px ${monthlyBarColor} `; } else { elIngresos.progressBarMonthly.style.boxShadow = 'none'; } elIngresos.progressTextMonthly.textContent = `🗓️ Tiempo del Mes: ${percentageTimeOfMonth.toFixed(0)}%`;  }  
+        function updateHistory_Ingresos() {  if (contributions.length === 0) { elIngresos.historyList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">🌱 Sin ingresos aún.</div>'; return; } elIngresos.historyList.innerHTML = ''; contributions.slice().reverse().forEach(c => { const item = document.createElement('div'); item.className = 'history-item'; const rateDisplay = typeof c.exchangeRate === 'number' ? c.exchangeRate.toFixed(4) : 'N/A'; let originalAmountDisplay = ''; if (c.originalAmountUSD && c.originalAmountUSD > 0 && c.originalAmountUSD.toFixed(2) !== c.amountUSD.toFixed(2)) { originalAmountDisplay = `<span class="history-original-amount">(Bruto: ${formatUSD(c.originalAmountUSD)})</span>`; } item.innerHTML = ` <div> <div class="history-date">📅 ${c.date} - ${c.time} (${c.monthYear})</div> <div class="history-amount" style="font-size:0.9em;"> +${formatUSD(c.amountUSD)} ${originalAmountDisplay} <span class="history-rate">(a ${rateDisplay})</span> </div> </div> <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`; elIngresos.historyList.appendChild(item); }); }  
+        function updateMonthlyGoalsDisplay_Ingresos() { const savingsByMonth = {}; const currentMonthKey_Ingresos = getCurrentMonthYear_Ingresos(); contributions.forEach(c => { savingsByMonth[c.monthYear] = (savingsByMonth[c.monthYear] || 0) + c.amountCOP; }); elIngresos.monthlyGoalsList.innerHTML = ''; let uniquePastAndCurrentMonths = new Set(); contributions.forEach(c => uniquePastAndCurrentMonths.add(c.monthYear)); uniquePastAndCurrentMonths.add(currentMonthKey_Ingresos); if (contributions.length > 0) { const firstContributionMonthYear = contributions.length ? contributions.reduce((oldest, current) => new Date(current.monthYear + '-01') < new Date(oldest.monthYear + '-01') ? current : oldest).monthYear : null; if (firstContributionMonthYear) { let datePointer = new Date(firstContributionMonthYear + '-01'); const todayFirstOfMonth = new Date(currentMonthKey_Ingresos + '-01'); while(datePointer <= todayFirstOfMonth) { uniquePastAndCurrentMonths.add(`${datePointer.getFullYear()}-${String(datePointer.getMonth() + 1).padStart(2, '0')}`); datePointer.setMonth(datePointer.getMonth() + 1); } } } if (uniquePastAndCurrentMonths.size === 0 && Object.keys(monthlyTargets).length === 0) { elIngresos.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>'; return; } Object.keys(monthlyTargets).forEach(m => uniquePastAndCurrentMonths.add(m)); const sortedMonths = Array.from(uniquePastAndCurrentMonths).sort().reverse(); sortedMonths.forEach(monthYearKey => { const [year, monthNum] = monthYearKey.split('-'); const monthName = new Date(parseInt(year), parseInt(monthNum) - 1, 1) .toLocaleString('es-CO', { month: 'long', year: 'numeric' }); const monthNameCapitalized = monthName.charAt(0).toUpperCase() + monthName.slice(1); const savedThisMonthCOP = savingsByMonth[monthYearKey] || 0; const targetForThisListEntry = monthlyTargets[monthYearKey] || (monthYearKey === currentMonthKey_Ingresos ? currentOverallTargetCOP : DEFAULT_OVERALL_TARGET_COP); const item = document.createElement('div'); item.className = 'monthly-goal-item'; let statusText, statusClass; if (monthYearKey < currentMonthKey_Ingresos) { if (savedThisMonthCOP >= targetForThisListEntry && targetForThisListEntry > 0) { statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'achieved'; } else { statusText = `❌ No Cumplido (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'not-achieved'; } } else { if (savedThisMonthCOP >= targetForThisListEntry && targetForThisListEntry > 0) { statusText = `🎉 ¡Superado Meta! (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'achieved'; } else { statusText = `⏳ En Progreso (${formatCOP(savedThisMonthCOP)} de ${formatCOP(targetForThisListEntry)})`; statusClass = 'pending'; } } item.innerHTML = ` <div class="monthly-goal-month">${monthNameCapitalized}</div> <div class="monthly-goal-status ${statusClass}">${statusText}</div>`; elIngresos.monthlyGoalsList.appendChild(item); }); }  
+        function updateCurrentMonthDisplayDOM_Ingresos() { const now = new Date(); const monthName = now.toLocaleString('es-CO', { month: 'long' }); const year = now.getFullYear(); elIngresos.currentMonthDisplay.textContent = `🗓️ ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${year}`; }  
+        function checkForMonthlyResetLogic_Ingresos() {  const currentMonthKey = getCurrentMonthYear_Ingresos(); const lastRunMonth = localStorage.getItem(LAST_RUN_MONTH_KEY_INGRESOS); if (currentMonthKey !== lastRunMonth) { console.log(`Nuevo mes detectado (Ingresos): ${currentMonthKey}. El último mes registrado fue ${lastRunMonth || 'ninguno'}.`); currentOverallTargetCOP = monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP; elIngresos.overallTargetInput.value = currentOverallTargetCOP; localStorage.setItem(LAST_RUN_MONTH_KEY_INGRESOS, currentMonthKey); saveData_Ingresos(); updateAllDisplays_Ingresos(); }  }  
+        function updateAllDisplays_Ingresos() { updateDisplay_Ingresos(); updateHistory_Ingresos(); updateMonthlyGoalsDisplay_Ingresos(); }  
+        function clearHistory_Ingresos() {  if (confirm('🤔 ¿Limpiar TODO el historial de ingresos, metas y reiniciar el progreso? Esta acción es irreversible.')) { contributions = []; selectedInputCurrencyIngresos = 'USD'; elIngresos.currencySelector.value = 'USD'; monthlyTargets = {}; const currentMonthKey = getCurrentMonthYear_Ingresos(); currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; monthlyTargets[currentMonthKey] = currentOverallTargetCOP; elIngresos.overallTargetInput.value = currentOverallTargetCOP; saveData_Ingresos(); localStorage.removeItem(LAST_RUN_MONTH_KEY_INGRESOS); localStorage.setItem(LAST_RUN_MONTH_KEY_INGRESOS, currentMonthKey); localStorage.removeItem(LOCAL_STORAGE_KEY_INGRESOS + '_daily_rate_erapi'); currentDailyExchangeRate = null;  updateCurrentMonthDisplayDOM_Ingresos(); getDailyExchangeRate_Ingresos().then(updateAllDisplays_Ingresos); }  }
 
-        // --- FUNCIONES DEL HORARIO UNIVERSITARIO ---
+        // --- FUNCIONES DEL HORARIO UNIVERSITARIO (CSS Grid) ---
         function loadTimetableData() {
             const savedData = localStorage.getItem(LOCAL_STORAGE_KEY_TIMETABLE);
+            const defaultTimetable = [
+                { id: 'ev1', day: 'MIÉRCOLES', startTime: '08:00', endTime: '10:00', subject: 'Estrategia', teacher: 'Prof. X', color: 'var(--accent-red-clear)' }, // Span 2h
+                { id: 'ev3', day: 'LUNES', startTime: '14:00', endTime: '16:00', subject: 'Mercadeo', teacher: 'Prof. Luna', color: 'var(--accent-green-medium)' },
+                { id: 'ev4', day: 'MARTES', startTime: '14:00', endTime: '15:00', subject: 'Negocios Digitales', teacher: 'Prof. Sol', color: 'var(--accent-yellow-pale)' },
+                { id: 'ev5', day: 'MARTES', startTime: '15:00', endTime: '17:00', subject: 'GOP', teacher: 'Prof. Estrella', color: 'var(--accent-pink)' },
+                { id: 'ev6', day: 'VIERNES', startTime: '07:00', endTime: '09:00', subject: 'Estrategia', teacher: 'Prof. Y', color: 'var(--accent-red-clear)' },
+            ];
+
             if (savedData) {
-                timetableData = JSON.parse(savedData);
-            } else { // Datos de ejemplo si no hay nada guardado
-                timetableData = [ { id: 'ev1', day: 'MIÉRCOLES', startTime: '08:00', endTime: '09:00', subject: 'Estrategia', teacher: 'Prof. X', color: getComputedStyle(document.documentElement).getPropertyValue('--accent-red-clear') }, { id: 'ev2', day: 'VIERNES', startTime: '08:00', endTime: '09:00', subject: 'Estrategia', teacher: 'Prof. X', color: getComputedStyle(document.documentElement).getPropertyValue('--accent-red-clear') }, { id: 'ev3', day: 'LUNES', startTime: '14:00', endTime: '16:00', subject: 'Mercadeo', teacher: 'Prof. Luna', color: getComputedStyle(document.documentElement).getPropertyValue('--accent-green-medium') }, { id: 'ev4', day: 'MARTES', startTime: '14:00', endTime: '15:00', subject: 'Negocios digitales', teacher: 'Prof. Sol', color: getComputedStyle(document.documentElement).getPropertyValue('--accent-yellow-pale') }, { id: 'ev5', day: 'MARTES', startTime: '15:00', endTime: '17:00', subject: 'GOP', teacher: 'Prof. Estrella', color: getComputedStyle(document.documentElement).getPropertyValue('--accent-pink') }, ];
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    if (Array.isArray(parsedData)) {
+                        timetableData = parsedData;
+                    } else {
+                        console.warn("Timetable data from localStorage is not an array. Resetting to default.");
+                        timetableData = [...defaultTimetable]; // Use spread to ensure a new array
+                    }
+                } catch (error) {
+                    console.error("Error parsing timetable data from localStorage:", error);
+                    timetableData = [...defaultTimetable];
+                }
+            } else {
+                timetableData = [...defaultTimetable];
             }
         }
         function saveTimetableData() { localStorage.setItem(LOCAL_STORAGE_KEY_TIMETABLE, JSON.stringify(timetableData)); }
 
         function renderTimetable() {
-            timetableBody.innerHTML = ''; 
-            const timetableMatrix = {}; 
-
-            for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) {
-                const row = timetableBody.insertRow();
-                const timeCell = row.insertCell();
-                timeCell.classList.add('time-header');
-                timeCell.textContent = `${String(hour).padStart(2, '0')}:00`;
-                timetableMatrix[hour] = {};
-
-                TIMETABLE_DAYS.forEach(day => {
-                    if (timetableMatrix[hour]?.[day] === 'occupied') return; 
-                    
-                    const event = timetableData.find(e => e.day === day && parseInt(e.startTime.split(':')[0]) === hour);
-                    const cell = row.insertCell();
-                    cell.dataset.day = day; 
-                    cell.dataset.time = `${String(hour).padStart(2, '0')}:00`;
-
-                    if (event) {
-                        cell.classList.add('class-slot'); 
-                        const startHourEvent = parseInt(event.startTime.split(':')[0]);
-                        const endHourEvent = parseInt(event.endTime.split(':')[0]);
-                        const duration = Math.max(1, endHourEvent - startHourEvent);
-                        
-                        if (duration > 1) cell.rowSpan = duration;
-                        
-                        const classItem = document.createElement('div');
-                        classItem.className = 'class-item';
-                        // classItem.draggable = false; // Ya no es arrastrable
-                        classItem.dataset.eventId = event.id;
-                        classItem.style.backgroundColor = event.color || 'var(--subject-default-event-bg)';
-                        classItem.innerHTML = `<span class="subject-name">${event.subject}</span><span class="teacher-name class-details">${event.teacher || ''}</span>`;
-                        cell.appendChild(classItem);
-                        classItem.addEventListener('dblclick', () => openTimetableModal(event.id)); 
-
-                        for (let i = 1; i < duration; i++) {
-                            if (hour + i <= TIMETABLE_END_HOUR) { // Asegurar no exceder límites
-                                if (!timetableMatrix[hour + i]) timetableMatrix[hour + i] = {};
-                                timetableMatrix[hour + i][day] = 'occupied';
-                            }
-                        }
-                    } else {
-                        cell.classList.add('empty-slot'); 
-                        cell.addEventListener('click', () => openTimetableModal(null, day, `${String(hour).padStart(2, '0')}:00`));
-                    }
-                    // Se quitaron los listeners de D&D de las celdas
-                });
+            const gridContainer = document.getElementById('timetableGrid');
+            if (!gridContainer) {
+                console.error("Timetable grid container (#timetableGrid) not found!");
+                return;
             }
-            // Quitar listeners de D&D de class-item ya que se recrean
+            gridContainer.innerHTML = ''; // Limpiar contenido previo
+
+            // --- Generar Encabezado Vacío (Esquina) y Encabezados de Días ---
+            const cornerDiv = document.createElement('div');
+            cornerDiv.className = 'timetable-grid-corner';
+            // CSS se encargará de posicionarlo en grid-column: 1; grid-row: 1;
+            gridContainer.appendChild(cornerDiv);
+
+            TIMETABLE_DAYS.forEach((day, index) => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'timetable-grid-header';
+                dayHeader.textContent = day;
+                dayHeader.style.gridColumn = `${index + 2}`; // Col 2 para LUNES, etc.
+                dayHeader.style.gridRow = '1'; 
+                gridContainer.appendChild(dayHeader);
+            });
+
+            // --- Generar Etiquetas de Hora ---
+            // La primera fila del grid (1) es para los encabezados. Las horas empiezan en la fila 2.
+            for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) {
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'timetable-grid-time-label';
+                timeLabel.textContent = `${String(hour).padStart(2, '0')}:00`;
+                timeLabel.style.gridColumn = '1'; // Columna 'times'
+                // Mapeo de hora a fila: Hora X está en la fila (X - TIMETABLE_START_HOUR + 2)
+                timeLabel.style.gridRow = `${hour - TIMETABLE_START_HOUR + 2}`;
+                gridContainer.appendChild(timeLabel);
+            }
+            
+            // --- Generar Eventos ---
+            timetableData.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'timetable-grid-event';
+                eventDiv.dataset.eventId = event.id;
+                eventDiv.style.backgroundColor = event.color || getComputedStyle(document.documentElement).getPropertyValue('--subject-default-event-bg').trim();
+
+                eventDiv.innerHTML = `<span class="subject-name">${event.subject}</span><span class="teacher-name">${event.teacher || ''}</span>`;
+                eventDiv.addEventListener('dblclick', () => openTimetableModal(event.id));
+
+                const dayIndex = TIMETABLE_DAYS.indexOf(event.day.toUpperCase());
+                if (dayIndex === -1) {
+                    console.warn(`Invalid day for event "${event.subject}": ${event.day}`);
+                    return; 
+                }
+                eventDiv.style.gridColumn = `${dayIndex + 2}`; 
+
+                const startHourEvent = parseInt(event.startTime.split(':')[0]);
+                const endHourEvent = parseInt(event.endTime.split(':')[0]);
+
+                // Mapeo de hora a fila del grid:
+                // Fila de inicio: (Hora de inicio del evento - Hora de inicio del horario + 2)
+                // Fila de fin: (Hora de fin del evento - Hora de inicio del horario + 2)
+                // La línea de grid-row-end es exclusiva.
+                const startRow = startHourEvent - TIMETABLE_START_HOUR + 2;
+                const endRow = endHourEvent - TIMETABLE_START_HOUR + 2; 
+
+                if (startRow < 2 || endRow <= startRow || endRow > (TIMETABLE_END_HOUR - TIMETABLE_START_HOUR + 2) ) {
+                     console.warn(`Event "${event.subject}" has invalid time range for grid: ${event.startTime}-${event.endTime}. StartRow: ${startRow}, EndRow: ${endRow}`);
+                     return; // Saltar evento si está fuera de rango
+                }
+                eventDiv.style.gridRow = `${startRow} / ${endRow}`;
+                
+                gridContainer.appendChild(eventDiv);
+            });
         }
         
-        // --- MODAL TIMETABLE ---
-        function populateTimeSelect(selectElement, startHour, endHour, selectedValue, isEndTime = false) {
-            selectElement.innerHTML = '';
-            // Para la hora de fin, permitir una hora más allá del horario para eventos que terminan en la última hora
-            const limit = isEndTime ? endHour + 1 : endHour; 
-            for (let h = startHour; h <= limit; h++) {
-                const timeStr = `${String(h).padStart(2, '0')}:00`;
-                const option = document.createElement('option');
-                option.value = timeStr;
-                option.textContent = timeStr;
-                if (timeStr === selectedValue) option.selected = true;
-                selectElement.appendChild(option);
-            }
-        }
-
-        function openTimetableModal(eventId = null, defaultDay = null, defaultStartTime = null) {
-            currentEditingEventId = eventId;
-            timetableEventForm.reset(); 
-            
-            eventDaySelect.innerHTML = '';
-            TIMETABLE_DAYS.forEach(day => {
-                const option = document.createElement('option'); option.value = day; option.textContent = day; eventDaySelect.appendChild(option);
-            });
-
-            const defaultStart = defaultStartTime || `${String(TIMETABLE_START_HOUR).padStart(2, '0')}:00`;
-            let defaultEndHour = parseInt(defaultStart.split(':')[0]) + 1;
-            if (defaultEndHour > TIMETABLE_END_HOUR + 1) defaultEndHour = TIMETABLE_END_HOUR + 1; // Cap end time
-            const defaultEnd = `${String(defaultEndHour).padStart(2, '0')}:00`;
-
-            populateTimeSelect(eventStartTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR, defaultStart);
-            populateTimeSelect(eventEndTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR + 1, defaultEnd, true); // isEndTime = true
-
-            if (eventId) {
-                modalTitle.textContent = "Editar Evento";
-                const event = timetableData.find(e => e.id === eventId);
-                if (event) {
-                    eventModalIdInput.value = event.id;
-                    eventSubjectInput.value = event.subject;
-                    eventTeacherInput.value = event.teacher || '';
-                    eventDaySelect.value = event.day;
-                    eventStartTimeSelect.value = event.startTime;
-                    eventEndTimeSelect.value = event.endTime;
-                    eventColorInput.value = event.color || getComputedStyle(document.documentElement).getPropertyValue('--subject-default-event-bg').trim();
-                    deleteTimetableEventBtn.style.display = 'block';
-                }
-            } else {
-                modalTitle.textContent = "Añadir Nuevo Evento";
-                eventModalIdInput.value = ''; 
-                if (defaultDay) eventDaySelect.value = defaultDay;
-                // El color por defecto ya está en el HTML del input
-                deleteTimetableEventBtn.style.display = 'none';
-            }
-            timetableEventModalOverlay.classList.add('active');
-        }
-
+        function populateTimeSelect(selectElement, startHour, endHour, selectedValue, isEndTime = false) { selectElement.innerHTML = ''; const limit = isEndTime ? endHour + 1 : endHour; for (let h = startHour; h <= limit; h++) { const timeStr = `${String(h).padStart(2, '0')}:00`; const option = document.createElement('option'); option.value = timeStr; option.textContent = timeStr; if (timeStr === selectedValue) option.selected = true; selectElement.appendChild(option); } }
+        function openTimetableModal(eventId = null, defaultDay = null, defaultStartTime = null) { currentEditingEventId = eventId; timetableEventForm.reset(); eventDaySelect.innerHTML = ''; TIMETABLE_DAYS.forEach(day => { const option = document.createElement('option'); option.value = day; option.textContent = day; eventDaySelect.appendChild(option); }); const defaultStart = defaultStartTime || `${String(TIMETABLE_START_HOUR).padStart(2, '0')}:00`; let defaultEndHour = parseInt(defaultStart.split(':')[0]) + 1; if (defaultEndHour > TIMETABLE_END_HOUR + 1) defaultEndHour = TIMETABLE_END_HOUR + 1; // TIMETABLE_END_HOUR + 1 para permitir 24:00 como fin
+            const defaultEnd = `${String(Math.min(defaultEndHour, TIMETABLE_END_HOUR +1 )).padStart(2, '0')}:00`; 
+            populateTimeSelect(eventStartTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR, defaultStart); // Hora de inicio hasta 23:00
+            populateTimeSelect(eventEndTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR + 1 , defaultEnd, true); // Hora de fin hasta 24:00 (TIMETABLE_END_HOUR + 1)
+            if (eventId) { modalTitle.textContent = "Editar Evento"; const event = timetableData.find(e => e.id === eventId); if (event) { eventModalIdInput.value = event.id; eventSubjectInput.value = event.subject; eventTeacherInput.value = event.teacher || ''; eventDaySelect.value = event.day; eventStartTimeSelect.value = event.startTime; eventEndTimeSelect.value = event.endTime; eventColorInput.value = event.color || getComputedStyle(document.documentElement).getPropertyValue('--subject-default-event-bg').trim(); deleteTimetableEventBtn.style.display = 'block'; } } else { modalTitle.textContent = "Añadir Nuevo Evento"; eventModalIdInput.value = ''; if (defaultDay) eventDaySelect.value = defaultDay; eventColorInput.value = getComputedStyle(document.documentElement).getPropertyValue('--subject-default-event-bg').trim(); deleteTimetableEventBtn.style.display = 'none'; } timetableEventModalOverlay.classList.add('active'); }
         function closeTimetableModal() { timetableEventModalOverlay.classList.remove('active'); }
-
-        timetableEventForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = eventModalIdInput.value;
-            const subject = eventSubjectInput.value.trim();
-            const teacher = eventTeacherInput.value.trim();
-            const day = eventDaySelect.value;
-            const startTime = eventStartTimeSelect.value;
-            const endTime = eventEndTimeSelect.value;
-            const color = eventColorInput.value;
-
-            if (!subject) { alert("El nombre de la materia es obligatorio."); return; }
-            const startHour = parseInt(startTime.split(':')[0]);
-            const endHour = parseInt(endTime.split(':')[0]);
-            if (startHour >= endHour) { alert("La hora de fin debe ser posterior a la hora de inicio."); return; }
-
-            const collision = timetableData.find(ev => {
-                if (id && ev.id === id) return false; 
-                return ev.day === day && startHour < parseInt(ev.endTime.split(':')[0]) && endHour > parseInt(ev.startTime.split(':')[0]);
-            });
-            if (collision) { alert("Conflicto de horario: Ya existe un evento en ese rango de tiempo."); return; }
-
-            const newEventData = { subject, teacher, day, startTime, endTime, color };
-            if (id) { 
-                const eventIndex = timetableData.findIndex(e => e.id === id);
-                if (eventIndex > -1) timetableData[eventIndex] = { ...timetableData[eventIndex], ...newEventData };
-            } else { 
-                timetableData.push({ id: 'ev' + Date.now(), ...newEventData });
-            }
-            saveTimetableData(); renderTimetable(); closeTimetableModal();
-        });
-
+        timetableEventForm.addEventListener('submit', function(e) { e.preventDefault(); const id = eventModalIdInput.value; const subject = eventSubjectInput.value.trim(); const teacher = eventTeacherInput.value.trim(); const day = eventDaySelect.value; const startTime = eventStartTimeSelect.value; const endTime = eventEndTimeSelect.value; const color = eventColorInput.value; if (!subject) { alert("El nombre de la materia es obligatorio."); return; } const startHour = parseInt(startTime.split(':')[0]); const endHour = parseInt(endTime.split(':')[0]); if (startHour >= endHour) { alert("La hora de fin debe ser posterior a la hora de inicio."); return; } const collision = timetableData.find(ev => { if (id && ev.id === id) return false; return ev.day === day && startHour < parseInt(ev.endTime.split(':')[0]) && endHour > parseInt(ev.startTime.split(':')[0]); }); if (collision) { alert("Conflicto de horario: Ya existe un evento en ese rango de tiempo."); return; } const newEventData = { subject, teacher, day, startTime, endTime, color }; if (id) { const eventIndex = timetableData.findIndex(e => e.id === id); if (eventIndex > -1) timetableData[eventIndex] = { ...timetableData[eventIndex], ...newEventData }; } else { timetableData.push({ id: 'ev' + Date.now(), ...newEventData }); } saveTimetableData(); renderTimetable(); closeTimetableModal(); });
         cancelTimetableEventBtn.addEventListener('click', closeTimetableModal);
-        deleteTimetableEventBtn.addEventListener('click', function() {
-            if (currentEditingEventId && confirm("¿Seguro que quieres eliminar este evento?")) {
-                timetableData = timetableData.filter(e => e.id !== currentEditingEventId);
-                saveTimetableData(); renderTimetable(); closeTimetableModal();
-            }
-        });
-        addTimetableEventBtnGlobal.addEventListener('click', () => openTimetableModal()); // Botón global
+        deleteTimetableEventBtn.addEventListener('click', function() { if (currentEditingEventId && confirm("¿Seguro que quieres eliminar este evento?")) { timetableData = timetableData.filter(e => e.id !== currentEditingEventId); saveTimetableData(); renderTimetable(); closeTimetableModal(); } });
+        if (addTimetableEventBtnGlobal) { addTimetableEventBtnGlobal.addEventListener('click', () => openTimetableModal()); }
 
 
         // --- INICIALIZACIÓN ---
         function initializeApp() { 
             showPage(defaultPage); 
             // Ingresos
-            updateCurrentMonthDisplayDOM_Ingresos(); checkForMonthlyResetLogic_Ingresos(); elIngresos.overallTargetCOPDisplay.textContent = formatCOP(OVERALL_TARGET_COP); elIngresos.subtitle.textContent = `🚀 Progreso hacia tu meta general de ${formatCOP(OVERALL_TARGET_COP)}`; elIngresos.addMoneyButton.innerHTML = `➕ Añadir Ingreso`; loadData_Ingresos(); updateInputPlaceholder_Ingresos(); getDailyExchangeRate_Ingresos().then(() => { updateAllDisplays_Ingresos(); elIngresos.addMoneyButton.disabled = false; }); elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); elIngresos.moneyInput.addEventListener('keypress', e => { if (e.key === 'Enter') addMoney_Ingresos(); }); elIngresos.clearHistoryButton.addEventListener('click', clearHistory_Ingresos); elIngresos.currencySelector.addEventListener('change', (event) => { selectedInputCurrencyIngresos = event.target.value; updateInputPlaceholder_Ingresos(); saveData_Ingresos(); }); 
+            updateCurrentMonthDisplayDOM_Ingresos(); 
+            loadData_Ingresos(); 
+            checkForMonthlyResetLogic_Ingresos(); 
+            elIngresos.overallTargetInput.addEventListener('change', () => { const newTarget = parseFloat(elIngresos.overallTargetInput.value); if (!isNaN(newTarget) && newTarget > 0) { currentOverallTargetCOP = newTarget; saveData_Ingresos(); updateAllDisplays_Ingresos(); } else { elIngresos.overallTargetInput.value = currentOverallTargetCOP; } }); 
+            getDailyExchangeRate_Ingresos().then(() => { updateAllDisplays_Ingresos(); elIngresos.addMoneyButton.disabled = false; }).catch(err => { console.error("Error initializing exchange rate:", err); elIngresos.addMoneyButton.disabled = false; updateInputPlaceholder_Ingresos(); updateAllDisplays_Ingresos(); }); 
+            elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); elIngresos.moneyInput.addEventListener('keypress', e => { if (e.key === 'Enter') addMoney_Ingresos(); }); elIngresos.clearHistoryButton.addEventListener('click', clearHistory_Ingresos); elIngresos.currencySelector.addEventListener('change', (event) => { selectedInputCurrencyIngresos = event.target.value; updateInputPlaceholder_Ingresos(); saveData_Ingresos(); }); 
             // Horario
             loadTimetableData(); renderTimetable(); 
         }

@@ -92,21 +92,18 @@
             flex-shrink: 1; 
             flex-basis: auto; 
             width: 100%; 
+            max-width: 1150px; /* Ancho estándar para widgets principales como calendario y horario */
             min-width: 300px; 
             text-align:center;
             display: flex; 
             flex-direction: column;
         }
         #ingresos-widget-main { 
-            max-width: 700px; 
-        }
-        #calendar-widget-card, .university-timetable-widget { 
-            max-width: 1150px; /* Más ancho para calendario y horario */
-            flex-grow: 1; /* Permitir que ocupen más espacio si está disponible */
+            max-width: 700px; /* Ingresos mantiene su ancho más contenido */
         }
         #mainCalendar {
             flex-grow: 1; 
-            min-height: 550px; /* Un poco más de altura para el calendario */
+            min-height: 500px; 
             width: 100%; 
         }
 
@@ -166,15 +163,15 @@
         }
         #calendar-progress-bars .progress-label { min-width: 40px; margin-right: 10px; }
         #calendar-progress-bars .progress-bar-bg-cal {
-            flex-grow: 1; max-width: 200px; /* Más cortas */
+            flex-grow: 1; max-width: 200px; 
             height: 18px; background: var(--bg-card); border-radius: 18px;
             overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.25); margin-right: 10px;
         }
         #calendar-progress-bars .progress-bar-cal {
             height: 100%; border-radius: 18px; width: 0%; 
-            transition: width 0.8s ease-out, background-color 0.8s ease-out; 
+            transition: width 0.8s ease-out, background-color 0.8s ease-out, box-shadow 0.8s ease-out; 
             position: relative;
-            box-shadow: 0 0 8px 1px transparent, 0 0 12px 2px transparent; /* Glow sutil */
+            /* El glow se aplica dinámicamente en JS ahora */
         }
          #calendar-progress-bars .progress-bar-cal::before{ 
             content:''; position:absolute; top:0;left:0; height:100%; width:100%; 
@@ -191,8 +188,8 @@
         .fc th { border-color: var(--fc-border-color) !important; color: var(--accent-yellow-green); }
         .fc .fc-daygrid-day-number { color: var(--text-secondary); }
         .fc .fc-day-today { 
-            box-shadow: 0 0 18px 8px rgba(var(--accent-yellow-pale-rgb), 0.45); 
-            border-radius: 12px; 
+            box-shadow: 0 0 18px 8px rgba(var(--accent-yellow-pale-rgb), 0.5); /* Glow externo y más difuso */
+            border-radius: 12px; /* Más redondeado */
             position: relative; 
             z-index: 1;
         }
@@ -206,6 +203,7 @@
             border:none; border-radius: 8px; cursor:pointer; font-weight: 600;
         }
         #addCalendarEventBtn:hover { background-color: var(--accent-green-neon); }
+
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.75); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
         .modal-overlay.active { display: flex; }
@@ -445,7 +443,7 @@
                          mainCalendarInstance.updateSize(); 
                     }
                     if (!dayProgressInterval) { 
-                        updateCalendarDayProgressBar(); // Actualizar una vez al mostrar
+                        updateCalendarDayProgressBar(); 
                         dayProgressInterval = setInterval(updateCalendarDayProgressBar, 30000); 
                     }
                 } else {
@@ -477,7 +475,9 @@
         // --- FUNCIONES DEL HORARIO UNIVERSITARIO ---
         function loadTimetableData() { const savedData = localStorage.getItem(LOCAL_STORAGE_KEY_TIMETABLE); const defaultTimetable = [ { id: 'ev1', day: 'MIÉRCOLES', startTime: '08:00', endTime: '10:00', subject: 'Estrategia', teacher: 'Prof. X', color: PRESET_PASTEL_COLORS[0].value },{ id: 'ev3', day: 'LUNES', startTime: '14:00', endTime: '16:00', subject: 'Mercadeo', teacher: 'Prof. Luna', color: PRESET_PASTEL_COLORS[1].value },{ id: 'ev4', day: 'MARTES', startTime: '14:00', endTime: '15:00', subject: 'Negocios Digitales', teacher: 'Prof. Sol', color: PRESET_PASTEL_COLORS[2].value },{ id: 'ev5', day: 'MARTES', startTime: '15:00', endTime: '17:00', subject: 'GOP', teacher: 'Prof. Estrella', color: PRESET_PASTEL_COLORS[3].value },{ id: 'ev6', day: 'VIERNES', startTime: '07:00', endTime: '09:00', subject: 'Estrategia', teacher: 'Prof. Y', color: PRESET_PASTEL_COLORS[4].value },]; if (savedData) { try { const parsedData = JSON.parse(savedData); if (Array.isArray(parsedData)) { timetableData = parsedData; } else { timetableData = [...defaultTimetable]; } } catch (error) { timetableData = [...defaultTimetable];} } else { timetableData = [...defaultTimetable]; } }
         function saveTimetableData() { localStorage.setItem(LOCAL_STORAGE_KEY_TIMETABLE, JSON.stringify(timetableData)); }
-        function renderTimetable() { const gridContainer = document.getElementById('timetableGrid'); if (!gridContainer) return; gridContainer.innerHTML = ''; const cornerDiv = document.createElement('div'); cornerDiv.className = 'timetable-grid-corner'; gridContainer.appendChild(cornerDiv); TIMETABLE_DAYS.forEach((day, index) => { const dayHeader = document.createElement('div'); dayHeader.className = 'timetable-grid-header'; dayHeader.textContent = day; dayHeader.style.gridColumn = `${index + 2}`; dayHeader.style.gridRow = '1'; gridContainer.appendChild(dayHeader); }); for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) { const timeLabel = document.createElement('div'); timeLabel.className = 'timetable-grid-time-label'; timeLabel.textContent = `${String(hour).padStart(2, '0')}:00`; timeLabel.style.gridColumn = '1'; timeLabel.style.gridRow = `${hour - TIMETABLE_START_HOUR + 2}`; gridContainer.appendChild(timeLabel); } timetableData.forEach(event => { const eventDiv = document.createElement('div'); eventDiv.className = 'timetable-grid-event'; eventDiv.dataset.eventId = event.id; eventDiv.style.backgroundColor = event.color || DEFAULT_EVENT_COLOR; eventDiv.innerHTML = `<span class="subject-name">${event.subject}</span><span class="teacher-name">${event.teacher || ''}</span>`; eventDiv.addEventListener('dblclick', () => openEventModal('timetable', event.id)); const dayIndex = TIMETABLE_DAYS.indexOf(event.day.toUpperCase()); if (dayIndex === -1) return;  eventDiv.style.gridColumn = `${dayIndex + 2}`;  const startHourEvent = parseInt(event.startTime.split(':')[0]); const endHourEvent = parseInt(event.endTime.split(':')[0]); const startRow = startHourEvent - TIMETABLE_START_HOUR + 2; const endRow = endHourEvent - TIMETABLE_START_HOUR + 2;  if (startRow < 2 || endRow <= startRow || endRow > (TIMETABLE_END_HOUR - TIMETABLE_START_HOUR + 2 + 1) ) return;  eventDiv.style.gridRow = `${startRow} / ${endRow}`; gridContainer.appendChild(eventDiv); }); }
+        function renderTimetable() { const gridContainer = document.getElementById('timetableGrid'); if (!gridContainer) return; gridContainer.innerHTML = ''; const cornerDiv = document.createElement('div'); cornerDiv.className = 'timetable-grid-corner'; gridContainer.appendChild(cornerDiv); TIMETABLE_DAYS.forEach((day, index) => { const dayHeader = document.createElement('div'); dayHeader.className = 'timetable-grid-header'; dayHeader.textContent = day; dayHeader.style.gridColumn = `${index + 2}`; dayHeader.style.gridRow = '1'; gridContainer.appendChild(dayHeader); }); for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) { const timeLabel = document.createElement('div'); timeLabel.className = 'timetable-grid-time-label'; timeLabel.textContent = `${String(hour).padStart(2, '0')}:00`; timeLabel.style.gridColumn = '1'; timeLabel.style.gridRow = `${hour - TIMETABLE_START_HOUR + 2}`; gridContainer.appendChild(timeLabel); } timetableData.forEach(event => { const eventDiv = document.createElement('div'); eventDiv.className = 'timetable-grid-event'; eventDiv.dataset.eventId = event.id; eventDiv.style.backgroundColor = event.color || DEFAULT_EVENT_COLOR; eventDiv.innerHTML = `<span class="subject-name">${event.subject}</span><span class="teacher-name">${event.teacher || ''}</span>`; 
+        eventDiv.addEventListener('click', () => openEventModal('timetable', event.id)); // Cambiado a click
+        const dayIndex = TIMETABLE_DAYS.indexOf(event.day.toUpperCase()); if (dayIndex === -1) return;  eventDiv.style.gridColumn = `${dayIndex + 2}`;  const startHourEvent = parseInt(event.startTime.split(':')[0]); const endHourEvent = parseInt(event.endTime.split(':')[0]); const startRow = startHourEvent - TIMETABLE_START_HOUR + 2; const endRow = endHourEvent - TIMETABLE_START_HOUR + 2;  if (startRow < 2 || endRow <= startRow || endRow > (TIMETABLE_END_HOUR - TIMETABLE_START_HOUR + 2 + 1) ) return;  eventDiv.style.gridRow = `${startRow} / ${endRow}`; gridContainer.appendChild(eventDiv); }); }
         function populateTimeSelect(selectElement, startHour, endHour, selectedValue, isEndTime = false) { selectElement.innerHTML = ''; const limit = isEndTime ? endHour + 1 : endHour; for (let h = startHour; h <= limit; h++) { const timeStr = `${String(h).padStart(2, '0')}:00`; const option = document.createElement('option'); option.value = timeStr; option.textContent = timeStr; if (timeStr === selectedValue) option.selected = true; selectElement.appendChild(option); } }
         
         // --- FUNCIONES DEL CALENDARIO PRINCIPAL ---
@@ -486,9 +486,10 @@
 
         function getCalendarProgressBarColor(percentage) {
             if (percentage >= 100) return 'var(--accent-green-neon)'; 
-            if (percentage >= 66) return 'var(--cal-progress-q4)'; // Verde
-            if (percentage >= 33) return 'var(--cal-progress-q3)'; // Amarillo-Verde
-            return 'var(--cal-progress-q2)'; // Naranja/Rojo para bajo progreso
+            if (percentage >= 75) return 'var(--cal-progress-q4)';
+            if (percentage >= 50) return 'var(--cal-progress-q3)';
+            if (percentage >= 25) return 'var(--cal-progress-q2)';
+            return 'var(--cal-progress-q1)';
         }
 
         function updateCalendarDayProgressBar() { 
@@ -506,10 +507,11 @@
                 const color = getCalendarProgressBarColor(percentageDay);
                 dayProgressBarCal.style.width = `${percentageDay}%`;
                 dayProgressBarCal.style.backgroundColor = color;
-                dayProgressBarCal.style.boxShadow = `0 0 8px 1px ${color}, 0 0 12px 2px ${color}`;
+                dayProgressBarCal.style.boxShadow = `0 0 6px 1px ${color}`; // Ajustado el glow
                 dayTextCal.textContent = `${percentageDay.toFixed(0)}%`;
             }
         }
+
 
         function updateCalendarProgressBars() { 
             const today = new Date();const year = today.getFullYear();const month = today.getMonth(); const day = today.getDate();
@@ -522,7 +524,7 @@
                 const colorMonth = getCalendarProgressBarColor(percentageMonth);
                 monthProgressBarCal.style.width = `${percentageMonth}%`;
                 monthProgressBarCal.style.backgroundColor = colorMonth;
-                monthProgressBarCal.style.boxShadow = `0 0 8px 1px ${colorMonth}, 0 0 12px 2px ${colorMonth}`;
+                monthProgressBarCal.style.boxShadow = `0 0 6px 1px ${colorMonth}`; // Ajustado el glow
                 monthTextCal.textContent = `${percentageMonth.toFixed(0)}%`;
             }
             
@@ -538,7 +540,7 @@
                 const colorYear = getCalendarProgressBarColor(percentageYear);
                 yearProgressBarCal.style.width = `${percentageYear}%`;
                 yearProgressBarCal.style.backgroundColor = colorYear;
-                yearProgressBarCal.style.boxShadow = `0 0 8px 1px ${colorYear}, 0 0 12px 2px ${colorYear}`;
+                yearProgressBarCal.style.boxShadow = `0 0 6px 1px ${colorYear}`; // Ajustado el glow
                 yearTextCal.textContent = `${percentageYear.toFixed(0)}%`;
             }
         }
@@ -569,7 +571,7 @@
                 selectMirror: true,
                 selectAllow: function(selectInfo) { 
                     const selectedDate = new Date(selectInfo.start);
-                    selectedDate.setHours(0,0,0,0); // Normalizar
+                    selectedDate.setHours(23,59,59,999); // Para asegurar que el mismo día sea válido
                     const currentDate = new Date();
                     currentDate.setHours(0,0,0,0);
                     return selectedDate >= currentDate;
@@ -577,14 +579,14 @@
                 eventClick: function(info) {
                     const today = new Date(); today.setHours(0,0,0,0); 
                     if (info.event.source && info.event.source.id === 'user-events') {
-                        const canEdit = new Date(info.event.startStr.slice(0,10)) >= today;
+                        const canEdit = new Date(info.event.startStr.slice(0,10) + "T00:00:00") >= today; // Normalizar fecha del evento a medianoche
                         openEventModal('calendar', info.event.id, info.event.startStr, canEdit);
                     } else if (info.event.title) {
                         alert(`Festivo: ${info.event.title}`); 
                     }
                 },
                 select: function(info) { 
-                     openEventModal('calendar', null, info.startStr, true); // Para nuevos, siempre se puede editar la fecha (restringida a futuro)
+                     openEventModal('calendar', null, info.startStr, true); 
                      if (mainCalendarInstance) mainCalendarInstance.unselect(); 
                 },
                 datesSet: function(dateInfo) {
@@ -648,11 +650,12 @@
                     const event = calendarEventsData.find(e => e.id === eventId);
                     if (event) {
                         modalEventIdInput.value = event.id; modalEventTitleInput.value = event.title;
-                        modalEventStartDateInput.value = event.start.slice(0,10); 
+                        const eventStartDate = event.start.slice(0,10);
+                        modalEventStartDateInput.value = eventStartDate; 
                         modalEventColorSelect.value = event.color || DEFAULT_EVENT_COLOR;
                         modalEventStartDateInput.disabled = !canEditCalendarDate; 
                          if (!canEditCalendarDate) {
-                            modalEventStartDateInput.min = event.start.slice(0,10); 
+                            modalEventStartDateInput.min = eventStartDate; 
                         }
                     }
                 } else { 
@@ -698,15 +701,16 @@
             } else if (type === 'calendar') {
                 const startDate = modalEventStartDateInput.value;
                 const todayISO = new Date().toISOString().slice(0,10);
+                
                 if (startDate < todayISO && !id) { 
                     alert("No se pueden añadir actividades a días pasados.");
                     return;
                 }
-                // Si es un evento existente y la fecha es pasada, pero se intentó cambiar (aunque el input esté disabled, por seguridad)
-                if (id && startDate < todayISO && calendarEventsData.find(e=>e.id===id)?.start.slice(0,10) !== startDate) {
-                    alert("No se puede mover un evento a una fecha pasada.");
-                    modalEventStartDateInput.value = calendarEventsData.find(e=>e.id===id)?.start.slice(0,10); // Revertir
-                    return;
+                const existingEvent = id ? calendarEventsData.find(e=>e.id===id) : null;
+                if (id && existingEvent && existingEvent.start.slice(0,10) < todayISO && startDate !== existingEvent.start.slice(0,10)) {
+                     alert("No se puede cambiar la fecha de un evento pasado.");
+                     modalEventStartDateInput.value = existingEvent.start.slice(0,10); // Revertir
+                     return;
                 }
 
 

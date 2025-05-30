@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -92,14 +91,14 @@
             flex-shrink: 1; 
             flex-basis: auto; 
             width: 100%; 
-            max-width: 1150px; /* Ancho estándar para widgets principales como calendario y horario */
+            max-width: 1150px; 
             min-width: 300px; 
             text-align:center;
             display: flex; 
             flex-direction: column;
         }
         #ingresos-widget-main { 
-            max-width: 700px; /* Ingresos mantiene su ancho más contenido */
+            max-width: 700px; 
         }
         #mainCalendar {
             flex-grow: 1; 
@@ -156,7 +155,6 @@
         .timetable-grid-event .subject-name { font-weight: 700; display: block; margin-bottom: 3px; font-size: 1.05em; word-break: break-word; }
         .timetable-grid-event .teacher-name { font-size: 0.9em; color: rgba(var(--subject-default-text-color), 0.8); display: block; word-break: break-word; }
         
-        /* Barras de Progreso del Calendario */
         #calendar-progress-bars { margin-bottom: 20px; text-align: left; padding: 0 10px; }
         #calendar-progress-bars .progress-item { 
             display: flex; align-items: center; margin-bottom: 10px; font-size: 0.9em; color: var(--text-secondary); 
@@ -368,8 +366,6 @@
     <script src='https://cdn.jsdelivr.net/npm/ical.js@2.0.1/build/ical.min.js'></script>
 
     <!-- Firebase SDK -->
-    <!-- TU SDK de Firebase (asegúrate que sean las versiones que usas y que sean compatibles) -->
-    <!-- Using the compat libraries for easier transition from v8 to v9 -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <!-- Si necesitas autenticación en el futuro: -->
@@ -378,9 +374,8 @@
 
     <script>
         // --- FIREBASE CONFIG ---
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyBCuJ4Xetzex0zQpnrOKx1bLihpfX-0KaI", // REEMPLAZA ESTA CON TU API KEY REAL DE FIREBASE
+            apiKey: "TU_API_KEY_AQUI", // <-- IMPORTANTE: REEMPLAZA ESTO CON TU API KEY REAL DE FIREBASE
             authDomain: "meta-ingresos-app.firebaseapp.com",
             projectId: "meta-ingresos-app",
             storageBucket: "meta-ingresos-app.firebasestorage.app",
@@ -393,20 +388,13 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        // ------ IMPORTANTE: USER ID PLACEHOLDER ------
-        // En una aplicación real, obtendrías el userId del usuario autenticado.
-        // Por ahora, usaremos un ID fijo para que todos los datos se guarden/lean del mismo sitio.
-        // Esto NO es seguro para múltiples usuarios. Deberías implementar Firebase Authentication.
-        const userId = 'mainUserData'; 
-        // -------------------------------------------
-
+        const userId = 'mainUserData'; // Placeholder: Implementar autenticación para IDs únicos
+        
         // --- CONFIGURACIONES GLOBALES ---
         const DEFAULT_OVERALL_TARGET_COP = 3500000; 
-        // const LOCAL_STORAGE_KEY_INGRESOS = 'financialGoal_v27_monthlyTarget'; // No más para datos principales
-        // const LAST_RUN_MONTH_KEY_INGRESOS = LOCAL_STORAGE_KEY_INGRESOS + '_lastRunMonth'; // Se manejará en Firebase
         const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; 
-        const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; // 3 horas para caché de tasa de cambio
-        const RATE_CACHE_KEY_INGRESOS = 'exchangeRateCache_erapi'; // Clave para localStorage de tasa
+        const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; 
+        const RATE_CACHE_KEY_INGRESOS = 'exchangeRateCache_erapi'; 
         const FALLBACK_RATE = 4000; 
         const FIXED_FEE_USD = 3; 
         const PERCENTAGE_FEE = 0.03; 
@@ -415,7 +403,6 @@
         const TIMETABLE_START_HOUR = 5; 
         const TIMETABLE_END_HOUR = 23;  
         const TIMETABLE_DAYS = ["LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
-        // const LOCAL_STORAGE_KEY_TIMETABLE = 'universityTimetable_v7_grid_pastelColors'; // No más
         
         const PRESET_PASTEL_COLORS = [
             { name: "Rosa Suave", value: "#FFB6C1" }, { name: "Melocotón", value: "#FFDAB9" },
@@ -427,17 +414,15 @@
         ];
         const DEFAULT_EVENT_COLOR = PRESET_PASTEL_COLORS[0].value; 
 
-        // const LOCAL_STORAGE_KEY_CALENDAR_EVENTS = 'mainCalendarEvents_v4_dateFix'; // No más
         let calendarEventsData = []; 
         let mainCalendarInstance = null; 
         
-        // Variables de estado de la aplicación (se cargarán desde Firebase)
         let contributions = []; 
         let currentDailyExchangeRate = null; 
         let selectedInputCurrencyIngresos = 'USD'; 
         let monthlyTargets = {}; 
         let currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; 
-        let lastRunMonthIngresos = null; // Para la lógica de reinicio mensual
+        let lastRunMonthIngresos = null; 
 
         let timetableData = []; 
         
@@ -446,7 +431,7 @@
         let defaultPage = 'calendario-page'; 
         let dayProgressInterval = null; 
         
-        const elIngresos = {  currentMonthDisplay: document.getElementById('currentMonthDisplay'), moneyInput: document.getElementById('moneyInputIngresos'),  addMoneyButton: document.getElementById('addMoneyBtnIngresos'),  clearHistoryButton: document.getElementById('clearHistoryBtnIngresos'), overallTargetInput: document.getElementById('overallTargetInput'), subtitle: document.getElementById('subtitleText'), progressBarOverall: document.getElementById('progressBarOverall'), progressTextOverall: document.getElementById('progressTextOverall'), progressBarMonthly: document.getElementById('progressBarMonthly'), progressTextMonthly: document.getElementById('progressTextMonthly'), totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'),  overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'),  overallRemainingCOP: document.getElementById('overallRemainingCOP'),  currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), overallUSDTotal: document.getElementById('overallUSDTotal'),  exchangeRateInfo: document.getElementById('exchangeRateInfo'), exchangeRateSource: document.getElementById('exchangeRateSource'), celebrationOverall: document.getElementById('celebrationOverall'),  historyList: document.getElementById('historyList'), monthlyGoalsList: document.getElementById('monthlyGoalsList'), currencySelector: document.getElementById('currencySelectorIngresos')  };
+        const elIngresos = {  currentMonthDisplay: document.getElementById('currentMonthDisplay'), moneyInput: document.getElementById('moneyInputIngresos'),  addMoneyButton: document.getElementById('addMoneyBtnIngresos'),  clearHistoryButton: document.getElementById('clearHistoryBtnIngresos'), overallTargetInput: document.getElementById('overallTargetInput'), subtitle: document.getElementById('subtitleText'), progressBarOverall: document.getElementById('progressBarOverall'), progressTextOverall: document.getElementById('progressTextOverall'), progressBarMonthly: document.getElementById('progressBarMonthly'), progressTextOverall: document.getElementById('progressTextOverall'), progressBarMonthly: document.getElementById('progressBarMonthly'), progressTextMonthly: document.getElementById('progressTextMonthly'), totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'),  overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'),  overallRemainingCOP: document.getElementById('overallRemainingCOP'),  currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), overallUSDTotal: document.getElementById('overallUSDTotal'),  exchangeRateInfo: document.getElementById('exchangeRateInfo'), exchangeRateSource: document.getElementById('exchangeRateSource'), celebrationOverall: document.getElementById('celebrationOverall'),  historyList: document.getElementById('historyList'), monthlyGoalsList: document.getElementById('monthlyGoalsList'), currencySelector: document.getElementById('currencySelectorIngresos')  };
         const addTimetableEventBtnGlobal = document.getElementById('addTimetableEventBtnGlobal'); 
         const addCalendarEventBtn = document.getElementById('addCalendarEventBtn');
         
@@ -503,7 +488,8 @@
         document.querySelectorAll('.nav-button').forEach(button => { button.addEventListener('click', () => { showPage(button.dataset.page); }); });
 
         // --- FUNCIONES DE INGRESOS ---
-        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); } function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }  
+        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); } 
+        function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount); }  
         
         async function fetchAndUpdateDailyExchangeRateWithERAPI_Ingresos() { 
             if(!elIngresos.exchangeRateInfo || !elIngresos.addMoneyButton) return; 
@@ -531,7 +517,7 @@
             if (!success && currentDailyExchangeRate === null) { 
                 const cachedData = localStorage.getItem(RATE_CACHE_KEY_INGRESOS); 
                 const cached = cachedData ? JSON.parse(cachedData) : null; 
-                if (cached && typeof cached.rate === 'number' && (Date.now() - cached.timestamp < RATE_CACHE_DURATION * 24 )) { // Extend cache use if API fails
+                if (cached && typeof cached.rate === 'number' && (Date.now() - cached.timestamp < RATE_CACHE_DURATION * 24 )) { 
                     currentDailyExchangeRate = cached.rate; 
                     elIngresos.exchangeRateInfo.textContent = `1 USD = ${currentDailyExchangeRate.toFixed(4)} COP (Cache)`; 
                     success = true; 
@@ -567,7 +553,7 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    const ingresosData = data.ingresos || {}; // Get the 'ingresos' field
+                    const ingresosData = data.ingresos || {};
 
                     contributions = Array.isArray(ingresosData.contributions) ? ingresosData.contributions.map(c => ({ 
                         ...c, 
@@ -589,23 +575,20 @@
                     console.log("Datos de ingresos cargados desde Firebase.", ingresosData);
                 } else {
                     console.log("No se encontraron datos de ingresos en Firebase para el usuario. Inicializando con valores por defecto.");
-                    // Initialize with defaults if no document exists
                     contributions = [];
                     selectedInputCurrencyIngresos = 'USD';
                     if(elIngresos.currencySelector) elIngresos.currencySelector.value = selectedInputCurrencyIngresos;
                     monthlyTargets = {};
                     const currentMonthKey = getCurrentMonthYear_Ingresos();
                     currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP;
-                    monthlyTargets[currentMonthKey] = currentOverallTargetCOP; // Set initial target for current month
+                    monthlyTargets[currentMonthKey] = currentOverallTargetCOP; 
                     if(elIngresos.overallTargetInput) elIngresos.overallTargetInput.value = currentOverallTargetCOP;
-                    lastRunMonthIngresos = null; // No previous run
+                    lastRunMonthIngresos = null; 
                     
-                    // Save these defaults to Firebase
                     await saveData_Ingresos(); 
                 }
             } catch (error) {
                 console.error("Error cargando datos de ingresos desde Firebase:", error);
-                // Fallback to local defaults in case of error, but don't rely on localStorage for persistence
                 contributions = [];
                 selectedInputCurrencyIngresos = 'USD';
                 monthlyTargets = {};
@@ -619,18 +602,15 @@
         async function saveData_Ingresos() {
             try {
                 const currentMonthKey = getCurrentMonthYear_Ingresos();
-                monthlyTargets[currentMonthKey] = currentOverallTargetCOP; // Ensure current target is saved for the month
+                monthlyTargets[currentMonthKey] = currentOverallTargetCOP; 
 
                 const ingresosDataToSave = {
                     contributions,
                     selectedInputCurrencyIngresos,
                     monthlyTargets,
-                    currentOverallTargetCOP, // Save the current overall target as well
-                    lastRunMonth: lastRunMonthIngresos // Save the last run month for reset logic
+                    currentOverallTargetCOP, 
+                    lastRunMonth: lastRunMonthIngresos 
                 };
-
-                // Using .set with { merge: true } to update or create the 'ingresos' field
-                // within the user's document without overwriting other fields like 'timetable' or 'calendarEvents'.
                 await db.collection('users').doc(userId).set({
                     ingresos: ingresosDataToSave 
                 }, { merge: true });
@@ -729,12 +709,10 @@
             const rootStyles = getComputedStyle(document.documentElement); 
             if (type === 'general') { 
                 if (percentage >= 100) return 'var(--celebration-overall-bg)'; 
-                // Estas variables CSS (--quartileX-color-general) no están definidas en el CSS original.
-                // Usaré los colores de progreso del calendario como referencia o colores fijos.
-                if (percentage < 25) return 'var(--cal-progress-q1)'; // Antes: rootStyles.getPropertyValue('--quartile1-color-general').trim();
-                if (percentage < 50) return 'var(--cal-progress-q2)'; // Antes: rootStyles.getPropertyValue('--quartile2-color-general').trim();
-                if (percentage < 75) return 'var(--cal-progress-q3)'; // Antes: rootStyles.getPropertyValue('--quartile3-color-general').trim();
-                return 'var(--cal-progress-q4)'; // Antes: rootStyles.getPropertyValue('--quartile4-color-general').trim();
+                if (percentage < 25) return 'var(--cal-progress-q1)'; 
+                if (percentage < 50) return 'var(--cal-progress-q2)'; 
+                if (percentage < 75) return 'var(--cal-progress-q3)'; 
+                return 'var(--cal-progress-q4)'; 
             } else { 
                 return rootStyles.getPropertyValue('--monthly-time-progress-color').trim(); 
             } 
@@ -875,13 +853,12 @@
             if(!elIngresos.overallTargetInput) return;  
             const currentMonthKey = getCurrentMonthYear_Ingresos(); 
             
-            // 'lastRunMonthIngresos' is now loaded from Firebase
             if (currentMonthKey !== lastRunMonthIngresos) { 
                 console.log(`Nuevo mes detectado (Ingresos): ${currentMonthKey}. El último mes registrado fue ${lastRunMonthIngresos || 'ninguno'}.`); 
                 currentOverallTargetCOP = monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP; 
                 elIngresos.overallTargetInput.value = currentOverallTargetCOP; 
-                lastRunMonthIngresos = currentMonthKey; // Update the state variable
-                await saveData_Ingresos(); // Save the new lastRunMonth and potentially new target to Firebase
+                lastRunMonthIngresos = currentMonthKey; 
+                await saveData_Ingresos(); 
                 updateAllDisplays_Ingresos(); 
             }  
         }  
@@ -903,13 +880,11 @@
                 currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; 
                 monthlyTargets[currentMonthKey] = currentOverallTargetCOP; 
                 elIngresos.overallTargetInput.value = currentOverallTargetCOP; 
-                lastRunMonthIngresos = currentMonthKey; // Reset last run month
+                lastRunMonthIngresos = currentMonthKey; 
 
-                await saveData_Ingresos(); // Save cleared data to Firebase
+                await saveData_Ingresos(); 
                 
-                // localStorage.removeItem(LAST_RUN_MONTH_KEY_INGRESOS); // No longer needed
-                // localStorage.setItem(LAST_RUN_MONTH_KEY_INGRESOS, currentMonthKey); // No longer needed
-                localStorage.removeItem(RATE_CACHE_KEY_INGRESOS); // Clear exchange rate cache
+                localStorage.removeItem(RATE_CACHE_KEY_INGRESOS); 
                 currentDailyExchangeRate = null;  
                 
                 updateCurrentMonthDisplayDOM_Ingresos(); 
@@ -939,16 +914,16 @@
                     } else {
                         timetableData = [...defaultTimetable];
                         console.log("No se encontraron datos de horario en Firebase, usando predeterminados y guardando.");
-                        await saveTimetableData(); // Save defaults if timetable field is missing or not an array
+                        await saveTimetableData(); 
                     }
                 } else {
                     timetableData = [...defaultTimetable];
                     console.log("No se encontró documento de usuario para horario, usando predeterminados y guardando.");
-                    await saveTimetableData(); // Save defaults if user document doesn't exist
+                    await saveTimetableData(); 
                 }
             } catch (error) {
                 console.error("Error cargando datos del horario desde Firebase:", error);
-                timetableData = [...defaultTimetable]; // Fallback to defaults
+                timetableData = [...defaultTimetable]; 
                 alert("Error al cargar datos del horario. Se usarán valores por defecto.");
             }
         }
@@ -957,7 +932,7 @@
             try {
                 await db.collection('users').doc(userId).set({
                     timetable: timetableData 
-                }, { merge: true }); // Merge to avoid overwriting other data like 'ingresos'
+                }, { merge: true }); 
                 console.log("Datos del horario guardados en Firebase.");
             } catch (e) {
                 console.error("Error guardando datos del horario en Firebase:", e);
@@ -1034,7 +1009,7 @@
                         calendarEventsData = data.calendarEvents;
                         console.log("Eventos del calendario cargados desde Firebase.", calendarEventsData);
                     } else {
-                        calendarEventsData = []; // Default to empty if field missing or not array
+                        calendarEventsData = []; 
                         console.log("No se encontraron eventos de calendario, inicializando como vacío y guardando.");
                         await saveCalendarEventsData();
                     }
@@ -1045,7 +1020,7 @@
                 }
             } catch (error) {
                 console.error("Error cargando eventos del calendario desde Firebase:", error);
-                calendarEventsData = []; // Fallback
+                calendarEventsData = []; 
                 alert("Error al cargar eventos del calendario. Se usarán valores por defecto.");
             }
         }
@@ -1123,7 +1098,6 @@
         }
 
         function initializeMainCalendar() {
-            // loadCalendarEventsData(); // Ya se llama en initializeApp
             const calendarEl = document.getElementById('mainCalendar');
             if (!calendarEl) { console.error("Elemento #mainCalendar no encontrado."); return; }
             const todayISO = new Date().toISOString().slice(0,10);
@@ -1270,7 +1244,7 @@
         
         function closeEventModal() { eventModalOverlay.classList.remove('active'); }
         
-        eventForm.addEventListener('submit', async function(e) { // Made async
+        eventForm.addEventListener('submit', async function(e) { 
             e.preventDefault(); 
             const id = modalEventIdInput.value; 
             const type = modalEventTypeInput.value;
@@ -1329,7 +1303,7 @@
         
         cancelEventBtn.addEventListener('click', closeEventModal);
         
-        deleteEventBtn.addEventListener('click', async function() { // Made async
+        deleteEventBtn.addEventListener('click', async function() { 
             if (!currentEditingEventId) return; 
             if (confirm("¿Seguro que quieres eliminar este evento? Esto también lo eliminará de la nube.")) { 
                 if (currentEditingEventType === 'timetable') { 
@@ -1353,12 +1327,11 @@
         });}
 
         // --- INICIALIZACIÓN ---
-        async function initializeApp() { // Made async
+        async function initializeApp() { 
             console.log("Inicializando aplicación...");
             showPage(defaultPage); 
             updateCurrentMonthDisplayDOM_Ingresos(); 
 
-            // Cargar todos los datos de Firebase
             await Promise.all([
                 loadData_Ingresos(),
                 loadTimetableData(),
@@ -1367,9 +1340,9 @@
             console.log("Todos los datos iniciales cargados.");
 
             // Lógica de Ingresos
-            checkForMonthlyResetLogic_Ingresos(); // Esto podría necesitar acceso a datos ya cargados
+            await checkForMonthlyResetLogic_Ingresos(); 
             if(elIngresos.overallTargetInput) {
-                elIngresos.overallTargetInput.addEventListener('change', async () => { // Made async
+                elIngresos.overallTargetInput.addEventListener('change', async () => { 
                     const newTarget = parseFloat(elIngresos.overallTargetInput.value); 
                     if (!isNaN(newTarget) && newTarget > 0) { 
                         currentOverallTargetCOP = newTarget; 
@@ -1393,23 +1366,22 @@
             if(elIngresos.moneyInput) elIngresos.moneyInput.addEventListener('keypress', e => { if (e.key === 'Enter') addMoney_Ingresos(); }); 
             if(elIngresos.clearHistoryButton) elIngresos.clearHistoryButton.addEventListener('click', clearHistory_Ingresos); 
             if(elIngresos.currencySelector) {
-                elIngresos.currencySelector.addEventListener('change', async (event) => { // Made async
+                elIngresos.currencySelector.addEventListener('change', async (event) => { 
                     selectedInputCurrencyIngresos = event.target.value; 
                     updateInputPlaceholder_Ingresos(); 
                     await saveData_Ingresos(); 
                 }); 
             }
             
-            // Lógica de Horario
             renderTimetable(); 
 
-            // Lógica de Calendario (initializeMainCalendar se llama dentro de showPage si es la página activa)
-            // Si la página por defecto es calendario, ya se inicializará allí.
-            // Si no, se inicializará cuando el usuario navegue a ella.
-            // Asegurarse de que `calendarEventsData` esté poblado antes de `initializeMainCalendar`.
             if (defaultPage === 'calendario-page' && mainCalendarInstance) {
                  mainCalendarInstance.refetchEvents('user-events');
                  updateTodayTasksList();
+            } else if (defaultPage === 'calendario-page' && !mainCalendarInstance) {
+                // Si es la página por defecto y el calendario aún no se ha inicializado (por showPage),
+                // lo forzamos aquí después de que los datos se hayan cargado.
+                initializeMainCalendar();
             }
             console.log("Aplicación inicializada.");
         }
@@ -1418,4 +1390,3 @@
     </script>
 </body>
 </html>
-```

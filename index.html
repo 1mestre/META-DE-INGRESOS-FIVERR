@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organizador de Vida Digital Compartido</title>
+
+    <link rel="icon" type="image/png" href="/Vida_Sebas/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/Vida_Sebas/favicon.svg" />
+    <link rel="shortcut icon" href="/Vida_Sebas/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/Vida_Sebas/apple-touch-icon.png" />
+    <link rel="manifest" href="/Vida_Sebas/site.webmanifest" />
+
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
     <style>
@@ -131,13 +138,11 @@
         #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } 
         #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; }
         
-        /* CORRECCIÓN: Estilo para la barra de progreso general */
         #progressBarOverall {
              background: linear-gradient(90deg, var(--accent-green-medium), var(--accent-green-neon));
              box-shadow: 0 0 12px rgba(var(--accent-green-neon-rgb), 0.4);
         }
 
-        /* CORRECCIÓN: Estilo para la barra de progreso del mes */
         #progressBarMonthly {
             background: linear-gradient(90deg, var(--accent-blue-info), var(--accent-purple));
             box-shadow: 0 0 12px rgba(var(--glow-color-blue-rgb), 0.4);
@@ -361,7 +366,8 @@
     <div class="modal-overlay" id="eventModalOverlay">
         <div class="modal-content"> 
             <h3 id="eventModalTitle">Añadir/Editar Evento</h3>
-            <form id="eventForm" novalidate> <input type="hidden" id="eventModalId"> 
+            <form id="eventForm" novalidate>
+                <input type="hidden" id="eventModalId"> 
                 <input type="hidden" id="eventModalType"> 
 
                 <div class="modal-form-group"> <label for="eventTitle">Título/Materia:</label> <input type="text" id="eventTitle" required> </div>
@@ -553,7 +559,7 @@
             updateAllDisplays_Ingresos();
             renderTimetable();
             updateCalendarProgressBars(); 
-            updateMonthlyTimeProgress(); // <-- Llamada a la nueva función de progreso mensual
+            updateMonthlyTimeProgress();
             if (mainCalendarInstance) {
                 mainCalendarInstance.refetchEvents();
                 updateTodayTasksList();
@@ -618,7 +624,6 @@
             setProgress(dayBar, dayText, dayProgress);
         }
 
-        // CORRECCIÓN: Función para la barra de progreso mensual en la página de ingresos
         function updateMonthlyTimeProgress() {
             const now = new Date();
             const dayOfMonth = now.getDate();
@@ -893,7 +898,6 @@
             modalTimetableFields.style.display = (type === 'timetable') ? 'block' : 'none';
             modalCalendarFields.style.display = (type === 'calendar') ? 'block' : 'none';
             
-            // CORRECCIÓN: Gestionar el atributo 'required' dinámicamente
             modalEventStartDateInput.required = (type === 'calendar');
 
             eventModalTitle.textContent = id ? `Editar ${type === 'timetable' ? 'Clase' : 'Actividad'}` : `Añadir Nueva ${type === 'timetable' ? 'Clase' : 'Actividad'}`;
@@ -965,7 +969,7 @@
             updateCurrentMonthDisplayDOM_Ingresos();
             initializeMainCalendar();
             getDailyExchangeRate_Ingresos(); 
-            updateMonthlyTimeProgress(); // <-- Llamada inicial
+            updateMonthlyTimeProgress();
 
             document.querySelectorAll('.nav-button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
             if(elIngresos.addMoneyButton) elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); 

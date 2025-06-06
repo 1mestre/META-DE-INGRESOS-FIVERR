@@ -124,11 +124,29 @@
         @keyframes slideInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } 
         #ingresos-page .currency-selector-container { display: flex; align-items: center; justify-content: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; } #ingresos-page .currency-selector-container label { font-size: 0.95em; color: var(--text-secondary); margin-right: 5px; } #ingresos-page #currencySelectorIngresos {  padding: 8px 12px; border-radius: 8px; border: 1px solid #4a505e; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; font-size: 0.95em; cursor: pointer; outline: none; } #ingresos-page #currencySelectorIngresos:focus { border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb), 0.4); }
         #ingresos-page .money-input{ width:100%; padding:14px; border:2px solid #4a505e; border-radius:12px; font-size:1.15em; text-align:center; margin-bottom:12px; background: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; transition: border-color 0.3s ease, box-shadow 0.3s ease; } #ingresos-page .money-input::placeholder { color: #888; }  #ingresos-page .money-input:focus{ outline:none; border-color: var(--accent-blue-info); box-shadow:0 0 12px rgba(var(--glow-color-blue-rgb), 0.5), 0 0 2px rgba(var(--glow-color-blue-rgb), 0.7);  } #ingresos-page .add-btn{  background:linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-neon)); color: #111;  border:none; padding:14px 30px; border-radius:12px; font-size:1.05em; cursor:pointer; font-weight:700; transition:all 0.3s ease; animation: pulseButton 2s infinite ease-in-out 1s; box-shadow: 0 0 10px rgba(var(--accent-green-neon-rgb), 0.3);  width: 100%;  } #ingresos-page .add-btn:hover{ transform:translateY(-3px) scale(1.08); box-shadow:0 8px 20px rgba(var(--accent-green-neon-rgb), 0.4), 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5) ; animation-play-state: paused; } #ingresos-page .add-btn:disabled { background: #4a4a4a; color: #888; cursor: not-allowed; animation: none; box-shadow: none; } @keyframes pulseButton { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        
         #ingresos-page .progress-container{margin:25px 0} 
         #ingresos-page .progress-container.monthly .progress-bar-bg{ height: 30px; border-radius:30px; } 
         #ingresos-page .progress-container.monthly .progress-bar{ height: 30px; border-radius:30px; } 
         #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } 
-        #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; box-shadow: 0 0 8px 2px transparent, 0 0 15px 4px transparent; } #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} } #ingresos-page .progress-bar.monthly-bar { background: var(--monthly-time-progress-color); } #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } 
+        #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; }
+        
+        /* CORRECCIÓN: Estilo para la barra de progreso general */
+        #progressBarOverall {
+             background: linear-gradient(90deg, var(--accent-green-medium), var(--accent-green-neon));
+             box-shadow: 0 0 12px rgba(var(--accent-green-neon-rgb), 0.4);
+        }
+
+        /* CORRECCIÓN: Estilo para la barra de progreso del mes */
+        #progressBarMonthly {
+            background: linear-gradient(90deg, var(--accent-blue-info), var(--accent-purple));
+            box-shadow: 0 0 12px rgba(var(--glow-color-blue-rgb), 0.4);
+        }
+
+        #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} }
+        #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } 
+        #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } 
+        
         #ingresos-page .money-display{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:18px; margin:25px 0; } 
         #ingresos-page .money-card{ transition: transform 0.35s ease, box-shadow 0.35s ease; animation: popIn 0.5s ease-out backwards; padding: 18px; border-radius: 15px; margin-bottom: 0; } 
         #ingresos-page .money-card:nth-child(1) { animation-delay: 0.5s; }  #ingresos-page .money-card:nth-child(2) { animation-delay: 0.6s; }  #ingresos-page .money-card:nth-child(3) { animation-delay: 0.7s; }  #ingresos-page .money-card:nth-child(4) { animation-delay: 0.8s; } @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } } #ingresos-page .money-card:hover{  transform: translateY(-5px) scale(1.02);  box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25);  } #ingresos-page .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; } #ingresos-page .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; } #ingresos-page .total-accumulated-cop .money-value {color: var(--accent-green-medium)}  #ingresos-page .overall-target-cop .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-remaining-cop .money-value {color: var(--accent-yellow-green)}  #ingresos-page .current-month-usd-total .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-usd-total .money-value {color: var(--accent-gold)}  #ingresos-page .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;} #ingresos-page .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; } 
@@ -289,7 +307,7 @@
                     <div class="title-container"> <h1 class="title">🎯 Meta Ingresos</h1> <div class="target-input-group"> <label for="overallTargetInput">Meta (COP):</label> <input type="number" id="overallTargetInput" step="1000" placeholder="3,500,000"> </div> </div>
                     <p class="subtitle" id="subtitleText">🚀 Progreso hacia tu meta general...</p>
                     <div class="input-section glass-section"> <div class="currency-selector-container"> <label for="currencySelectorIngresos">Moneda de Ingreso:</label> <select id="currencySelectorIngresos"> <option value="USD" selected>USD ($)</option> <option value="COP">COP ($)</option> </select> </div> <input type="number" class="money-input" id="moneyInputIngresos" placeholder="💵 Ingresa cantidad en USD..." min="0.01" step="0.01"> <button class="add-btn" id="addMoneyBtnIngresos">➕ Añadir Ingreso</button> </div>
-                    <div class="progress-container"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarOverall"></div> </div> <div class="progress-text" id="progressTextOverall">0% 📊</div> </div> <div class="progress-container monthly"> <div class="progress-bar-bg"> <div class="progress-bar monthly-bar" id="progressBarMonthly"></div> </div> <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> </div> <div class="money-display"> <div class="money-card widget-card"> <div class="money-label">💚 Total Ingresos Netos Acumulados (COP)</div> <div class="money-value" id="totalAccumulatedCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">🏁 Meta General Actual (COP)</div> <div class="money-value" id="overallTargetCOPDisplay">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">📈 Restante Meta General (COP)</div> <div class="money-value" id="overallRemainingCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">💵 Ingresos Netos este Mes (USD)</div> <div class="money-value" id="currentMonthUSDTotal">$0.00</div> </div> </div> <div class="money-card widget-card" style="margin-top: 15px;"> <div class="money-label">🌍 Total Ingresos Netos Histórico (USD)</div> <div class="money-value" id="overallUSDTotal">$0.00</div> <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div> <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div> </div> <div class="celebration-overall" id="celebrationOverall"> 🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br> 🏆 ¡Eres un maestro del joseo! Te amo. 🏆 </div> 
+                    <div class="progress-container"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarOverall"></div> </div> <div class="progress-text" id="progressTextOverall">0% 📊</div> </div> <div class="progress-container monthly"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarMonthly"></div> </div> <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> </div> <div class="money-display"> <div class="money-card widget-card"> <div class="money-label">💚 Total Ingresos Netos Acumulados (COP)</div> <div class="money-value" id="totalAccumulatedCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">🏁 Meta General Actual (COP)</div> <div class="money-value" id="overallTargetCOPDisplay">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">📈 Restante Meta General (COP)</div> <div class="money-value" id="overallRemainingCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">💵 Ingresos Netos este Mes (USD)</div> <div class="money-value" id="currentMonthUSDTotal">$0.00</div> </div> </div> <div class="money-card widget-card" style="margin-top: 15px;"> <div class="money-label">🌍 Total Ingresos Netos Histórico (USD)</div> <div class="money-value" id="overallUSDTotal">$0.00</div> <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div> <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div> </div> <div class="celebration-overall" id="celebrationOverall"> 🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br> 🏆 ¡Eres un maestro del joseo! Te amo. 🏆 </div> 
                     <div class="history widget-card"> <div class="history-title">📝 Historial Detallado de Ingresos (Netos)</div> <div class="history-list" id="historyList"></div> </div> 
                     <div class="monthly-goals-section widget-card"> <div class="monthly-goals-title">🎯 Progreso Ingresos Mensuales (Netos vs Meta)</div> <div class="monthly-goals-list" id="monthlyGoalsList"></div> <button class="clear-btn" id="clearHistoryBtnIngresos">🗑️ Limpiar Todo el Historial</button> </div>
                 </div>
@@ -343,8 +361,7 @@
     <div class="modal-overlay" id="eventModalOverlay">
         <div class="modal-content"> 
             <h3 id="eventModalTitle">Añadir/Editar Evento</h3>
-            <form id="eventForm">
-                <input type="hidden" id="eventModalId"> 
+            <form id="eventForm" novalidate> <input type="hidden" id="eventModalId"> 
                 <input type="hidden" id="eventModalType"> 
 
                 <div class="modal-form-group"> <label for="eventTitle">Título/Materia:</label> <input type="text" id="eventTitle" required> </div>
@@ -357,7 +374,7 @@
                 </div>
 
                  <div id="modalCalendarFields">
-                     <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate" required> </div>
+                     <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate"> </div>
                      <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
                      <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
                      <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
@@ -495,7 +512,6 @@
             SHARED_DATA_PATH.onSnapshot(async (doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    // CORRECCIÓN: Asegurar que los arrays siempre existan en el estado de la app.
                     appState = {
                         contributions: data.contributions || [],
                         monthlyTargets: data.monthlyTargets || {},
@@ -536,7 +552,8 @@
         function updateAllUI() {
             updateAllDisplays_Ingresos();
             renderTimetable();
-            updateCalendarProgressBars(); // CORRECCIÓN: Llamada a la nueva función
+            updateCalendarProgressBars(); 
+            updateMonthlyTimeProgress(); // <-- Llamada a la nueva función de progreso mensual
             if (mainCalendarInstance) {
                 mainCalendarInstance.refetchEvents();
                 updateTodayTasksList();
@@ -563,23 +580,19 @@
         function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount); }
         function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount); }
         
-        // CORRECCIÓN: Nueva función para las barras de progreso del calendario
         function updateCalendarProgressBars() {
             const now = new Date();
             
-            // Progreso del Año
             const startOfYear = new Date(now.getFullYear(), 0, 1);
             const dayOfYear = Math.floor((now - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
             const daysInYear = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) || now.getFullYear() % 400 === 0 ? 366 : 365;
             const yearProgress = (dayOfYear / daysInYear) * 100;
 
-            // Progreso del Mes
             const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
             const dayOfMonth = now.getDate();
             const daysInMonth = endOfMonth.getDate();
             const monthProgress = (dayOfMonth / daysInMonth) * 100;
 
-            // Progreso del Día
             const dayProgress = ((now.getHours() * 60 + now.getMinutes()) / (24 * 60)) * 100;
 
             const yearBar = document.getElementById('year-progress-bar-cal');
@@ -604,6 +617,20 @@
             setProgress(monthBar, monthText, monthProgress);
             setProgress(dayBar, dayText, dayProgress);
         }
+
+        // CORRECCIÓN: Función para la barra de progreso mensual en la página de ingresos
+        function updateMonthlyTimeProgress() {
+            const now = new Date();
+            const dayOfMonth = now.getDate();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const progress = (dayOfMonth / daysInMonth) * 100;
+
+            if (elIngresos.progressBarMonthly && elIngresos.progressTextMonthly) {
+                elIngresos.progressBarMonthly.style.width = `${progress}%`;
+                elIngresos.progressTextMonthly.textContent = `🗓️ Tiempo del Mes: ${progress.toFixed(0)}%`;
+            }
+        }
+
 
         async function getDailyExchangeRate_Ingresos() {
             elIngresos.exchangeRateInfo.textContent = "Tasa actual: Actualizando...";
@@ -711,7 +738,7 @@
                 item.innerHTML = `
                         <div>
                             <div class="history-date">📅 ${dateString}</div>
-                            <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate.toFixed(2)})</span></div>
+                            <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate ? c.exchangeRate.toFixed(2) : 'N/A'})</span></div>
                         </div>
                         <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
                 elIngresos.historyList.appendChild(item);
@@ -866,6 +893,9 @@
             modalTimetableFields.style.display = (type === 'timetable') ? 'block' : 'none';
             modalCalendarFields.style.display = (type === 'calendar') ? 'block' : 'none';
             
+            // CORRECCIÓN: Gestionar el atributo 'required' dinámicamente
+            modalEventStartDateInput.required = (type === 'calendar');
+
             eventModalTitle.textContent = id ? `Editar ${type === 'timetable' ? 'Clase' : 'Actividad'}` : `Añadir Nueva ${type === 'timetable' ? 'Clase' : 'Actividad'}`;
             
             modalEventColorSelect.innerHTML = '';
@@ -935,6 +965,7 @@
             updateCurrentMonthDisplayDOM_Ingresos();
             initializeMainCalendar();
             getDailyExchangeRate_Ingresos(); 
+            updateMonthlyTimeProgress(); // <-- Llamada inicial
 
             document.querySelectorAll('.nav-button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
             if(elIngresos.addMoneyButton) elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); 

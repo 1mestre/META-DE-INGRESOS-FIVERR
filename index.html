@@ -18,8 +18,8 @@
             --accent-green-neon: #39ff14;   
             --accent-yellow-pale: #f1fa8c;  
             --accent-yellow-green: #c3e08d; 
-            --accent-blue-info: #8be9fd;    
-            --accent-red-clear: #ff5555;    
+            --accent-blue-info: #8be9fd;   
+            --accent-red-clear: #ff5555;   
             --accent-gold: #ffd700;         
             --accent-pink: #ff79c6;
             --accent-purple: #bd93f9;
@@ -273,8 +273,7 @@
 <body>
     <div id="loading-indicator">Cargando datos compartidos...</div>
     <div class="floating-emoji-container">
-        <!-- Tus emojis flotantes -->
-    </div>
+        </div>
     
     <div class="main-container">
         <div class="main-navigation"> 
@@ -299,45 +298,45 @@
 
         <div id="calendario-page" class="page-content active">
              <div class="page-widget-container" id="calendar-widget-container">
-                <div id="calendar-widget-card" class="widget-card"> 
-                    <h2>📅 Calendario Interactivo</h2>
-                    <div id="calendar-progress-bars">
-                        <div class="progress-item">
-                            <span class="progress-label">Mes:</span>
-                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="month-progress-bar-cal"></div> </div>
-                            <span class="progress-text-cal" id="month-text-cal">0%</span>
-                        </div>
-                        <div class="progress-item">
-                            <span class="progress-label">Día:</span>
-                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="day-progress-bar-cal"></div> </div>
-                            <span class="progress-text-cal" id="day-text-cal">0%</span>
-                        </div>
-                        <div class="progress-item">
-                            <span class="progress-label">Año:</span>
-                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="year-progress-bar-cal"></div> </div>
-                            <span class="progress-text-cal" id="year-text-cal">0%</span>
-                        </div>
-                    </div>
-                    <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
-                    <div id="mainCalendar"></div>
-                    <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
-                        <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
-                        <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
-                            <li style="color: var(--text-secondary);">Cargando actividades...</li>
-                        </ul>
-                    </div>
-                </div>
+                 <div id="calendar-widget-card" class="widget-card"> 
+                     <h2>📅 Calendario Interactivo</h2>
+                     <div id="calendar-progress-bars">
+                         <div class="progress-item">
+                             <span class="progress-label">Mes:</span>
+                             <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="month-progress-bar-cal"></div> </div>
+                             <span class="progress-text-cal" id="month-text-cal">0%</span>
+                         </div>
+                         <div class="progress-item">
+                             <span class="progress-label">Día:</span>
+                             <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="day-progress-bar-cal"></div> </div>
+                             <span class="progress-text-cal" id="day-text-cal">0%</span>
+                         </div>
+                         <div class="progress-item">
+                             <span class="progress-label">Año:</span>
+                             <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="year-progress-bar-cal"></div> </div>
+                             <span class="progress-text-cal" id="year-text-cal">0%</span>
+                         </div>
+                     </div>
+                     <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
+                     <div id="mainCalendar"></div>
+                     <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
+                         <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
+                         <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
+                             <li style="color: var(--text-secondary);">Cargando actividades...</li>
+                         </ul>
+                     </div>
+                 </div>
              </div>
         </div>
         
         <div id="universidad-page" class="page-content"> 
              <div class="page-widget-container">
-                <div class="university-timetable-widget widget-card"> 
-                    <h2>🎓 Horario Universitario</h2>
-                    <div id="timetableGrid"></div>
-                     <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
-                </div>
-            </div>
+                 <div class="university-timetable-widget widget-card"> 
+                     <h2>🎓 Horario Universitario</h2>
+                     <div id="timetableGrid"></div>
+                       <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
+                 </div>
+             </div>
         </div>
     </div> 
 
@@ -358,12 +357,12 @@
                 </div>
 
                  <div id="modalCalendarFields">
-                    <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate" required> </div>
-                    <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
-                    <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
-                    <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
-                    <div class="modal-form-group hidden-field"><label for="eventAllDay">Todo el día:</label><input type="checkbox" id="eventAllDay" checked></div>
-                </div>
+                     <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate" required> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
+                     <div class="modal-form-group hidden-field"><label for="eventAllDay">Todo el día:</label><input type="checkbox" id="eventAllDay" checked></div>
+                 </div>
                 
                 <div class="modal-form-group"> 
                     <label for="eventColorSelect">Color del Evento:</label> 
@@ -378,24 +377,22 @@
         </div>
     </div>
     
-    <!-- SDKs de Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore-compat.js"></script>
 
-    <!-- Otras librerías -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/ical.js@2.0.1/build/ical.min.js'></script>
 
     <script>
         // --- CONFIGURACIÓN DE FIREBASE ---
-        // PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_AUTH_DOMAIN",
-            projectId: "TU_PROJECT_ID",
-            storageBucket: "TU_STORAGE_BUCKET",
-            messagingSenderId: "TU_MESSAGING_SENDER_ID",
-            appId: "TU_APP_ID"
+          apiKey: "AIzaSyBCuJ4Xetzex0zQpnrOKx1bLihpfX-0KaI",
+          authDomain: "meta-ingresos-app.firebaseapp.com",
+          projectId: "meta-ingresos-app",
+          storageBucket: "meta-ingresos-app.appspot.com",
+          messagingSenderId: "367840381632",
+          appId: "1:367840381632:web:8d124fc5ee24183445fb25",
+          measurementId: "G-SE63KFXXRS"
         };
 
         // --- INICIALIZACIÓN DE FIREBASE ---
@@ -666,11 +663,11 @@
                 const d = new Date(c.date);
                 const dateString = `${d.toLocaleDateString('es-CO')} - ${d.toLocaleTimeString('es-CO', {hour: '2-digit', minute: '2-digit'})}`;
                 item.innerHTML = `
-                    <div>
-                        <div class="history-date">📅 ${dateString}</div>
-                        <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate.toFixed(2)})</span></div>
-                    </div>
-                    <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
+                        <div>
+                            <div class="history-date">📅 ${dateString}</div>
+                            <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate.toFixed(2)})</span></div>
+                        </div>
+                        <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
                 elIngresos.historyList.appendChild(item);
             });
         }
@@ -698,12 +695,12 @@
                 item.className = 'monthly-goal-item';
                 let statusText, statusClass;
                  if (savedThisMonth >= targetThisMonth && targetThisMonth > 0) {
-                    statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
-                    statusClass = 'achieved';
-                } else {
-                    statusText = `⏳ En Progreso (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
-                    statusClass = 'pending';
-                }
+                     statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                     statusClass = 'achieved';
+                 } else {
+                     statusText = `⏳ En Progreso (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                     statusClass = 'pending';
+                 }
                 item.innerHTML = `<div class="monthly-goal-month">${monthName}</div><div class="monthly-goal-status ${statusClass}">${statusText}</div>`;
                 elIngresos.monthlyGoalsList.appendChild(item);
             });

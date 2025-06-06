@@ -182,7 +182,7 @@
         #calendar-progress-bars .progress-text-cal { font-weight: 500; color: var(--text-primary); min-width: 45px; text-align: right;}
         
         #mainCalendar { max-width: 100%; margin: 0 auto; }
-        .fc .fc-toolbar-title { display: none; } 
+        .fc .fc-toolbar-title { font-size: 1.5em !important; color: var(--accent-yellow-pale); } 
         .fc .fc-button { background-color: var(--bg-card-light); border-color: rgba(var(--text-primary),0.1); color: var(--text-primary); box-shadow: none;}
         .fc .fc-button:hover { background-color: var(--accent-blue-info); color:var(--bg-dark); }
         .fc .fc-button-primary:disabled { background-color: var(--bg-card); color: var(--text-secondary); }
@@ -198,12 +198,29 @@
         .fc .fc-day-today .fc-daygrid-day-number { font-weight: bold; color: var(--accent-yellow-pale); }
         .fc-event { white-space: normal !important; font-size: 0.85em; padding: 2px 4px; }
         .fc-event .fc-event-main { overflow: hidden; text-overflow: ellipsis; }
+        
          #addCalendarEventBtn {
-            margin: 15px auto; padding: 10px 20px; 
-            background-color: var(--accent-green-medium); color: var(--bg-dark); 
-            border:none; border-radius: 8px; cursor:pointer; font-weight: 600;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin: 20px auto; 
+            padding: 15px 30px; 
+            background: linear-gradient(45deg, var(--accent-green-medium), var(--accent-green-neon)); 
+            color: var(--bg-dark); 
+            border:none; 
+            border-radius: 12px; 
+            cursor:pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(var(--accent-green-neon-rgb), 0.2);
         }
-        #addCalendarEventBtn:hover { background-color: var(--accent-green-neon); }
+        #addCalendarEventBtn:hover { 
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(var(--accent-green-neon-rgb), 0.4);
+        }
+        #addCalendarEventBtn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(var(--accent-green-neon-rgb), 0.3);
+        }
 
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.75); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
@@ -390,7 +407,6 @@
         
         const DEFAULT_OVERALL_TARGET_COP = 3500000; 
         const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; 
-        const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; 
         const FALLBACK_RATE = 4000; 
         const FIXED_FEE_USD = 3; 
         const PERCENTAGE_FEE = 0.03; 
@@ -410,18 +426,20 @@
         ];
         const DEFAULT_EVENT_COLOR = PRESET_PASTEL_COLORS[0].value; 
 
-        let calendarEventsData = []; 
+        // Centralized state object
+        let appState = {
+            contributions: [],
+            monthlyTargets: {},
+            selectedInputCurrencyIngresos: 'USD',
+            timetableData: [],
+            calendarEventsData: [],
+        };
+        
         let mainCalendarInstance = null; 
-        let contributions = []; 
         let currentDailyExchangeRate = null; 
-        let selectedInputCurrencyIngresos = 'USD'; 
-        let monthlyTargets = {}; 
-        let currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; 
-        let timetableData = []; 
         let currentEditingEventId = null; 
         let currentEditingEventType = ''; 
         let defaultPage = 'calendario-page'; 
-        let dayProgressInterval = null; 
         
         const elIngresos = {  
             currentMonthDisplay: document.getElementById('currentMonthDisplay'), 
@@ -471,26 +489,25 @@
         const cancelEventBtn = document.getElementById('cancelEventBtn');
         const deleteEventBtn = document.getElementById('deleteEventBtn');
         
-        // --- FUNCIONES DE DATOS CON FIRESTORE ---
+        // --- DATA HANDLING (FIREBASE) ---
 
         function loadSharedDataFromFirestore() {
             const loadingIndicator = document.getElementById('loading-indicator');
             loadingIndicator.style.display = 'flex';
 
-            SHARED_DATA_PATH.onSnapshot(doc => {
+            SHARED_DATA_PATH.onSnapshot(async (doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    contributions = data.contributions || [];
-                    monthlyTargets = data.monthlyTargets || {};
-                    selectedInputCurrencyIngresos = data.selectedInputCurrencyIngresos || 'USD';
-                    timetableData = data.timetableData || [];
-                    calendarEventsData = data.calendarEventsData || [];
+                    // Update the local state with data from Firestore
+                    appState = { ...appState, ...data };
                     console.log("Datos compartidos cargados desde Firestore.");
                 } else {
-                    console.log("No existen datos compartidos, se crearán al guardar.");
-                    resetLocalData();
+                    console.log("No existen datos compartidos, creando documento inicial.");
+                    // If the document doesn't exist, create it with default values
+                    await saveSharedDataToFirestore(); 
                 }
-                updateAllUI();
+                updateAllUI(); // Render the UI with the new state
+                
                 loadingIndicator.style.opacity = '0';
                 setTimeout(() => { loadingIndicator.style.display = 'none'; }, 500);
             }, error => {
@@ -501,31 +518,19 @@
         }
 
         async function saveSharedDataToFirestore() {
+            // Add a timestamp for the last update
             const dataToSave = {
-                contributions,
-                monthlyTargets,
-                selectedInputCurrencyIngresos,
-                timetableData,
-                calendarEventsData,
+                ...appState,
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
             };
-
             try {
+                // Use set with merge to avoid overwriting fields if the local state is incomplete
                 await SHARED_DATA_PATH.set(dataToSave, { merge: true });
                 console.log("Datos compartidos guardados en Firestore.");
             } catch (error) {
                 console.error("Error al guardar datos en Firestore:", error);
                 alert("Error: No se pudieron guardar tus cambios.");
             }
-        }
-        
-        function resetLocalData() {
-            contributions = [];
-            monthlyTargets = {};
-            timetableData = [];
-            calendarEventsData = [];
-            currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP;
-            selectedInputCurrencyIngresos = 'USD';
         }
 
         function updateAllUI() {
@@ -537,7 +542,7 @@
             }
         }
 
-        // --- LÓGICA DE LA APLICACIÓN ---
+        // --- APP LOGIC ---
 
         function showPage(pageId) { 
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
@@ -576,6 +581,10 @@
         }
         
         async function addMoney_Ingresos() {
+            if (!currentDailyExchangeRate) {
+                alert("Tasa de cambio no disponible, por favor espera.");
+                return;
+            }
             const rawAmount = parseFloat(elIngresos.moneyInput.value);
             if (isNaN(rawAmount) || rawAmount <= 0) {
                 alert(`⚠️ Ingrese un monto válido.`);
@@ -586,7 +595,7 @@
             let netAmountCOP = 0;
             let originalGrossAmountUSD = 0;
 
-            if (selectedInputCurrencyIngresos === 'USD') {
+            if (appState.selectedInputCurrencyIngresos === 'USD') {
                 originalGrossAmountUSD = rawAmount;
                 if (originalGrossAmountUSD < MIN_USD_INPUT_FOR_NET_CALC) {
                     alert(`⚠️ El monto bruto debe ser mayor para cubrir comisiones.`);
@@ -602,7 +611,7 @@
             }
             
             const now = new Date();
-            contributions.push({ 
+            appState.contributions.push({ 
                 amountUSD: netAmountUSD, 
                 amountCOP: netAmountCOP, 
                 originalAmountUSD: originalGrossAmountUSD, 
@@ -616,13 +625,15 @@
         }
 
         function updateAllDisplays_Ingresos() {
-             if (!elIngresos.subtitle) return;
-            const totalCOPSavedOverall = contributions.reduce((s,c) => s + c.amountCOP, 0);
-            const totalUSDSavedOverall = contributions.reduce((s,c) => s + c.amountUSD, 0);
+            if (!elIngresos.subtitle) return;
+            const totalCOPSavedOverall = appState.contributions.reduce((s, c) => s + c.amountCOP, 0);
+            const totalUSDSavedOverall = appState.contributions.reduce((s, c) => s + c.amountUSD, 0);
             const currentMonthKey = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
-            const totalUSDSavedThisMonth = contributions.filter(c => c.monthYear === currentMonthKey).reduce((s, c) => s + c.amountUSD, 0);
+            const totalUSDSavedThisMonth = appState.contributions
+                .filter(c => c.monthYear === currentMonthKey)
+                .reduce((s, c) => s + c.amountUSD, 0);
             
-            currentOverallTargetCOP = monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP;
+            const currentOverallTargetCOP = appState.monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP;
             elIngresos.overallTargetInput.value = currentOverallTargetCOP;
 
             const percentageOverall = currentOverallTargetCOP > 0 ? Math.min((totalCOPSavedOverall / currentOverallTargetCOP) * 100, 100) : 0;
@@ -645,11 +656,11 @@
         function updateHistory_Ingresos() {
             if (!elIngresos.historyList) return;
             elIngresos.historyList.innerHTML = '';
-            if (contributions.length === 0) {
+            if (appState.contributions.length === 0) {
                 elIngresos.historyList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">🌱 Sin ingresos aún.</div>';
                 return;
             }
-            [...contributions].reverse().forEach(c => {
+            [...appState.contributions].reverse().forEach(c => {
                 const item = document.createElement('div');
                 item.className = 'history-item';
                 const d = new Date(c.date);
@@ -667,12 +678,11 @@
         function updateMonthlyGoalsDisplay_Ingresos() {
             if (!elIngresos.monthlyGoalsList) return;
             const savingsByMonth = {};
-            contributions.forEach(c => {
+            appState.contributions.forEach(c => {
                 savingsByMonth[c.monthYear] = (savingsByMonth[c.monthYear] || 0) + c.amountCOP;
             });
             elIngresos.monthlyGoalsList.innerHTML = '';
-            // Create a set of all months that have either a target or a contribution
-            const allMonths = new Set([...Object.keys(monthlyTargets), ...Object.keys(savingsByMonth)]);
+            const allMonths = new Set([...Object.keys(appState.monthlyTargets), ...Object.keys(savingsByMonth)]);
             if (allMonths.size === 0) {
                 elIngresos.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>';
                 return;
@@ -681,13 +691,13 @@
             const sortedMonths = Array.from(allMonths).sort().reverse();
             sortedMonths.forEach(monthYear => {
                 const savedThisMonth = savingsByMonth[monthYear] || 0;
-                const targetThisMonth = monthlyTargets[monthYear] || DEFAULT_OVERALL_TARGET_COP;
+                const targetThisMonth = appState.monthlyTargets[monthYear] || DEFAULT_OVERALL_TARGET_COP;
                 const [year, month] = monthYear.split('-');
                 const monthName = new Date(year, month - 1).toLocaleString('es-CO', { month: 'long', year: 'numeric' });
                 const item = document.createElement('div');
                 item.className = 'monthly-goal-item';
                 let statusText, statusClass;
-                 if (savedThisMonth >= targetThisMonth) {
+                 if (savedThisMonth >= targetThisMonth && targetThisMonth > 0) {
                     statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
                     statusClass = 'achieved';
                 } else {
@@ -707,8 +717,8 @@
 
         async function clearHistory_Ingresos() {
             if (confirm('🤔 ¿Estás seguro de que quieres limpiar TODO el historial de ingresos para TODOS los usuarios? Esta acción es irreversible.')) {
-                contributions = [];
-                monthlyTargets = {};
+                appState.contributions = [];
+                appState.monthlyTargets = {};
                 await saveSharedDataToFirestore();
             }
         }
@@ -716,7 +726,7 @@
         function renderTimetable() {
             const grid = document.getElementById('timetableGrid');
             if(!grid) return;
-            grid.innerHTML = ''; // Clear existing
+            grid.innerHTML = '';
             
             const corner = document.createElement('div');
             corner.className = 'timetable-grid-corner';
@@ -738,7 +748,7 @@
                 grid.appendChild(timeLabel);
             }
 
-            timetableData.forEach(event => {
+            appState.timetableData.forEach(event => {
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'timetable-grid-event';
                 eventDiv.dataset.eventId = event.id;
@@ -762,9 +772,13 @@
             mainCalendarInstance = new FullCalendar.Calendar(calendarEl, {
                 locale: 'es',
                 initialView: 'dayGridMonth',
-                headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
+                headerToolbar: { 
+                    left: 'prev,next today', 
+                    center: 'title', 
+                    right: '' // Empty 'right' to remove view switchers
+                },
                 events: (fetchInfo, successCallback) => {
-                    successCallback(calendarEventsData);
+                    successCallback(appState.calendarEventsData);
                 },
                 eventClick: (info) => {
                     openEventModal('calendar', info.event.id);
@@ -783,7 +797,7 @@
             const tasksListEl = document.getElementById('today-tasks-list');
             if (!tasksListEl) return;
             tasksListEl.innerHTML = '';
-            const todayEvents = calendarEventsData.filter(event => event.start.slice(0, 10) === todayStr);
+            const todayEvents = appState.calendarEventsData.filter(event => event.start.slice(0, 10) === todayStr);
             if (todayEvents.length > 0) {
                 todayEvents.forEach(event => {
                     const li = document.createElement('li');
@@ -830,7 +844,7 @@
                 populateTimeSelect(modalEventEndTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR, null, true);
 
                 if (id) {
-                    const event = timetableData.find(e => e.id === id);
+                    const event = appState.timetableData.find(e => e.id === id);
                     if (event) {
                         modalEventTitleInput.value = event.subject;
                         modalEventTeacherInput.value = event.teacher || '';
@@ -843,7 +857,7 @@
             } else { // calendar
                 modalEventStartDateInput.value = dateStr ? dateStr.slice(0, 10) : new Date().toISOString().slice(0, 10);
                 if (id) {
-                    const event = calendarEventsData.find(e => e.id === id);
+                    const event = appState.calendarEventsData.find(e => e.id === id);
                     if (event) {
                         modalEventTitleInput.value = event.title;
                         modalEventStartDateInput.value = event.start.slice(0, 10);
@@ -872,7 +886,7 @@
             }
         }
 
-        // --- INICIALIZACIÓN DE LA APLICACIÓN ---
+        // --- APP INITIALIZATION ---
         function initializeApp() { 
             showPage('calendario-page');
             updateCurrentMonthDisplayDOM_Ingresos();
@@ -905,8 +919,8 @@
                         endTime: modalEventEndTimeSelect.value,
                         color
                     };
-                    if(id) timetableData = timetableData.map(e => e.id === id ? newEvent : e);
-                    else timetableData.push(newEvent);
+                    if(id) appState.timetableData = appState.timetableData.map(e => e.id === id ? newEvent : e);
+                    else appState.timetableData.push(newEvent);
                 } else { // calendar
                     const newEvent = {
                         id: id || 'cal_' + Date.now(),
@@ -915,8 +929,8 @@
                         allDay: true,
                         color
                     };
-                    if(id) calendarEventsData = calendarEventsData.map(e => e.id === id ? newEvent : e);
-                    else calendarEventsData.push(newEvent);
+                    if(id) appState.calendarEventsData = appState.calendarEventsData.map(e => e.id === id ? newEvent : e);
+                    else appState.calendarEventsData.push(newEvent);
                 }
                 
                 await saveSharedDataToFirestore();
@@ -929,9 +943,9 @@
                 if (!id) return;
                 if (confirm('¿Seguro que quieres eliminar este evento?')) {
                     if (type === 'timetable') {
-                        timetableData = timetableData.filter(e => e.id !== id);
+                        appState.timetableData = appState.timetableData.filter(e => e.id !== id);
                     } else {
-                        calendarEventsData = calendarEventsData.filter(e => e.id !== id);
+                        appState.calendarEventsData = appState.calendarEventsData.filter(e => e.id !== id);
                     }
                     await saveSharedDataToFirestore();
                     closeEventModal();
@@ -942,9 +956,14 @@
                 const newTarget = parseFloat(elIngresos.overallTargetInput.value);
                 if (!isNaN(newTarget) && newTarget > 0) {
                     const currentMonthKey = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
-                    monthlyTargets[currentMonthKey] = newTarget;
+                    appState.monthlyTargets[currentMonthKey] = newTarget;
                     await saveSharedDataToFirestore();
                 }
+            });
+
+             elIngresos.currencySelector.addEventListener('change', (event) => {
+                appState.selectedInputCurrencyIngresos = event.target.value;
+                saveSharedDataToFirestore();
             });
         }
         

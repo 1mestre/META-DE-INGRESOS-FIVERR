@@ -8,35 +8,71 @@
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
     <style>
         :root {
-            --bg-dark: #181a1f; --bg-card: #22252e; --bg-card-light: #2a2e37;
-            --text-primary: #f0f0f0; --text-secondary: #b0b0b0; --accent-green-medium: #50fa7b;
-            --accent-green-neon: #39ff14; --accent-yellow-pale: #f1fa8c; --accent-yellow-green: #c3e08d;
-            --accent-blue-info: #8be9fd; --accent-red-clear: #ff5555; --accent-gold: #ffd700;
-            --accent-pink: #ff79c6; --accent-purple: #bd93f9; --accent-orange: #ffb86c;
-            --pastel-green-celebration: #a7f3d0; --celebration-overall-bg: var(--pastel-green-celebration);
-            --celebration-overall-text-color: #054228; --celebration-overall-glow: #6ee7b7;
-            --cal-progress-q1: var(--accent-red-clear); --cal-progress-q2: var(--accent-orange);
-            --cal-progress-q3: var(--accent-yellow-green); --cal-progress-q4: var(--accent-green-medium);
-            --monthly-time-progress-color: var(--accent-blue-info); --glow-color-blue-rgb: 139, 233, 253;
-            --glow-color-green-rgb: 80, 250, 123; --glow-color-neutral-rgb: 70, 75, 85;
-            --accent-red-clear-rgb: 255, 85, 85; --accent-green-neon-rgb: 57, 255, 20;
-            --accent-yellow-pale-rgb: 241, 250, 140; --bg-card-rgb: 34, 37, 46;
-            --bg-card-light-rgb: 42, 46, 55; --bg-dark-rgb: 24, 26, 31;
-            --subject-default-text-color: var(--bg-dark); --fc-border-color: rgba(var(--text-secondary), 0.3);
-            --fc-daygrid-event-dot-width: 8px; --fc-event-text-color: var(--bg-dark);
-            --fc-more-link-bg-color: var(--bg-card-light); --fc-more-link-text-color: var(--text-secondary);
-            --fc-today-bg-color: transparent; --fc-page-bg-color: transparent;
-            --fc-neutral-bg-color: rgba(var(--bg-card-light-rgb), 0.5);
+            --bg-dark: #181a1f; 
+            --bg-card: #22252e; 
+            --bg-card-light: #2a2e37;
+            --text-primary: #f0f0f0; 
+            --text-secondary: #b0b0b0; 
+            
+            --accent-green-medium: #50fa7b; 
+            --accent-green-neon: #39ff14;   
+            --accent-yellow-pale: #f1fa8c;  
+            --accent-yellow-green: #c3e08d; 
+            --accent-blue-info: #8be9fd;    
+            --accent-red-clear: #ff5555;    
+            --accent-gold: #ffd700;         
+            --accent-pink: #ff79c6;
+            --accent-purple: #bd93f9;
+            --accent-orange: #ffb86c;
+
+            --pastel-green-celebration: #a7f3d0; 
+            --celebration-overall-bg: var(--pastel-green-celebration); 
+            --celebration-overall-text-color: #054228; 
+            --celebration-overall-glow: #6ee7b7;
+
+            --cal-progress-q1: var(--accent-red-clear);
+            --cal-progress-q2: var(--accent-orange);
+            --cal-progress-q3: var(--accent-yellow-green);
+            --cal-progress-q4: var(--accent-green-medium);
+            
+            --monthly-time-progress-color: var(--accent-blue-info); 
+
+            --glow-color-blue-rgb: 139, 233, 253; 
+            --glow-color-green-rgb: 80, 250, 123; 
+            --glow-color-neutral-rgb: 70, 75, 85; 
+            --accent-red-clear-rgb: 255, 85, 85; 
+            --accent-green-neon-rgb: 57, 255, 20;
+            --accent-yellow-pale-rgb: 241, 250, 140; 
+
+
+            --bg-card-rgb: 34, 37, 46;
+            --bg-card-light-rgb: 42, 46, 55;
+            --bg-dark-rgb: 24, 26, 31;
+            
+            --subject-default-text-color: var(--bg-dark);
+
+            --fc-border-color: rgba(var(--text-secondary), 0.3);
+            --fc-daygrid-event-dot-width: 8px;
+            --fc-event-text-color: var(--bg-dark); 
+            --fc-more-link-bg-color: var(--bg-card-light);
+            --fc-more-link-text-color: var(--text-secondary);
+            --fc-today-bg-color: transparent; 
+            --fc-page-bg-color: transparent; 
+            --fc-neutral-bg-color: rgba(var(--bg-card-light-rgb), 0.5); 
         }
+
         *{margin:0;padding:0;box-sizing:border-box}
         html, body { height: 100%; width: 100%; overflow-x: hidden; }
         body{ font-family: 'Rubik', Arial, sans-serif; padding: 15px; background-color: var(--bg-dark); color: var(--text-primary); display: flex; flex-direction: column; align-items: center; position: relative; }
+        
         #loading-indicator {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(var(--bg-dark-rgb), 0.9);
             display: flex; justify-content: center; align-items: center;
             z-index: 9999; color: var(--accent-blue-info); font-size: 1.5em;
+            transition: opacity 0.5s ease;
         }
+
         .main-container { width: 100%; max-width: 1600px; display: flex; flex-direction: column; align-items: center; }
         .main-navigation { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.85); backdrop-filter: blur(10px) saturate(180%); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.25); margin-bottom: 25px; width: 100%; max-width: 900px; position: sticky; top: 15px; z-index: 1000; }
         .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
@@ -45,10 +81,176 @@
         .page-content { display: none; width: 100%; animation: fadeInPage 0.5s ease-out forwards; padding: 0 10px; }
         .page-content.active { display: block;  }
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .widget-card { background-color: rgba(var(--bg-card-light-rgb), 0.75); backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%); border: 1px solid rgba(var(--text-primary), 0.12); border-radius:20px; padding:25px; margin-bottom:25px; box-shadow: 0 8px 25px rgba(var(--glow-color-neutral-rgb), 0.15), 0 5px 15px rgba(0,0,0,0.25); position: relative; z-index: 10; flex-grow: 0; flex-shrink: 1; flex-basis: auto; width: 100%; max-width: 1150px; min-width: 300px; text-align:center; display: flex; flex-direction: column;}
+        .page-widget-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
+        
+        .widget-card {
+            background-color: rgba(var(--bg-card-light-rgb), 0.75); 
+            backdrop-filter: blur(12px) saturate(160%); 
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            border: 1px solid rgba(var(--text-primary), 0.12); 
+            border-radius:20px; padding:25px; margin-bottom:25px; 
+            box-shadow: 0 8px 25px rgba(var(--glow-color-neutral-rgb), 0.15), 0 5px 15px rgba(0,0,0,0.25); 
+            position: relative; z-index: 10; 
+            flex-grow: 0; 
+            flex-shrink: 1; 
+            flex-basis: auto; 
+            width: 100%; 
+            max-width: 1150px;
+            min-width: 300px; 
+            text-align:center;
+            display: flex; 
+            flex-direction: column;
+        }
+        #ingresos-widget-main { 
+            max-width: 700px;
+        }
+        #mainCalendar {
+            flex-grow: 1; 
+            min-height: 500px; 
+            width: 100%; 
+        }
+
+        .placeholder-page h2, .university-timetable-widget h2, #ingresos-page .title, #calendario-page h2 { font-size: 1.8em; color: var(--accent-blue-info); margin-bottom: 20px; }
+        .placeholder-page p { font-size: 1.1em; color: var(--text-secondary); }
+        #ingresos-page .money-card.widget-card { padding: 18px; border-radius: 15px; margin-bottom: 0; max-width: none; }
+        #ingresos-page .current-month-display { padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.15); margin-bottom: 15px; background-color: rgba(var(--bg-card-light-rgb), 0.85); color: var(--accent-blue-info); font-size: 1.1em; font-weight: 500;} 
+        #ingresos-page .title-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; flex-wrap: wrap; }
+        #ingresos-page .target-input-group { display: flex; align-items: center; gap: 8px; background-color: rgba(var(--bg-card-light-rgb), 0.7); padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid rgba(var(--text-primary),0.1); }
+        #ingresos-page .target-input-group label { font-size: 0.9em; color: var(--text-secondary); }
+        #ingresos-page #overallTargetInput { width: 120px; padding: 6px 8px; border: 1px solid #4a505e; border-radius: 6px; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; text-align: right; font-size: 0.95em; }
+        #ingresos-page #overallTargetInput:focus { outline: none; border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb),0.3); }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } } 
+        #ingresos-page .subtitle{  color: var(--text-secondary); font-size:1.1em; margin-bottom:25px; margin-top: 5px; font-weight: 500; animation: slideInUp 0.6s ease-out 0.4s backwards; } 
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } 
+        #ingresos-page .currency-selector-container { display: flex; align-items: center; justify-content: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; } #ingresos-page .currency-selector-container label { font-size: 0.95em; color: var(--text-secondary); margin-right: 5px; } #ingresos-page #currencySelectorIngresos {  padding: 8px 12px; border-radius: 8px; border: 1px solid #4a505e; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; font-size: 0.95em; cursor: pointer; outline: none; } #ingresos-page #currencySelectorIngresos:focus { border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb), 0.4); }
+        #ingresos-page .money-input{ width:100%; padding:14px; border:2px solid #4a505e; border-radius:12px; font-size:1.15em; text-align:center; margin-bottom:12px; background: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; transition: border-color 0.3s ease, box-shadow 0.3s ease; } #ingresos-page .money-input::placeholder { color: #888; }  #ingresos-page .money-input:focus{ outline:none; border-color: var(--accent-blue-info); box-shadow:0 0 12px rgba(var(--glow-color-blue-rgb), 0.5), 0 0 2px rgba(var(--glow-color-blue-rgb), 0.7);  } #ingresos-page .add-btn{  background:linear-gradient(135deg, var(--accent-green-medium), var(--accent-green-neon)); color: #111;  border:none; padding:14px 30px; border-radius:12px; font-size:1.05em; cursor:pointer; font-weight:700; transition:all 0.3s ease; animation: pulseButton 2s infinite ease-in-out 1s; box-shadow: 0 0 10px rgba(var(--accent-green-neon-rgb), 0.3);  width: 100%;  } #ingresos-page .add-btn:hover{ transform:translateY(-3px) scale(1.08); box-shadow:0 8px 20px rgba(var(--accent-green-neon-rgb), 0.4), 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5) ; animation-play-state: paused; } #ingresos-page .add-btn:disabled { background: #4a4a4a; color: #888; cursor: not-allowed; animation: none; box-shadow: none; } @keyframes pulseButton { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        #ingresos-page .progress-container{margin:25px 0} 
+        #ingresos-page .progress-container.monthly .progress-bar-bg{ height: 30px; border-radius:30px; } 
+        #ingresos-page .progress-container.monthly .progress-bar{ height: 30px; border-radius:30px; } 
+        #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } 
+        #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; box-shadow: 0 0 8px 2px transparent, 0 0 15px 4px transparent; } #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} } #ingresos-page .progress-bar.monthly-bar { background: var(--monthly-time-progress-color); } #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } 
+        #ingresos-page .money-display{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:18px; margin:25px 0; } 
+        #ingresos-page .money-card{ transition: transform 0.35s ease, box-shadow 0.35s ease; animation: popIn 0.5s ease-out backwards; padding: 18px; border-radius: 15px; margin-bottom: 0; } 
+        #ingresos-page .money-card:nth-child(1) { animation-delay: 0.5s; }  #ingresos-page .money-card:nth-child(2) { animation-delay: 0.6s; }  #ingresos-page .money-card:nth-child(3) { animation-delay: 0.7s; }  #ingresos-page .money-card:nth-child(4) { animation-delay: 0.8s; } @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } } #ingresos-page .money-card:hover{  transform: translateY(-5px) scale(1.02);  box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25);  } #ingresos-page .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; } #ingresos-page .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; } #ingresos-page .total-accumulated-cop .money-value {color: var(--accent-green-medium)}  #ingresos-page .overall-target-cop .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-remaining-cop .money-value {color: var(--accent-yellow-green)}  #ingresos-page .current-month-usd-total .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-usd-total .money-value {color: var(--accent-gold)}  #ingresos-page .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;} #ingresos-page .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; } 
+        #ingresos-page .celebration-overall{ display:none; margin:20px 0; padding:20px; background: var(--celebration-overall-bg); border-radius:15px; font-size:1.4em; color: var(--celebration-overall-text-color); font-weight:700; animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate; text-shadow: 0 0 8px rgba(0,0,0,0.1); box-shadow: 0 0 20px var(--celebration-overall-glow); position: relative; z-index: 15; } 
+        @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: rgba(var(--bg-dark-rgb), 0.8);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: rgba(var(--bg-card-rgb), 0.7);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: rgba(var(--bg-card-rgb), 0.9); transform: translateX(3px); } #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
+        
+        .floating-emoji-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .floating-emoji { position: absolute; font-size: 5rem; user-select: none; animation: floatUpSmooth 15s infinite linear; opacity: 0; } 
+        @keyframes floatUpSmooth { 0% { transform: translateY(105vh) translateX(0vw) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.15; transform: scale(1.1) translateY(90vh); } 90% { opacity: 0.15; transform: translateY(-10vh) translateX(calc(5vw * var(--direction, 1))) rotate(350deg) scale(1); } 100% { transform: translateY(-20vh) translateX(calc(6vw * var(--direction, 1))) rotate(360deg) scale(0.8); opacity: 0; } }
+        .floating-emoji:nth-child(1) { left: 5%; animation-delay: 0s; animation-duration: 20s; font-size: 5.5rem; --direction: 1; color: var(--accent-yellow-pale);} 
+        .floating-emoji:nth-child(2) { left: 15%; animation-delay: 2s; animation-duration: 24s; font-size: 4rem; --direction: -1; color: var(--accent-green-medium);} 
+        .floating-emoji:nth-child(3) { left: 28%; animation-delay: 4s; animation-duration: 18s; font-size: 6rem; --direction: 1; color: var(--accent-blue-info);} 
+        .floating-emoji:nth-child(4) { left: 40%; animation-delay: 6s; animation-duration: 22s; font-size: 3.8rem; --direction: -1; color: var(--accent-red-clear);} 
+        .floating-emoji:nth-child(5) { left: 55%; animation-delay: 1s; animation-duration: 27s; font-size: 5.2rem; --direction: 1; color: var(--accent-green-neon);} 
+        .floating-emoji:nth-child(6) { left: 68%; animation-delay: 3s; animation-duration: 16s; font-size: 4.5rem; --direction: -1; color: var(--accent-yellow-green);}
+        .floating-emoji:nth-child(7) { left: 80%; animation-delay: 5s; animation-duration: 21s; font-size: 5rem; --direction: 1; color: var(--accent-pink);}
+        .floating-emoji:nth-child(8) { left: 92%; animation-delay: 7s; animation-duration: 19s; font-size: 4.2rem; --direction: -1; color: var(--accent-purple);}
+        .floating-emoji:nth-child(9) { left: 20%; animation-delay: 8s; animation-duration: 25s; font-size: 5.8rem; --direction: 1; color: var(--accent-orange);}
+        .floating-emoji:nth-child(10) { left: 75%; animation-delay: 9s; animation-duration: 17s; font-size: 4.0rem; --direction: -1; color: var(--accent-gold);}
+
+        #timetableGrid { display: grid; grid-template-columns: [times] 60px repeat(5, 1fr); grid-auto-rows: minmax(40px, auto); gap: 3px; padding: 15px; border-radius: 12px; margin-top: 20px; max-width: 100%; overflow-x: auto; }
+        .timetable-grid-header, .timetable-grid-time-label, .timetable-grid-corner { background-color: rgba(var(--bg-card-rgb), 0.95); color: var(--accent-blue-info); font-weight: 600; padding: 10px 5px; text-align: center; position: sticky; z-index: 2; }
+        .timetable-grid-header { top: 0; }
+        .timetable-grid-time-label { left: 0; color: var(--accent-yellow-green); text-align: right; padding-right: 12px; font-size: 0.85em;}
+        .timetable-grid-corner { top: 0; left: 0; z-index: 3; }
+        .timetable-grid-event { color: var(--subject-default-text-color); padding: 8px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background-color 0.3s ease, transform 0.15s ease-out, box-shadow 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; font-size: 0.8em; line-height: 1.3; min-height: 38px; position: relative; z-index: 1; }
+        .timetable-grid-event:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(var(--glow-color-neutral-rgb), 0.4); z-index: 4; }
+        .timetable-grid-event .subject-name { font-weight: 700; display: block; margin-bottom: 3px; font-size: 1.05em; word-break: break-word; }
+        .timetable-grid-event .teacher-name { font-size: 0.9em; color: rgba(var(--subject-default-text-color), 0.8); display: block; word-break: break-word; }
+        
+        #calendar-progress-bars { margin-bottom: 20px; text-align: left; padding: 0 10px; }
+        #calendar-progress-bars .progress-item { 
+            display: flex; align-items: center; margin-bottom: 10px; font-size: 0.9em; color: var(--text-secondary); 
+        }
+        #calendar-progress-bars .progress-label { min-width: 40px; margin-right: 10px; }
+        #calendar-progress-bars .progress-bar-bg-cal {
+            flex-grow: 1; max-width: 200px; 
+            height: 18px; background: var(--bg-card); border-radius: 18px;
+            overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.25); margin-right: 10px;
+        }
+        #calendar-progress-bars .progress-bar-cal {
+            height: 100%; border-radius: 18px; width: 0%; 
+            transition: width 0.8s ease-out, background-color 0.8s ease-out, box-shadow 0.8s ease-out; 
+            position: relative;
+        }
+         #calendar-progress-bars .progress-bar-cal::before{ 
+            content:''; position:absolute; top:0;left:0; height:100%; width:100%; 
+            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent); 
+            animation:shimmer 2.8s infinite linear; border-radius:18px; 
+        }
+        #calendar-progress-bars .progress-text-cal { font-weight: 500; color: var(--text-primary); min-width: 45px; text-align: right;}
+        
+        #mainCalendar { max-width: 100%; margin: 0 auto; }
+        .fc .fc-toolbar-title { display: none; } 
+        .fc .fc-button { background-color: var(--bg-card-light); border-color: rgba(var(--text-primary),0.1); color: var(--text-primary); box-shadow: none;}
+        .fc .fc-button:hover { background-color: var(--accent-blue-info); color:var(--bg-dark); }
+        .fc .fc-button-primary:disabled { background-color: var(--bg-card); color: var(--text-secondary); }
+        .fc th { border-color: var(--fc-border-color) !important; color: var(--accent-yellow-green); }
+        .fc .fc-daygrid-day-number { color: var(--text-secondary); }
+        .fc .fc-day-today { 
+            box-shadow: 0 0 18px 8px rgba(var(--accent-yellow-pale-rgb), 0.5);
+            border-radius: 12px;
+            position: relative; 
+            z-index: 1;
+        }
+        .fc .fc-day-today .fc-daygrid-day-frame { overflow: visible !important; }
+        .fc .fc-day-today .fc-daygrid-day-number { font-weight: bold; color: var(--accent-yellow-pale); }
+        .fc-event { white-space: normal !important; font-size: 0.85em; padding: 2px 4px; }
+        .fc-event .fc-event-main { overflow: hidden; text-overflow: ellipsis; }
+         #addCalendarEventBtn {
+            margin: 15px auto; padding: 10px 20px; 
+            background-color: var(--accent-green-medium); color: var(--bg-dark); 
+            border:none; border-radius: 8px; cursor:pointer; font-weight: 600;
+        }
+        #addCalendarEventBtn:hover { background-color: var(--accent-green-neon); }
+
+
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.75); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
         .modal-overlay.active { display: flex; }
-        /* El resto de tus estilos va aquí. Para brevedad, han sido omitidos. */
+        @keyframes modalFadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .modal-content { background-color: rgba(var(--bg-card-rgb), 0.95); backdrop-filter: blur(15px) saturate(180%); padding: 25px 30px; border-radius: 20px; box-shadow: 0 0 30px rgba(var(--glow-color-blue-rgb),0.25), 0 10px 40px rgba(0,0,0,0.35); width: 90%; max-width: 500px; border: 1px solid rgba(var(--text-primary),0.15); animation: popInModal 0.3s ease-out; z-index: 2010; }
+        @keyframes popInModal { from { opacity:0; transform: scale(0.9) translateY(10px); } to { opacity:1; transform: scale(1) translateY(0); } }
+        .modal-content h3 { color: var(--accent-blue-info); margin-top: 0; margin-bottom: 20px; text-align: center; font-size: 1.5em; text-shadow: 0 0 5px rgba(var(--glow-color-blue-rgb), 0.3); }
+        .modal-form-group { margin-bottom: 18px; }
+        .modal-form-group label { display: block; color: var(--text-secondary); margin-bottom: 6px; font-size: 0.9em; text-align: left; }
+        .modal-form-group input[type="text"], .modal-form-group input[type="date"], .modal-form-group input[type="time"], .modal-form-group select { width: 100%; padding: 10px 12px; border: 1px solid #4a505e; border-radius: 8px; background-color: var(--bg-dark); color: var(--text-primary); font-size: 1em; font-family: 'Rubik', sans-serif; }
+        .modal-form-group input[type="checkbox"]{ width: auto; vertical-align: middle; margin-left: 5px;}
+        .modal-form-group input[type="text"]:focus, .modal-form-group input[type="date"]:focus, .modal-form-group input[type="time"]:focus, .modal-form-group select:focus { outline: none; border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb), 0.3); }
+        .modal-actions { margin-top: 25px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; } 
+        .modal-actions button { flex-grow: 1; min-width: 100px; padding: 10px 15px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: 0.95em; }
+        #saveEventBtn { background-color: var(--accent-green-medium); color: var(--bg-dark); } #saveEventBtn:hover { background-color: var(--accent-green-neon); }
+        #cancelEventBtn { background-color: var(--bg-card-light); color: var(--text-primary); } #cancelEventBtn:hover { background-color: #3e4450; }
+        #deleteEventBtn { background-color: var(--accent-red-clear); color: var(--text-primary); display: none; } #deleteEventBtn:hover { background-color: #d43f3f; }
+        .hidden-field { display: none !important; }
+
+
+        @media (min-width: 1024px) { }
+        @media (max-width:768px){  
+            .main-navigation { padding: 10px; gap: 8px; top:10px; } 
+            .nav-button { padding: 8px 12px; font-size: 0.85em;} 
+            .widget-card { padding:20px; margin: 0 auto 20px auto; flex-basis: 100% !important; max-width: calc(100% - 20px) !important;} 
+            #ingresos-page .money-display{grid-template-columns:1fr}  
+            #ingresos-page .title, .placeholder-page h2, .university-timetable-widget h2, #calendario-page h2 {font-size:1.5em} 
+            #timetableGrid { font-size: 0.9em; gap: 2px; padding:10px; grid-template-columns: [times] 45px repeat(5, 1fr); grid-auto-rows: minmax(35px, auto); }
+            .timetable-grid-event { font-size: 0.75em; padding: 5px; }
+            .timetable-grid-time-label { font-size: 0.75em; padding-right: 5px;}
+            .timetable-grid-header { padding: 8px 3px; }
+            .fc .fc-toolbar { flex-direction: column; gap: 5px;}
+            #calendar-progress-bars .progress-bar-bg-cal { max-width: 100%; } 
+        }
+        @media (max-width:480px){ 
+            body { padding: 10px; } 
+            .floating-emoji { font-size: 3.5rem; opacity: 0.1; }  
+            .widget-card, .modal-content { backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); } 
+            #timetableGrid { font-size: 0.8em; grid-template-columns: [times] 40px repeat(5, 1fr); grid-auto-rows: minmax(30px, auto); padding: 5px; }
+            .timetable-grid-event { font-size: 0.7em; padding: 4px; min-height: 28px;}
+            .timetable-grid-event .subject-name { margin-bottom: 1px; }
+            .timetable-grid-time-label { font-size: 0.7em; }
+            .fc .fc-toolbar-left, .fc .fc-toolbar-center, .fc .fc-toolbar-right { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 5px; }
+            .fc .fc-button { padding: 0.3em 0.5em; font-size: 0.85em;}
+            #calendar-progress-bars div {font-size: 0.8em;}
+        }
     </style>
 </head>
 <body>
@@ -64,20 +266,99 @@
             <button class="nav-button" data-page="universidad-page">🎓 Universidad</button> 
         </div>
 
-        <!-- El resto de tu contenido HTML de las páginas (ingresos, calendario, etc.) va aquí sin cambios -->
         <div id="ingresos-page" class="page-content">
-            <!-- Contenido de la página de ingresos -->
+            <div class="page-widget-container">
+                <div id="ingresos-widget-main" class="widget-card"> 
+                    <div class="current-month-display glass-section" id="currentMonthDisplay"></div>
+                    <div class="title-container"> <h1 class="title">🎯 Meta Ingresos</h1> <div class="target-input-group"> <label for="overallTargetInput">Meta (COP):</label> <input type="number" id="overallTargetInput" step="1000" placeholder="3,500,000"> </div> </div>
+                    <p class="subtitle" id="subtitleText">🚀 Progreso hacia tu meta general...</p>
+                    <div class="input-section glass-section"> <div class="currency-selector-container"> <label for="currencySelectorIngresos">Moneda de Ingreso:</label> <select id="currencySelectorIngresos"> <option value="USD" selected>USD ($)</option> <option value="COP">COP ($)</option> </select> </div> <input type="number" class="money-input" id="moneyInputIngresos" placeholder="💵 Ingresa cantidad en USD..." min="0.01" step="0.01"> <button class="add-btn" id="addMoneyBtnIngresos">➕ Añadir Ingreso</button> </div>
+                    <div class="progress-container"> <div class="progress-bar-bg"> <div class="progress-bar" id="progressBarOverall"></div> </div> <div class="progress-text" id="progressTextOverall">0% 📊</div> </div> <div class="progress-container monthly"> <div class="progress-bar-bg"> <div class="progress-bar monthly-bar" id="progressBarMonthly"></div> </div> <div class="progress-text monthly-text" id="progressTextMonthly">🗓️ Tiempo del Mes: 0%</div> </div> <div class="money-display"> <div class="money-card widget-card"> <div class="money-label">💚 Total Ingresos Netos Acumulados (COP)</div> <div class="money-value" id="totalAccumulatedCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">🏁 Meta General Actual (COP)</div> <div class="money-value" id="overallTargetCOPDisplay">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">📈 Restante Meta General (COP)</div> <div class="money-value" id="overallRemainingCOP">$0</div> </div> <div class="money-card widget-card"> <div class="money-label">💵 Ingresos Netos este Mes (USD)</div> <div class="money-value" id="currentMonthUSDTotal">$0.00</div> </div> </div> <div class="money-card widget-card" style="margin-top: 15px;"> <div class="money-label">🌍 Total Ingresos Netos Histórico (USD)</div> <div class="money-value" id="overallUSDTotal">$0.00</div> <div class="exchange-rate-info" id="exchangeRateInfo" style="margin-top: 5px;">Tasa actual: Cargando...</div> <div class="exchange-rate-source" id="exchangeRateSource" style="display: none;"></div> </div> <div class="celebration-overall" id="celebrationOverall"> 🎉✨ ¡FELICITACIONES! ¡META GENERAL ALCANZADA! ✨🎉<br> 🏆 ¡Eres un maestro del joseo! Te amo. 🏆 </div> 
+                    <div class="history widget-card"> <div class="history-title">📝 Historial Detallado de Ingresos (Netos)</div> <div class="history-list" id="historyList"></div> </div> 
+                    <div class="monthly-goals-section widget-card"> <div class="monthly-goals-title">🎯 Progreso Ingresos Mensuales (Netos vs Meta)</div> <div class="monthly-goals-list" id="monthlyGoalsList"></div> <button class="clear-btn" id="clearHistoryBtnIngresos">🗑️ Limpiar Todo el Historial</button> </div>
+                </div>
+            </div>
         </div>
+
         <div id="calendario-page" class="page-content active">
-            <!-- Contenido de la página de calendario -->
+             <div class="page-widget-container" id="calendar-widget-container">
+                <div id="calendar-widget-card" class="widget-card"> 
+                    <h2>📅 Calendario Interactivo</h2>
+                    <div id="calendar-progress-bars">
+                        <div class="progress-item">
+                            <span class="progress-label">Mes:</span>
+                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="month-progress-bar-cal"></div> </div>
+                            <span class="progress-text-cal" id="month-text-cal">0%</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Día:</span>
+                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="day-progress-bar-cal"></div> </div>
+                            <span class="progress-text-cal" id="day-text-cal">0%</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-label">Año:</span>
+                            <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="year-progress-bar-cal"></div> </div>
+                            <span class="progress-text-cal" id="year-text-cal">0%</span>
+                        </div>
+                    </div>
+                    <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
+                    <div id="mainCalendar"></div>
+                    <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
+                        <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
+                        <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
+                            <li style="color: var(--text-secondary);">Cargando actividades...</li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
         </div>
-        <div id="universidad-page" class="page-content">
-            <!-- Contenido de la página de universidad -->
+        
+        <div id="universidad-page" class="page-content"> 
+             <div class="page-widget-container">
+                <div class="university-timetable-widget widget-card"> 
+                    <h2>🎓 Horario Universitario</h2>
+                    <div id="timetableGrid"></div>
+                     <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
+                </div>
+            </div>
         </div>
-    </div>
+    </div> 
 
     <div class="modal-overlay" id="eventModalOverlay">
-        <!-- Contenido del modal -->
+        <div class="modal-content"> 
+            <h3 id="eventModalTitle">Añadir/Editar Evento</h3>
+            <form id="eventForm">
+                <input type="hidden" id="eventModalId"> 
+                <input type="hidden" id="eventModalType"> 
+
+                <div class="modal-form-group"> <label for="eventTitle">Título/Materia:</label> <input type="text" id="eventTitle" required> </div>
+                
+                <div id="modalTimetableFields">
+                    <div class="modal-form-group"> <label for="eventTeacher">Profesor:</label> <input type="text" id="eventTeacher"> </div>
+                    <div class="modal-form-group"> <label for="eventDay">Día (Horario):</label> <select id="eventDay"></select> </div>
+                    <div class="modal-form-group timetable-common-fields"> <label for="eventStartTime">Hora Inicio (Horario):</label> <select id="eventStartTime"></select> </div>
+                    <div class="modal-form-group timetable-common-fields"> <label for="eventEndTime">Hora Fin (Horario):</label> <select id="eventEndTime"></select> </div>
+                </div>
+
+                 <div id="modalCalendarFields">
+                    <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate" required> </div>
+                    <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
+                    <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
+                    <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
+                    <div class="modal-form-group hidden-field"><label for="eventAllDay">Todo el día:</label><input type="checkbox" id="eventAllDay" checked></div>
+                </div>
+                
+                <div class="modal-form-group"> 
+                    <label for="eventColorSelect">Color del Evento:</label> 
+                    <select id="eventColorSelect" required></select>
+                </div>
+                <div class="modal-actions"> 
+                    <button type="button" id="deleteEventBtn">Eliminar</button> 
+                    <button type="button" id="cancelEventBtn">Cancelar</button> 
+                    <button type="submit" id="saveEventBtn">Guardar</button> 
+                </div>
+            </form>
+        </div>
     </div>
     
     <!-- SDKs de Firebase -->
@@ -106,12 +387,92 @@
         
         // --- CONSTANTES Y VARIABLES GLOBALES ---
         const SHARED_DATA_PATH = db.collection('organizador-publico').doc('datos-compartidos');
-        // El resto de tus constantes y variables globales van aquí
-        // ...
+        
+        const DEFAULT_OVERALL_TARGET_COP = 3500000; 
+        const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; 
+        const RATE_CACHE_DURATION = 3 * 60 * 60 * 1000; 
+        const FALLBACK_RATE = 4000; 
+        const FIXED_FEE_USD = 3; 
+        const PERCENTAGE_FEE = 0.03; 
+        const MIN_USD_INPUT_FOR_NET_CALC = FIXED_FEE_USD + 0.01; 
+        
+        const TIMETABLE_START_HOUR = 5; 
+        const TIMETABLE_END_HOUR = 23;  
+        const TIMETABLE_DAYS = ["LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
+        
+        const PRESET_PASTEL_COLORS = [
+            { name: "Rosa Suave", value: "#FFB6C1" }, { name: "Melocotón", value: "#FFDAB9" },
+            { name: "Amarillo Claro", value: "#FFFFE0" }, { name: "Menta", value: "#98FB98" },
+            { name: "Cielo", value: "#ADD8E6" }, { name: "Lavanda", value: "#E6E6FA" },
+            { name: "Gris Perla", value: "#D3D3D3" }, { name: "Beige Arenoso", value: "#F5F5DC" },
+            { name: "Verde Mar", value: "#AFEEEE" },   
+            { name: "Salmón Claro", value: "#FFA07A" }
+        ];
+        const DEFAULT_EVENT_COLOR = PRESET_PASTEL_COLORS[0].value; 
 
+        let calendarEventsData = []; 
+        let mainCalendarInstance = null; 
+        let contributions = []; 
+        let currentDailyExchangeRate = null; 
+        let selectedInputCurrencyIngresos = 'USD'; 
+        let monthlyTargets = {}; 
+        let currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP; 
+        let timetableData = []; 
+        let currentEditingEventId = null; 
+        let currentEditingEventType = ''; 
+        let defaultPage = 'calendario-page'; 
+        let dayProgressInterval = null; 
+        
+        const elIngresos = {  
+            currentMonthDisplay: document.getElementById('currentMonthDisplay'), 
+            moneyInput: document.getElementById('moneyInputIngresos'),  
+            addMoneyButton: document.getElementById('addMoneyBtnIngresos'),  
+            clearHistoryButton: document.getElementById('clearHistoryBtnIngresos'), 
+            overallTargetInput: document.getElementById('overallTargetInput'), 
+            subtitle: document.getElementById('subtitleText'), 
+            progressBarOverall: document.getElementById('progressBarOverall'), 
+            progressTextOverall: document.getElementById('progressTextOverall'), 
+            progressBarMonthly: document.getElementById('progressBarMonthly'), 
+            progressTextMonthly: document.getElementById('progressTextMonthly'), 
+            totalAccumulatedCOP: document.getElementById('totalAccumulatedCOP'),  
+            overallTargetCOPDisplay: document.getElementById('overallTargetCOPDisplay'),  
+            overallRemainingCOP: document.getElementById('overallRemainingCOP'),  
+            currentMonthUSDTotal: document.getElementById('currentMonthUSDTotal'), 
+            overallUSDTotal: document.getElementById('overallUSDTotal'),  
+            exchangeRateInfo: document.getElementById('exchangeRateInfo'), 
+            exchangeRateSource: document.getElementById('exchangeRateSource'), 
+            celebrationOverall: document.getElementById('celebrationOverall'),  
+            historyList: document.getElementById('historyList'), 
+            monthlyGoalsList: document.getElementById('monthlyGoalsList'), 
+            currencySelector: document.getElementById('currencySelectorIngresos')
+        };
+        const addTimetableEventBtnGlobal = document.getElementById('addTimetableEventBtnGlobal'); 
+        const addCalendarEventBtn = document.getElementById('addCalendarEventBtn');
+        
+        const eventModalOverlay = document.getElementById('eventModalOverlay');
+        const eventForm = document.getElementById('eventForm');
+        const eventModalTitle = document.getElementById('eventModalTitle');
+        const modalEventIdInput = document.getElementById('eventModalId'); 
+        const modalEventTypeInput = document.getElementById('eventModalType');
+        const modalEventTitleInput = document.getElementById('eventTitle'); 
+        const modalTimetableFields = document.getElementById('modalTimetableFields');
+        const modalEventTeacherInput = document.getElementById('eventTeacher');
+        const modalEventDaySelect = document.getElementById('eventDay');
+        const modalCalendarFields = document.getElementById('modalCalendarFields');
+        const modalEventStartDateInput = document.getElementById('eventStartDate');
+        const modalEventStartTimeCalInput = document.getElementById('eventStartTimeCal');
+        const modalEventEndDateInput = document.getElementById('eventEndDate');
+        const modalEventEndTimeCalInput = document.getElementById('eventEndTimeCal');
+        const modalEventAllDayCheckbox = document.getElementById('eventAllDay');
+        const modalEventStartTimeSelect = document.getElementById('eventStartTime'); 
+        const modalEventEndTimeSelect = document.getElementById('eventEndTime');   
+        const modalEventColorSelect = document.getElementById('eventColorSelect');
+        const saveEventBtn = document.getElementById('saveEventBtn');
+        const cancelEventBtn = document.getElementById('cancelEventBtn');
+        const deleteEventBtn = document.getElementById('deleteEventBtn');
+        
         // --- FUNCIONES DE DATOS CON FIRESTORE ---
 
-        // Carga todos los datos desde el documento compartido en Firestore en tiempo real
         function loadSharedDataFromFirestore() {
             const loadingIndicator = document.getElementById('loading-indicator');
             loadingIndicator.style.display = 'flex';
@@ -127,10 +488,8 @@
                     console.log("Datos compartidos cargados desde Firestore.");
                 } else {
                     console.log("No existen datos compartidos, se crearán al guardar.");
-                    // Inicializar con datos por defecto si el documento no existe
                     resetLocalData();
                 }
-                // Actualizar toda la interfaz con los datos nuevos
                 updateAllUI();
                 loadingIndicator.style.display = 'none';
             }, error => {
@@ -140,7 +499,6 @@
             });
         }
 
-        // Guarda todos los datos en el documento compartido de Firestore
         async function saveSharedDataToFirestore() {
             const dataToSave = {
                 contributions,
@@ -160,13 +518,13 @@
             }
         }
         
-        // Función para resetear variables locales
         function resetLocalData() {
             contributions = [];
             monthlyTargets = {};
             timetableData = [];
             calendarEventsData = [];
-            // ... resetea otras variables si es necesario
+            currentOverallTargetCOP = DEFAULT_OVERALL_TARGET_COP;
+            selectedInputCurrencyIngresos = 'USD';
         }
 
         function updateAllUI() {
@@ -176,64 +534,299 @@
             updateTodayTasksList();
         }
 
-        // --- FUNCIONES DE LÓGICA (MODIFICADAS PARA USAR saveSharedDataToFirestore) ---
+        // --- LÓGICA DE LA APLICACIÓN ---
 
-        // Ejemplo de modificación en una función que guarda datos
-        async function addMoney_Ingresos() {
-            // ... (toda tu lógica existente para añadir dinero) ...
-            // Al final, en lugar de cualquier otra función de guardado:
-            await saveSharedDataToFirestore();
-        }
+        function showPage(pageId) { 
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+            
+            const page = document.getElementById(pageId);
+            const button = document.querySelector(`.nav-button[data-page="${pageId}"]`);
+            
+            if(page) page.classList.add('active');
+            if(button) button.classList.add('active');
 
-        // Modifica el manejador del formulario del modal
-        eventForm.addEventListener('submit', async function(e) { 
-            e.preventDefault();
-            // ... (toda tu lógica existente para procesar el formulario) ...
-            await saveSharedDataToFirestore();
-            closeEventModal();
-        });
-        
-        // Modifica el botón de eliminar
-        deleteEventBtn.addEventListener('click', async function() {
-            // ... (tu lógica para eliminar el evento de las variables locales) ...
-            await saveSharedDataToFirestore();
-            closeEventModal();
-        });
-
-        // Modifica el botón de limpiar historial
-        async function clearHistory_Ingresos() {
-            if (confirm('🤔 ¿Estás seguro de que quieres limpiar TODO el historial de ingresos para TODOS los usuarios? Esta acción es irreversible.')) {
-                // Resetea las variables locales
-                contributions = [];
-                monthlyTargets = {};
-                // ...otros resets
-                await saveSharedDataToFirestore();
+            if (pageId === 'calendario-page' && mainCalendarInstance) {
+                mainCalendarInstance.updateSize();
             }
         }
 
+        function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount); }
+        function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount); }
+        
+        async function getDailyExchangeRate_Ingresos() {
+            elIngresos.exchangeRateInfo.textContent = "Tasa actual: Actualizando...";
+            elIngresos.addMoneyButton.disabled = true;
+            try {
+                const response = await fetch(EXCHANGE_RATE_API_URL_ERAPI);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                currentDailyExchangeRate = data.rates.COP;
+                elIngresos.exchangeRateInfo.textContent = `1 USD = ${formatCOP(currentDailyExchangeRate)}`;
+            } catch (error) {
+                console.error("Failed to fetch exchange rate:", error);
+                currentDailyExchangeRate = FALLBACK_RATE;
+                elIngresos.exchangeRateInfo.textContent = `1 USD ≈ ${formatCOP(FALLBACK_RATE)} (Respaldo)`;
+            } finally {
+                elIngresos.addMoneyButton.disabled = false;
+            }
+        }
+        
+        async function addMoney_Ingresos() {
+            const rawAmount = parseFloat(elIngresos.moneyInput.value);
+            if (isNaN(rawAmount) || rawAmount <= 0) {
+                alert(`⚠️ Ingrese un monto válido.`);
+                return;
+            }
+
+            let netAmountUSD = 0;
+            let netAmountCOP = 0;
+            let originalGrossAmountUSD = 0;
+
+            if (selectedInputCurrencyIngresos === 'USD') {
+                originalGrossAmountUSD = rawAmount;
+                if (originalGrossAmountUSD < MIN_USD_INPUT_FOR_NET_CALC) {
+                    alert(`⚠️ El monto bruto debe ser mayor para cubrir comisiones.`);
+                    return;
+                }
+                const amountAfterFixedFee = originalGrossAmountUSD - FIXED_FEE_USD;
+                netAmountUSD = amountAfterFixedFee * (1 - PERCENTAGE_FEE);
+                netAmountCOP = netAmountUSD * currentDailyExchangeRate;
+            } else {
+                netAmountCOP = rawAmount;
+                netAmountUSD = netAmountCOP / currentDailyExchangeRate;
+                originalGrossAmountUSD = netAmountUSD;
+            }
+            
+            const now = new Date();
+            contributions.push({ 
+                amountUSD: netAmountUSD, 
+                amountCOP: netAmountCOP, 
+                originalAmountUSD: originalGrossAmountUSD, 
+                exchangeRate: currentDailyExchangeRate, 
+                date: now.toISOString(),
+                monthYear: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+            });
+            
+            elIngresos.moneyInput.value = '';
+            await saveSharedDataToFirestore();
+        }
+
+        function updateAllDisplays_Ingresos() {
+             if (!elIngresos.subtitle) return;
+            const totalCOPSavedOverall = contributions.reduce((s,c) => s + c.amountCOP, 0);
+            const totalUSDSavedOverall = contributions.reduce((s,c) => s + c.amountUSD, 0);
+            const currentMonthKey = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+            const totalUSDSavedThisMonth = contributions.filter(c => c.monthYear === currentMonthKey).reduce((s, c) => s + c.amountUSD, 0);
+            
+            currentOverallTargetCOP = monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP;
+            elIngresos.overallTargetInput.value = currentOverallTargetCOP;
+
+            const percentageOverall = currentOverallTargetCOP > 0 ? Math.min((totalCOPSavedOverall / currentOverallTargetCOP) * 100, 100) : 0;
+            const remainingOverallCOP = Math.max(currentOverallTargetCOP - totalCOPSavedOverall, 0);
+            
+            elIngresos.subtitle.textContent = `🚀 Progreso hacia tu meta de ${formatCOP(currentOverallTargetCOP)}`;
+            elIngresos.progressBarOverall.style.width = percentageOverall + '%';
+            elIngresos.progressTextOverall.textContent = percentageOverall.toFixed(1) + '% 📊';
+            elIngresos.totalAccumulatedCOP.textContent = formatCOP(totalCOPSavedOverall);
+            elIngresos.overallTargetCOPDisplay.textContent = formatCOP(currentOverallTargetCOP);
+            elIngresos.overallRemainingCOP.textContent = formatCOP(remainingOverallCOP);
+            elIngresos.currentMonthUSDTotal.textContent = formatUSD(totalUSDSavedThisMonth);
+            elIngresos.overallUSDTotal.textContent = formatUSD(totalUSDSavedOverall);
+            elIngresos.celebrationOverall.style.display = (totalCOPSavedOverall >= currentOverallTargetCOP && currentOverallTargetCOP > 0) ? 'block' : 'none';
+
+            updateHistory_Ingresos();
+            updateMonthlyGoalsDisplay_Ingresos();
+        }
+
+        function updateHistory_Ingresos() {
+            if (!elIngresos.historyList) return;
+            elIngresos.historyList.innerHTML = '';
+            if (contributions.length === 0) {
+                elIngresos.historyList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">🌱 Sin ingresos aún.</div>';
+                return;
+            }
+            [...contributions].reverse().forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                const d = new Date(c.date);
+                const dateString = `${d.toLocaleDateString('es-CO')} - ${d.toLocaleTimeString('es-CO', {hour: '2-digit', minute: '2-digit'})}`;
+                item.innerHTML = `
+                    <div>
+                        <div class="history-date">📅 ${dateString}</div>
+                        <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate.toFixed(2)})</span></div>
+                    </div>
+                    <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
+                elIngresos.historyList.appendChild(item);
+            });
+        }
+        
+        function updateMonthlyGoalsDisplay_Ingresos(){/*...*/}
+
+        function updateCurrentMonthDisplayDOM_Ingresos() {
+            const now = new Date();
+            const monthName = now.toLocaleString('es-CO', { month: 'long' });
+            elIngresos.currentMonthDisplay.textContent = `🗓️ ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${now.getFullYear()}`;
+        }
+
+        async function clearHistory_Ingresos() {
+            if (confirm('🤔 ¿Estás seguro de que quieres limpiar TODO el historial de ingresos para TODOS los usuarios? Esta acción es irreversible.')) {
+                contributions = [];
+                monthlyTargets = {};
+                await saveSharedDataToFirestore();
+            }
+        }
+        
+        function renderTimetable() {
+            const grid = document.getElementById('timetableGrid');
+            if(!grid) return;
+            grid.innerHTML = ''; // Clear existing
+            
+            const corner = document.createElement('div');
+            corner.className = 'timetable-grid-corner';
+            grid.appendChild(corner);
+
+            TIMETABLE_DAYS.forEach((day, i) => {
+                const header = document.createElement('div');
+                header.className = 'timetable-grid-header';
+                header.textContent = day;
+                header.style.gridColumn = i + 2;
+                grid.appendChild(header);
+            });
+
+            for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) {
+                const timeLabel = document.createElement('div');
+                timeLabel.className = 'timetable-grid-time-label';
+                timeLabel.textContent = `${String(hour).padStart(2, '0')}:00`;
+                timeLabel.style.gridRow = hour - TIMETABLE_START_HOUR + 2;
+                grid.appendChild(timeLabel);
+            }
+
+            timetableData.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'timetable-grid-event';
+                eventDiv.dataset.eventId = event.id;
+                eventDiv.style.backgroundColor = event.color || DEFAULT_EVENT_COLOR;
+                eventDiv.innerHTML = `<span class="subject-name">${event.subject}</span><span class="teacher-name">${event.teacher || ''}</span>`;
+                eventDiv.addEventListener('click', () => openEventModal('timetable', event.id));
+                const dayIndex = TIMETABLE_DAYS.indexOf(event.day.toUpperCase());
+                if (dayIndex === -1) return;
+                eventDiv.style.gridColumn = dayIndex + 2;
+                const startRow = parseInt(event.startTime.split(':')[0]) - TIMETABLE_START_HOUR + 2;
+                const endRow = parseInt(event.endTime.split(':')[0]) - TIMETABLE_START_HOUR + 2;
+                eventDiv.style.gridRow = `${startRow} / ${endRow}`;
+                grid.appendChild(eventDiv);
+            });
+        }
+        
+        function initializeMainCalendar() {
+            const calendarEl = document.getElementById('mainCalendar');
+            if (!calendarEl || mainCalendarInstance) return;
+            
+            mainCalendarInstance = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
+                initialView: 'dayGridMonth',
+                headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
+                events: (fetchInfo, successCallback) => {
+                    successCallback(calendarEventsData);
+                },
+                eventClick: (info) => {
+                    openEventModal('calendar', info.event.id);
+                },
+                select: (info) => {
+                    openEventModal('calendar', null, info.startStr);
+                    mainCalendarInstance.unselect();
+                },
+                selectable: true,
+            });
+            mainCalendarInstance.render();
+        }
+
+        function updateTodayTasksList(){/*...*/}
+        function openEventModal(type, id = null, dateStr = null) {/*...*/}
+        function closeEventModal() { eventModalOverlay.classList.remove('active'); }
+        function populateTimeSelect() {/*...*/}
+
         // --- INICIALIZACIÓN DE LA APLICACIÓN ---
         function initializeApp() { 
-            showPage('calendario-page'); 
-            // Las funciones de inicialización de la UI que no dependen de datos pueden ir aquí
+            showPage('calendario-page');
             updateCurrentMonthDisplayDOM_Ingresos();
-            getDailyExchangeRate_Ingresos(); // No depende de los datos guardados
+            initializeMainCalendar();
+            getDailyExchangeRate_Ingresos(); 
 
-            // Configurar listeners que ahora guardarán en la nube
+            document.querySelectorAll('.nav-button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
             if(elIngresos.addMoneyButton) elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); 
             if(elIngresos.clearHistoryButton) elIngresos.clearHistoryButton.addEventListener('click', clearHistory_Ingresos);
-            // ... resto de tus listeners
+            
+            addCalendarEventBtn.addEventListener('click', () => openEventModal('calendar'));
+            addTimetableEventBtnGlobal.addEventListener('click', () => openEventModal('timetable'));
+            cancelEventBtn.addEventListener('click', closeEventModal);
+            
+            eventForm.addEventListener('submit', async function(e) { 
+                e.preventDefault();
+                const id = modalEventIdInput.value;
+                const type = modalEventTypeInput.value;
+                const title = modalEventTitleInput.value.trim();
+                const color = modalEventColorSelect.value;
+                if (!title) return alert("El título es obligatorio.");
+
+                if (type === 'timetable') {
+                    const newEvent = {
+                        id: id || 'tt_' + Date.now(),
+                        subject: title,
+                        teacher: modalEventTeacherInput.value,
+                        day: modalEventDaySelect.value,
+                        startTime: modalEventStartTimeSelect.value,
+                        endTime: modalEventEndTimeSelect.value,
+                        color
+                    };
+                    if(id) timetableData = timetableData.map(e => e.id === id ? newEvent : e);
+                    else timetableData.push(newEvent);
+                } else { // calendar
+                    const newEvent = {
+                        id: id || 'cal_' + Date.now(),
+                        title,
+                        start: modalEventStartDateInput.value,
+                        allDay: true,
+                        color
+                    };
+                    if(id) calendarEventsData = calendarEventsData.map(e => e.id === id ? newEvent : e);
+                    else calendarEventsData.push(newEvent);
+                }
+                
+                await saveSharedDataToFirestore();
+                closeEventModal();
+            });
+
+            deleteEventBtn.addEventListener('click', async function() {
+                const id = modalEventIdInput.value;
+                const type = modalEventTypeInput.value;
+                if (!id) return;
+                if (confirm('¿Seguro que quieres eliminar este evento?')) {
+                    if (type === 'timetable') {
+                        timetableData = timetableData.filter(e => e.id !== id);
+                    } else {
+                        calendarEventsData = calendarEventsData.filter(e => e.id !== id);
+                    }
+                    await saveSharedDataToFirestore();
+                    closeEventModal();
+                }
+            });
+
+             elIngresos.overallTargetInput.addEventListener('change', async () => {
+                const newTarget = parseFloat(elIngresos.overallTargetInput.value);
+                if (!isNaN(newTarget) && newTarget > 0) {
+                    const currentMonthKey = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+                    monthlyTargets[currentMonthKey] = newTarget;
+                    await saveSharedDataToFirestore();
+                }
+            });
         }
         
         document.addEventListener('DOMContentLoaded', () => {
             initializeApp();
-            loadSharedDataFromFirestore(); // Carga los datos públicos tan pronto como la página esté lista
+            loadSharedDataFromFirestore();
         });
-
-        // NOTA: Asegúrate de que TODAS las funciones que antes llamaban a saveData_Ingresos, 
-        // saveTimetableData, etc., ahora llamen a saveSharedDataToFirestore().
-        // El resto de tus funciones de UI y lógica (updateDisplay_Ingresos, renderTimetable, etc.)
-        // deben permanecer en tu código. Pégalas aquí.
-
     </script>
 </body>
 </html>

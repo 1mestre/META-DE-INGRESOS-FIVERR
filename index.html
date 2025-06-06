@@ -491,7 +491,8 @@
                     resetLocalData();
                 }
                 updateAllUI();
-                loadingIndicator.style.display = 'none';
+                loadingIndicator.style.opacity = '0';
+                setTimeout(() => { loadingIndicator.style.display = 'none'; }, 500);
             }, error => {
                 console.error("Error al cargar datos desde Firestore:", error);
                 loadingIndicator.textContent = 'Error al cargar datos.';
@@ -530,8 +531,10 @@
         function updateAllUI() {
             updateAllDisplays_Ingresos();
             renderTimetable();
-            if (mainCalendarInstance) mainCalendarInstance.refetchEvents('user-events');
-            updateTodayTasksList();
+            if (mainCalendarInstance) {
+                mainCalendarInstance.refetchEvents();
+                updateTodayTasksList();
+            }
         }
 
         // --- LÓGICA DE LA APLICACIÓN ---
@@ -661,7 +664,40 @@
             });
         }
         
-        function updateMonthlyGoalsDisplay_Ingresos(){/*...*/}
+        function updateMonthlyGoalsDisplay_Ingresos() {
+            if (!elIngresos.monthlyGoalsList) return;
+            const savingsByMonth = {};
+            contributions.forEach(c => {
+                savingsByMonth[c.monthYear] = (savingsByMonth[c.monthYear] || 0) + c.amountCOP;
+            });
+            elIngresos.monthlyGoalsList.innerHTML = '';
+            // Create a set of all months that have either a target or a contribution
+            const allMonths = new Set([...Object.keys(monthlyTargets), ...Object.keys(savingsByMonth)]);
+            if (allMonths.size === 0) {
+                elIngresos.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>';
+                return;
+            }
+
+            const sortedMonths = Array.from(allMonths).sort().reverse();
+            sortedMonths.forEach(monthYear => {
+                const savedThisMonth = savingsByMonth[monthYear] || 0;
+                const targetThisMonth = monthlyTargets[monthYear] || DEFAULT_OVERALL_TARGET_COP;
+                const [year, month] = monthYear.split('-');
+                const monthName = new Date(year, month - 1).toLocaleString('es-CO', { month: 'long', year: 'numeric' });
+                const item = document.createElement('div');
+                item.className = 'monthly-goal-item';
+                let statusText, statusClass;
+                 if (savedThisMonth >= targetThisMonth) {
+                    statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                    statusClass = 'achieved';
+                } else {
+                    statusText = `⏳ En Progreso (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                    statusClass = 'pending';
+                }
+                item.innerHTML = `<div class="monthly-goal-month">${monthName}</div><div class="monthly-goal-status ${statusClass}">${statusText}</div>`;
+                elIngresos.monthlyGoalsList.appendChild(item);
+            });
+        }
 
         function updateCurrentMonthDisplayDOM_Ingresos() {
             const now = new Date();
@@ -742,10 +778,99 @@
             mainCalendarInstance.render();
         }
 
-        function updateTodayTasksList(){/*...*/}
-        function openEventModal(type, id = null, dateStr = null) {/*...*/}
-        function closeEventModal() { eventModalOverlay.classList.remove('active'); }
-        function populateTimeSelect() {/*...*/}
+        function updateTodayTasksList(){
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const tasksListEl = document.getElementById('today-tasks-list');
+            if (!tasksListEl) return;
+            tasksListEl.innerHTML = '';
+            const todayEvents = calendarEventsData.filter(event => event.start.slice(0, 10) === todayStr);
+            if (todayEvents.length > 0) {
+                todayEvents.forEach(event => {
+                    const li = document.createElement('li');
+                    li.textContent = event.title;
+                    li.style.color = event.color;
+                    li.style.borderLeft = `3px solid ${event.color}`;
+                    li.style.paddingLeft = '8px';
+                    li.style.marginBottom = '5px';
+                    tasksListEl.appendChild(li);
+                });
+            } else {
+                tasksListEl.innerHTML = '<li style="color: var(--text-secondary);">No hay actividades programadas para hoy.</li>';
+            }
+        }
+
+        function openEventModal(type, id = null, dateStr = null) {
+            currentEditingEventType = type;
+            currentEditingEventId = id;
+            eventForm.reset();
+            modalEventIdInput.value = id || '';
+            modalEventTypeInput.value = type;
+
+            modalTimetableFields.style.display = (type === 'timetable') ? 'block' : 'none';
+            modalCalendarFields.style.display = (type === 'calendar') ? 'block' : 'none';
+            
+            eventModalTitle.textContent = id ? `Editar ${type === 'timetable' ? 'Clase' : 'Actividad'}` : `Añadir Nueva ${type === 'timetable' ? 'Clase' : 'Actividad'}`;
+            
+            modalEventColorSelect.innerHTML = '';
+            PRESET_PASTEL_COLORS.forEach(colorObj => {
+                const option = document.createElement('option');
+                option.value = colorObj.value;
+                option.textContent = colorObj.name;
+                modalEventColorSelect.appendChild(option);
+            });
+
+            if (type === 'timetable') {
+                modalEventDaySelect.innerHTML = '';
+                TIMETABLE_DAYS.forEach(d => {
+                    const o = document.createElement('option');
+                    o.value = d; o.textContent = d;
+                    modalEventDaySelect.appendChild(o);
+                });
+                populateTimeSelect(modalEventStartTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR);
+                populateTimeSelect(modalEventEndTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR, null, true);
+
+                if (id) {
+                    const event = timetableData.find(e => e.id === id);
+                    if (event) {
+                        modalEventTitleInput.value = event.subject;
+                        modalEventTeacherInput.value = event.teacher || '';
+                        modalEventDaySelect.value = event.day;
+                        modalEventStartTimeSelect.value = event.startTime;
+                        modalEventEndTimeSelect.value = event.endTime;
+                        modalEventColorSelect.value = event.color || DEFAULT_EVENT_COLOR;
+                    }
+                }
+            } else { // calendar
+                modalEventStartDateInput.value = dateStr ? dateStr.slice(0, 10) : new Date().toISOString().slice(0, 10);
+                if (id) {
+                    const event = calendarEventsData.find(e => e.id === id);
+                    if (event) {
+                        modalEventTitleInput.value = event.title;
+                        modalEventStartDateInput.value = event.start.slice(0, 10);
+                        modalEventColorSelect.value = event.color || DEFAULT_EVENT_COLOR;
+                    }
+                }
+            }
+            deleteEventBtn.style.display = id ? 'block' : 'none';
+            eventModalOverlay.classList.add('active');
+        }
+
+        function closeEventModal() {
+            eventModalOverlay.classList.remove('active');
+        }
+
+        function populateTimeSelect(selectElement, startHour, endHour, selectedValue = null, isEndTime = false) {
+            selectElement.innerHTML = '';
+            const limit = isEndTime ? endHour + 1 : endHour;
+            for (let h = startHour; h <= limit; h++) {
+                const timeStr = `${String(h).padStart(2, '0')}:00`;
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                if (timeStr === selectedValue) option.selected = true;
+                selectElement.appendChild(option);
+            }
+        }
 
         // --- INICIALIZACIÓN DE LA APLICACIÓN ---
         function initializeApp() { 

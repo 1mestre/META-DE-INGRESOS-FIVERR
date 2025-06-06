@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Organizador de Vida Digital Compartido</title>
 
-    <link rel="icon" type="image/png" href="/Vida_Sebas/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/Vida_Sebas/favicon.svg" />
-    <link rel="shortcut icon" href="/Vida_Sebas/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/Vida_Sebas/apple-touch-icon.png" />
-    <link rel="manifest" href="/Vida_Sebas/site.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/Vida_Sebas/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Vida_Sebas/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Vida_Sebas/favicon-16x16.png">
+    <link rel="manifest" href="/Vida_Sebas/site.webmanifest">
 
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/main.min.css' rel='stylesheet' />
@@ -32,6 +31,12 @@
             --accent-purple: #bd93f9;
             --accent-orange: #ffb86c;
 
+            /* CORRECCIÓN: Variables de color para degradados */
+            --green-dark: #2f9e4f;
+            --blue-dark: #1c7ed6;
+            --orange-dark: #e8590c;
+            --red-dark: #c92a2a;
+
             --pastel-green-celebration: #a7f3d0; 
             --celebration-overall-bg: var(--pastel-green-celebration); 
             --celebration-overall-text-color: #054228; 
@@ -50,6 +55,8 @@
             --accent-red-clear-rgb: 255, 85, 85; 
             --accent-green-neon-rgb: 57, 255, 20;
             --accent-yellow-pale-rgb: 241, 250, 140; 
+            --accent-orange-rgb: 255, 184, 108;
+            --accent-yellow-green-rgb: 195, 224, 141;
 
 
             --bg-card-rgb: 34, 37, 46;
@@ -136,19 +143,49 @@
         #ingresos-page .progress-container.monthly .progress-bar-bg{ height: 30px; border-radius:30px; } 
         #ingresos-page .progress-container.monthly .progress-bar{ height: 30px; border-radius:30px; } 
         #ingresos-page .progress-bar-bg{ width:100%; height:22px; background: #3a3f4b; border-radius:22px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(0,0,0,0.3); } 
-        #ingresos-page .progress-bar{ height:100%; border-radius:22px; width:0%; transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; position:relative; }
+        #ingresos-page .progress-bar{ 
+            height:100%; 
+            border-radius:22px; 
+            width:0%; 
+            transition:width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 1s ease, box-shadow 1s ease; 
+            position:relative; 
+        }
         
+        /* CORRECCIÓN: Estilos de degradado y resplandor para barras de progreso */
         #progressBarOverall {
-             background: linear-gradient(90deg, var(--accent-green-medium), var(--accent-green-neon));
-             box-shadow: 0 0 12px rgba(var(--accent-green-neon-rgb), 0.4);
+            background: linear-gradient(90deg, var(--green-dark), var(--accent-green-medium));
+            box-shadow: 0 0 12px 2px rgba(var(--glow-color-green-rgb), 0.4);
         }
 
         #progressBarMonthly {
-            background: linear-gradient(90deg, var(--accent-blue-info), var(--accent-purple));
-            box-shadow: 0 0 12px rgba(var(--glow-color-blue-rgb), 0.4);
+            background: linear-gradient(90deg, var(--blue-dark), var(--accent-blue-info));
+            box-shadow: 0 0 12px 2px rgba(var(--glow-color-blue-rgb), 0.4);
         }
 
-        #ingresos-page .progress-bar::before{ content:''; position:absolute; top:0;left:0; height:100%; width:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent); animation:shimmer 2.5s infinite linear; border-radius:22px; } @keyframes shimmer{ 0%{transform:translateX(-100%)} 50%{transform:translateX(0%)} 100%{transform:translateX(100%)} }
+        /* CORRECCIÓN: Animación de brillo (shimmer) más suave */
+        @keyframes shimmer {
+            0% { background-position: -800px 0; }
+            100% { background-position: 800px 0; }
+        }
+        #ingresos-page .progress-bar::before {
+            content:''; 
+            position:absolute; 
+            top:0;
+            left:0; 
+            height:100%; 
+            width:100%; 
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(255,255,255,0.05) 40%, 
+                rgba(255,255,255,0.3) 50%, 
+                rgba(255,255,255,0.05) 60%, 
+                transparent 100%);
+            background-size: 800px 100%;
+            background-repeat: no-repeat;
+            animation: shimmer 3.5s infinite linear; 
+            border-radius:22px;
+        }
+
         #ingresos-page .progress-text{ margin-top:12px; font-size:1.25em; font-weight:500; color: var(--text-primary); } 
         #ingresos-page .progress-text.monthly-text { font-size: 1.1em; color: var(--text-secondary); } 
         
@@ -193,14 +230,23 @@
             overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.25); margin-right: 10px;
         }
         #calendar-progress-bars .progress-bar-cal {
-            height: 100%; border-radius: 18px; width: 0%; 
-            transition: width 0.8s ease-out, background-color 0.8s ease-out, box-shadow 0.8s ease-out; 
+            height: 100%; 
+            border-radius: 18px; 
+            width: 0%; 
+            transition: width 1s ease-out, background 1s ease-out, box-shadow 1s ease-out; 
             position: relative;
         }
          #calendar-progress-bars .progress-bar-cal::before{ 
-            content:''; position:absolute; top:0;left:0; height:100%; width:100%; 
-            background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent); 
-            animation:shimmer 2.8s infinite linear; border-radius:18px; 
+            content:''; 
+            position:absolute; 
+            top:0;left:0; 
+            height:100%; 
+            width:100%; 
+            background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.05) 60%, transparent 100%);
+            background-size: 800px 100%;
+            background-repeat: no-repeat;
+            animation: shimmer 3.5s infinite linear;
+            border-radius:18px; 
         }
         #calendar-progress-bars .progress-text-cal { font-weight: 500; color: var(--text-primary); min-width: 45px; text-align: right;}
         
@@ -610,13 +656,27 @@
             
             if(!yearBar || !monthBar || !dayBar) return;
 
+            /* CORRECCIÓN: Función interna para asignar degradado y resplandor dinámicamente */
             const setProgress = (bar, textEl, progress) => {
                 bar.style.width = `${progress}%`;
                 textEl.textContent = `${Math.floor(progress)}%`;
-                if (progress < 25) bar.style.backgroundColor = 'var(--cal-progress-q1)';
-                else if (progress < 50) bar.style.backgroundColor = 'var(--cal-progress-q2)';
-                else if (progress < 75) bar.style.backgroundColor = 'var(--cal-progress-q3)';
-                else bar.style.backgroundColor = 'var(--cal-progress-q4)';
+                
+                let gradient, glowRgb;
+                if (progress < 25) {
+                    gradient = `linear-gradient(90deg, var(--red-dark), var(--accent-red-clear))`;
+                    glowRgb = `var(--accent-red-clear-rgb)`;
+                } else if (progress < 50) {
+                    gradient = `linear-gradient(90deg, var(--orange-dark), var(--accent-orange))`;
+                    glowRgb = `var(--accent-orange-rgb)`;
+                } else if (progress < 75) {
+                    gradient = `linear-gradient(90deg, var(--accent-yellow-green), var(--accent-yellow-pale))`;
+                    glowRgb = `var(--accent-yellow-green-rgb)`;
+                } else {
+                    gradient = `linear-gradient(90deg, var(--green-dark), var(--accent-green-medium))`;
+                    glowRgb = `var(--glow-color-green-rgb)`;
+                }
+                bar.style.background = gradient;
+                bar.style.boxShadow = `0 0 10px 2px rgba(${glowRgb}, 0.5)`;
             };
 
             setProgress(yearBar, yearText, yearProgress);

@@ -80,7 +80,7 @@
         body {
             font-family: 'Rubik', Arial, sans-serif;
             padding: 15px;
-            background: transparent !important;
+            background-color: transparent; /* El fondo real está en .background-layer */
             color: var(--text-primary);
             display: flex;
             flex-direction: column;
@@ -88,12 +88,20 @@
             position: relative;
         }
         
-        body::before {
-            content: '';
+        /* CAPAS DE FONDO */
+        .background-layer {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--bg-dark);
-            z-index: -10;
+            background: var(--bg-dark);
+            z-index: -2;
+        }
+
+        .floating-emoji-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
         }
        
         #loading-indicator {
@@ -120,28 +128,27 @@
         }
         .page-content.active { display: block;  }
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .page-widget-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
+        
+        .page-widget-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            justify-content: center; 
+            width: 100%; 
+        }
        
+        /* WIDGET CON GLASSMORPHISM CORREGIDO */
         .widget-card {
-            /* FORZAR NUEVA CAPA DE COMPOSICIÓN - ESTO ES CRÍTICO */
-            will-change: backdrop-filter;
-            isolation: isolate;
-            transform: translateZ(0);
-            contain: layout style paint;
-
-            /* EFECTO GLASSMORPHISM */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
-            /* MANTENER ESTILOS ORIGINALES */
+            position: relative;
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
-            position: relative;
-            z-index: 10;
             width: 100%;
             max-width: 1150px;
             min-width: 300px;
@@ -149,6 +156,7 @@
             display: flex;
             flex-direction: column;
         }
+
         #ingresos-widget-main { 
             max-width: 700px;
         }
@@ -227,20 +235,9 @@
         #ingresos-page .celebration-overall{ display:none; margin:20px 0; padding:20px; background: var(--celebration-overall-bg); border-radius:15px; font-size:1.4em; color: var(--celebration-overall-text-color); font-weight:700; animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate; text-shadow: 0 0 8px rgba(0,0,0,0.1); box-shadow: 0 0 20px var(--celebration-overall-glow); position: relative; z-index: 15; } 
         @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: rgba(var(--bg-dark-rgb), 0.8);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: rgba(var(--bg-card-rgb), 0.7);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: rgba(var(--bg-card-rgb), 0.9); transform: translateX(3px); } #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
        
-        .floating-emoji-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
+        /* Emojis */
         .floating-emoji {
-            position: fixed;
-            z-index: -1;
-            pointer-events: none;
+            position: absolute; /* Relativo al .floating-emoji-container */
             user-select: none;
             animation-name: floatUp;
             animation-timing-function: linear;
@@ -401,7 +398,7 @@
     </style>
 </head>
 <body>
-    <div id="loading-indicator">Cargando datos compartidos...</div>
+    <div class="background-layer"></div>
     <div class="floating-emoji-container">
         <span class="floating-emoji">💰</span>
         <span class="floating-emoji">🎓</span>
@@ -414,6 +411,8 @@
         <span class="floating-emoji">💡</span>
         <span class="floating-emoji">📚</span>
     </div>
+
+    <div id="loading-indicator">Cargando datos compartidos...</div>
    
     <div class="main-container">
         <div class="main-navigation"> 

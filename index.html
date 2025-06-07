@@ -76,7 +76,7 @@
 
         *{margin:0;padding:0;box-sizing:border-box}
         html, body { height: 100%; width: 100%; overflow-x: hidden; }
-       
+        
         body::before {
             content: '';
             position: fixed;
@@ -100,7 +100,7 @@
         .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .nav-button:hover { background: var(--accent-blue-info); color: var(--bg-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(var(--glow-color-blue-rgb), 0.3); }
         .nav-button.active {  background: var(--accent-green-neon); color: var(--bg-dark); box-shadow: 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5); font-weight: 700; }
-       
+        
         .page-content { 
             display: none; 
             width: 100%; 
@@ -114,31 +114,21 @@
         .page-widget-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
        
         .widget-card {
-            /* ESTO ES CRÍTICO - sin esto el backdrop-filter no funciona */
-            will-change: backdrop-filter;
-            isolation: isolate;
-            transform: translateZ(0);
-            /* Ahora sí el backdrop-filter */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.1);
-            
-            /* Propiedades originales conservadas */
-            border: 1px solid rgba(var(--text-primary), 0.18);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(var(--glow-color-neutral-rgb), 0.15), 0 5px 15px rgba(0,0,0,0.25);
-            position: relative;
-            z-index: 10;
-            flex-grow: 0;
-            flex-shrink: 1;
-            flex-basis: auto;
-            width: 100%;
+            background-color: rgba(var(--bg-card-light-rgb), 0.6); 
+            backdrop-filter: blur(18px) saturate(180%); 
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            border: 1px solid rgba(var(--text-primary), 0.18); 
+            border-radius:20px; padding:25px; margin-bottom:25px; 
+            box-shadow: 0 8px 25px rgba(var(--glow-color-neutral-rgb), 0.15), 0 5px 15px rgba(0,0,0,0.25); 
+            position: relative; z-index: 10; 
+            flex-grow: 0; 
+            flex-shrink: 1; 
+            flex-basis: auto; 
+            width: 100%; 
             max-width: 1150px;
-            min-width: 300px;
-            text-align: center;
-            display: flex;
+            min-width: 300px; 
+            text-align:center;
+            display: flex; 
             flex-direction: column;
         }
         #ingresos-widget-main { 
@@ -428,44 +418,44 @@
 
         <div id="calendario-page" class="page-content active">
              <div class="page-widget-container" id="calendar-widget-container">
-                   <div id="calendar-widget-card" class="widget-card"> 
-                        <h2>📅 Calendario Interactivo</h2>
-                        <div id="calendar-progress-bars">
-                            <div class="progress-item">
-                                <span class="progress-label">Mes:</span>
-                                <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="month-progress-bar-cal"></div> </div>
-                                <span class="progress-text-cal" id="month-text-cal">0%</span>
-                            </div>
-                            <div class="progress-item">
-                                <span class="progress-label">Día:</span>
-                                <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="day-progress-bar-cal"></div> </div>
-                                <span class="progress-text-cal" id="day-text-cal">0%</span>
-                            </div>
-                            <div class="progress-item">
-                                <span class="progress-label">Año:</span>
-                                <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="year-progress-bar-cal"></div> </div>
-                                <span class="progress-text-cal" id="year-text-cal">0%</span>
-                            </div>
-                        </div>
-                        <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
-                        <div id="mainCalendar"></div>
-                        <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
-                            <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
-                            <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
-                                <li style="color: var(--text-secondary);">Cargando actividades...</li>
-                            </ul>
-                        </div>
-                   </div>
+                  <div id="calendar-widget-card" class="widget-card"> 
+                       <h2>📅 Calendario Interactivo</h2>
+                       <div id="calendar-progress-bars">
+                           <div class="progress-item">
+                               <span class="progress-label">Mes:</span>
+                               <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="month-progress-bar-cal"></div> </div>
+                               <span class="progress-text-cal" id="month-text-cal">0%</span>
+                           </div>
+                           <div class="progress-item">
+                               <span class="progress-label">Día:</span>
+                               <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="day-progress-bar-cal"></div> </div>
+                               <span class="progress-text-cal" id="day-text-cal">0%</span>
+                           </div>
+                           <div class="progress-item">
+                               <span class="progress-label">Año:</span>
+                               <div class="progress-bar-bg-cal"> <div class="progress-bar-cal" id="year-progress-bar-cal"></div> </div>
+                               <span class="progress-text-cal" id="year-text-cal">0%</span>
+                           </div>
+                       </div>
+                       <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
+                       <div id="mainCalendar"></div>
+                       <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
+                           <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
+                           <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
+                               <li style="color: var(--text-secondary);">Cargando actividades...</li>
+                           </ul>
+                       </div>
+                  </div>
              </div>
         </div>
        
         <div id="universidad-page" class="page-content"> 
              <div class="page-widget-container">
-                   <div class="university-timetable-widget widget-card"> 
-                        <h2>🎓 Horario Universitario</h2>
-                        <div id="timetableGrid"></div>
-                         <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
-                   </div>
+                  <div class="university-timetable-widget widget-card"> 
+                       <h2>🎓 Horario Universitario</h2>
+                       <div id="timetableGrid"></div>
+                        <button id="addTimetableEventBtnGlobal" style="margin-top: 20px; padding: 10px 20px; background-color: var(--accent-blue-info); color: var(--bg-dark); border:none; border-radius: 8px; cursor:pointer; font-weight: 600;">➕ Añadir Nuevo Evento</button>
+                  </div>
              </div>
         </div>
     </div> 
@@ -487,11 +477,11 @@
                 </div>
 
                  <div id="modalCalendarFields">
-                      <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate"> </div>
-                      <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
-                      <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
-                      <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
-                      <div class="modal-form-group hidden-field"><label for="eventAllDay">Todo el día:</label><input type="checkbox" id="eventAllDay" checked></div>
+                     <div class="modal-form-group"> <label for="eventStartDate">Fecha:</label> <input type="date" id="eventStartDate"> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventStartTimeCal">Hora Inicio (Calendario):</label> <input type="time" id="eventStartTimeCal"> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventEndDate">Fecha Fin:</label> <input type="date" id="eventEndDate"> </div>
+                     <div class="modal-form-group hidden-field"> <label for="eventEndTimeCal">Hora Fin (Calendario):</label> <input type="time" id="eventEndTimeCal"> </div>
+                     <div class="modal-form-group hidden-field"><label for="eventAllDay">Todo el día:</label><input type="checkbox" id="eventAllDay" checked></div>
                  </div>
                
                 <div class="modal-form-group"> 
@@ -597,7 +587,7 @@
         const modalEventEndDateInput = document.getElementById('eventEndDate');
         const modalEventEndTimeCalInput = document.getElementById('eventEndTimeCal');
         const modalEventAllDayCheckbox = document.getElementById('eventAllDay');
-        const modalEventStartTimeSelect = document.getElementById('eventStartTime');  
+        const modalEventStartTimeSelect = document.getElementById('eventStartTime'); 
         const modalEventEndTimeSelect = document.getElementById('eventEndTime');   
         const modalEventColorSelect = document.getElementById('eventColorSelect');
         const saveEventBtn = document.getElementById('saveEventBtn');
@@ -811,11 +801,11 @@
                 const d = new Date(c.date);
                 const dateString = `${d.toLocaleDateString('es-CO')} - ${d.toLocaleTimeString('es-CO', {hour: '2-digit', minute: '2-digit'})}`;
                 item.innerHTML = `
-                                <div>
-                                    <div class="history-date">📅 ${dateString}</div>
-                                    <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate ? c.exchangeRate.toFixed(2) : 'N/A'})</span></div>
-                                </div>
-                                <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
+                            <div>
+                                <div class="history-date">📅 ${dateString}</div>
+                                <div class="history-amount">${formatUSD(c.amountUSD)} <span class="history-rate">(a ${c.exchangeRate ? c.exchangeRate.toFixed(2) : 'N/A'})</span></div>
+                            </div>
+                            <div class="history-amount" style="color:var(--accent-green-medium);">${formatCOP(c.amountCOP)}</div>`;
                 elIngresos.historyList.appendChild(item);
             });
         }
@@ -841,11 +831,11 @@
                 item.className = 'monthly-goal-item';
                 let statusText, statusClass;
                  if (savedThisMonth >= targetThisMonth && targetThisMonth > 0) {
-                        statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
-                        statusClass = 'achieved';
+                      statusText = `✅ ¡Cumplido! (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                      statusClass = 'achieved';
                  } else {
-                        statusText = `⏳ En Progreso (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
-                        statusClass = 'pending';
+                      statusText = `⏳ En Progreso (${formatCOP(savedThisMonth)} de ${formatCOP(targetThisMonth)})`;
+                      statusClass = 'pending';
                  }
                 item.innerHTML = `<div class="monthly-goal-month">${monthName}</div><div class="monthly-goal-status ${statusClass}">${statusText}</div>`;
                 elIngresos.monthlyGoalsList.appendChild(item);

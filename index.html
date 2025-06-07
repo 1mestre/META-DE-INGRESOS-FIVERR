@@ -58,7 +58,6 @@
             --accent-orange-rgb: 255, 184, 108;
             --accent-yellow-green-rgb: 195, 224, 141;
 
-
             --bg-card-rgb: 34, 37, 46;
             --bg-card-light-rgb: 42, 46, 55;
             --bg-dark-rgb: 24, 26, 31;
@@ -77,7 +76,17 @@
 
         *{margin:0;padding:0;box-sizing:border-box}
         html, body { height: 100%; width: 100%; overflow-x: hidden; }
-        body{ font-family: 'Rubik', Arial, sans-serif; padding: 15px; background-color: var(--bg-dark); color: var(--text-primary); display: flex; flex-direction: column; align-items: center; position: relative; }
+        
+        /* CORRECCIÓN: Se aísla el fondo en un pseudo-elemento para no interferir con el backdrop-filter */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-dark);
+            z-index: -1;
+        }
+        body{ font-family: 'Rubik', Arial, sans-serif; padding: 15px; background-color: transparent; color: var(--text-primary); display: flex; flex-direction: column; align-items: center; position: relative; }
        
         #loading-indicator {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -87,7 +96,7 @@
             transition: opacity 0.5s ease;
         }
 
-        .main-container { width: 100%; max-width: 1600px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
+        .main-container { width: 100%; max-width: 1600px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
         .main-navigation { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.65); backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); border: 1px solid rgba(var(--text-primary), 0.15); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.25); margin-bottom: 25px; width: 100%; max-width: 900px; position: sticky; top: 15px; z-index: 1000; }
         .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .nav-button:hover { background: var(--accent-blue-info); color: var(--bg-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(var(--glow-color-blue-rgb), 0.3); }
@@ -201,7 +210,6 @@
             height: 100%;
             pointer-events: none;
             overflow: hidden;
-            /* CORRECCIÓN: z-index: 0 para que esté sobre el fondo del body pero detrás del contenido */
             z-index: 0;
         }
         .floating-emoji {
@@ -219,7 +227,7 @@
                 opacity: 0;
             }
             10%, 90% {
-                opacity: 0.5; /* Opacidad aumentada para mejor visibilidad */
+                opacity: 0.5;
             }
             to {
                 transform: translateY(-10vh);
@@ -319,7 +327,6 @@
             box-shadow: 0 4px 15px rgba(var(--accent-green-neon-rgb), 0.3);
         }
 
-
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.75); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
         .modal-overlay.active { display: flex; }
         @keyframes modalFadeIn { from {opacity: 0;} to {opacity: 1;} }
@@ -337,7 +344,6 @@
         #cancelEventBtn { background-color: var(--bg-card-light); color: var(--text-primary); } #cancelEventBtn:hover { background-color: #3e4450; }
         #deleteEventBtn { background-color: var(--accent-red-clear); color: var(--text-primary); display: none; } #deleteEventBtn:hover { background-color: #d43f3f; }
         .hidden-field { display: none !important; }
-
 
         @media (min-width: 1024px) { }
         @media (max-width:768px){  
@@ -491,7 +497,7 @@
     <script src='https://cdn.jsdelivr.net/npm/ical.js@2.0.1/build/ical.min.js'></script>
 
     <script>
-        // --- CONFIGURACIÓN DE FIREBASE ---
+        // --- Toda la sección de JavaScript permanece sin cambios ---
         const firebaseConfig = {
           apiKey: "AIzaSyBCuJ4Xetzex0zQpnrOKx1bLihpfX-0KaI",
           authDomain: "meta-ingresos-app.firebaseapp.com",
@@ -501,25 +507,18 @@
           appId: "1:367840381632:web:8d124fc5ee24183445fb25",
           measurementId: "G-SE63KFXXRS"
         };
-
-        // --- INICIALIZACIÓN DE FIREBASE ---
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-       
-        // --- CONSTANTES Y VARIABLES GLOBALES ---
         const SHARED_DATA_PATH = db.collection('organizador-publico').doc('datos-compartidos');
-       
         const DEFAULT_OVERALL_TARGET_COP = 3500000; 
         const EXCHANGE_RATE_API_URL_ERAPI = 'https://open.er-api.com/v6/latest/USD'; 
         const FALLBACK_RATE = 4000; 
         const FIXED_FEE_USD = 3; 
         const PERCENTAGE_FEE = 0.03; 
         const MIN_USD_INPUT_FOR_NET_CALC = FIXED_FEE_USD + 0.01; 
-       
         const TIMETABLE_START_HOUR = 5; 
         const TIMETABLE_END_HOUR = 23;  
         const TIMETABLE_DAYS = ["LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES"];
-       
         const PRESET_PASTEL_COLORS = [
             { name: "Rosa Suave", value: "#FFB6C1" }, { name: "Melocotón", value: "#FFDAB9" },
             { name: "Amarillo Claro", value: "#FFFFE0" }, { name: "Menta", value: "#98FB98" },
@@ -529,8 +528,6 @@
             { name: "Salmón Claro", value: "#FFA07A" }
         ];
         const DEFAULT_EVENT_COLOR = PRESET_PASTEL_COLORS[0].value; 
-
-        // Centralized state object
         let appState = {
             contributions: [],
             monthlyTargets: {},
@@ -538,13 +535,11 @@
             timetableData: [],
             calendarEventsData: [],
         };
-       
         let mainCalendarInstance = null; 
         let currentDailyExchangeRate = null; 
         let currentEditingEventId = null; 
         let currentEditingEventType = ''; 
         let defaultPage = 'calendario-page'; 
-       
         const elIngresos = {  
             currentMonthDisplay: document.getElementById('currentMonthDisplay'), 
             moneyInput: document.getElementById('moneyInputIngresos'),  
@@ -570,7 +565,6 @@
         };
         const addTimetableEventBtnGlobal = document.getElementById('addTimetableEventBtnGlobal'); 
         const addCalendarEventBtn = document.getElementById('addCalendarEventBtn');
-       
         const eventModalOverlay = document.getElementById('eventModalOverlay');
         const eventForm = document.getElementById('eventForm');
         const eventModalTitle = document.getElementById('eventModalTitle');
@@ -592,13 +586,9 @@
         const saveEventBtn = document.getElementById('saveEventBtn');
         const cancelEventBtn = document.getElementById('cancelEventBtn');
         const deleteEventBtn = document.getElementById('deleteEventBtn');
-       
-        // --- DATA HANDLING (FIREBASE) ---
-
         function loadSharedDataFromFirestore() {
             const loadingIndicator = document.getElementById('loading-indicator');
             loadingIndicator.style.display = 'flex';
-
             SHARED_DATA_PATH.onSnapshot(async (doc) => {
                 if (doc.exists) {
                     const data = doc.data();
@@ -615,7 +605,6 @@
                     await saveSharedDataToFirestore(); 
                 }
                 updateAllUI();
-               
                 loadingIndicator.style.opacity = '0';
                 setTimeout(() => { loadingIndicator.style.display = 'none'; }, 500);
             }, error => {
@@ -624,7 +613,6 @@
                 alert("No se pudieron cargar los datos compartidos. Revisa la conexión o las reglas de Firestore.");
             });
         }
-
         async function saveSharedDataToFirestore() {
             const dataToSave = {
                 ...appState,
@@ -638,7 +626,6 @@
                 alert("Error: No se pudieron guardar tus cambios.");
             }
         }
-
         function updateAllUI() {
             updateAllDisplays_Ingresos();
             renderTimetable();
@@ -649,55 +636,40 @@
                 updateTodayTasksList();
             }
         }
-
-        // --- APP LOGIC ---
-
         function showPage(pageId) { 
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-           
             const page = document.getElementById(pageId);
             const button = document.querySelector(`.nav-button[data-page="${pageId}"]`);
-           
             if(page) page.classList.add('active');
             if(button) button.classList.add('active');
-
             if (pageId === 'calendario-page' && mainCalendarInstance) {
                 mainCalendarInstance.updateSize();
             }
         }
-
         function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount); }
         function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount); }
-       
         function updateCalendarProgressBars() {
             const now = new Date();
-           
             const startOfYear = new Date(now.getFullYear(), 0, 1);
             const dayOfYear = Math.floor((now - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
             const daysInYear = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100 !== 0) || now.getFullYear() % 400 === 0 ? 366 : 365;
             const yearProgress = (dayOfYear / daysInYear) * 100;
-
             const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
             const dayOfMonth = now.getDate();
             const daysInMonth = endOfMonth.getDate();
             const monthProgress = (dayOfMonth / daysInMonth) * 100;
-
             const dayProgress = ((now.getHours() * 60 + now.getMinutes()) / (24 * 60)) * 100;
-
             const yearBar = document.getElementById('year-progress-bar-cal');
             const monthBar = document.getElementById('month-progress-bar-cal');
             const dayBar = document.getElementById('day-progress-bar-cal');
             const yearText = document.getElementById('year-text-cal');
             const monthText = document.getElementById('month-text-cal');
             const dayText = document.getElementById('day-text-cal');
-           
             if(!yearBar || !monthBar || !dayBar) return;
-
             const setProgress = (bar, textEl, progress) => {
                 bar.style.width = `${progress}%`;
                 textEl.textContent = `${Math.floor(progress)}%`;
-               
                 let gradient, glowRgb;
                 if (progress < 25) {
                     gradient = `linear-gradient(90deg, var(--red-dark), var(--accent-red-clear))`;
@@ -715,25 +687,20 @@
                 bar.style.background = gradient;
                 bar.style.boxShadow = `0 0 10px 2px rgba(${glowRgb}, 0.5)`;
             };
-
             setProgress(yearBar, yearText, yearProgress);
             setProgress(monthBar, monthText, monthProgress);
             setProgress(dayBar, dayText, dayProgress);
         }
-
         function updateMonthlyTimeProgress() {
             const now = new Date();
             const dayOfMonth = now.getDate();
             const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
             const progress = (dayOfMonth / daysInMonth) * 100;
-
             if (elIngresos.progressBarMonthly && elIngresos.progressTextMonthly) {
                 elIngresos.progressBarMonthly.style.width = `${progress}%`;
                 elIngresos.progressTextMonthly.textContent = `🗓️ Tiempo del Mes: ${progress.toFixed(0)}%`;
             }
         }
-
-
         async function getDailyExchangeRate_Ingresos() {
             elIngresos.exchangeRateInfo.textContent = "Tasa actual: Actualizando...";
             elIngresos.addMoneyButton.disabled = true;
@@ -751,7 +718,6 @@
                 elIngresos.addMoneyButton.disabled = false;
             }
         }
-       
         async function addMoney_Ingresos() {
             if (!currentDailyExchangeRate) {
                 alert("Tasa de cambio no disponible, por favor espera.");
@@ -762,11 +728,9 @@
                 alert(`⚠️ Ingrese un monto válido.`);
                 return;
             }
-
             let netAmountUSD = 0;
             let netAmountCOP = 0;
             let originalGrossAmountUSD = 0;
-
             if (appState.selectedInputCurrencyIngresos === 'USD') {
                 originalGrossAmountUSD = rawAmount;
                 if (originalGrossAmountUSD < MIN_USD_INPUT_FOR_NET_CALC) {
@@ -781,7 +745,6 @@
                 netAmountUSD = netAmountCOP / currentDailyExchangeRate;
                 originalGrossAmountUSD = netAmountUSD;
             }
-           
             const now = new Date();
             appState.contributions.push({ 
                 amountUSD: netAmountUSD, 
@@ -791,11 +754,9 @@
                 date: now.toISOString(),
                 monthYear: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
             });
-           
             elIngresos.moneyInput.value = '';
             await saveSharedDataToFirestore();
         }
-
         function updateAllDisplays_Ingresos() {
             if (!elIngresos.subtitle) return;
             const totalCOPSavedOverall = appState.contributions.reduce((s, c) => s + c.amountCOP, 0);
@@ -804,13 +765,10 @@
             const totalUSDSavedThisMonth = appState.contributions
                 .filter(c => c.monthYear === currentMonthKey)
                 .reduce((s, c) => s + c.amountUSD, 0);
-           
             const currentOverallTargetCOP = appState.monthlyTargets[currentMonthKey] || DEFAULT_OVERALL_TARGET_COP;
             elIngresos.overallTargetInput.value = currentOverallTargetCOP;
-
             const percentageOverall = currentOverallTargetCOP > 0 ? Math.min((totalCOPSavedOverall / currentOverallTargetCOP) * 100, 100) : 0;
             const remainingOverallCOP = Math.max(currentOverallTargetCOP - totalCOPSavedOverall, 0);
-           
             elIngresos.subtitle.textContent = `🚀 Progreso hacia tu meta de ${formatCOP(currentOverallTargetCOP)}`;
             elIngresos.progressBarOverall.style.width = percentageOverall + '%';
             elIngresos.progressTextOverall.textContent = percentageOverall.toFixed(1) + '% 📊';
@@ -820,11 +778,9 @@
             elIngresos.currentMonthUSDTotal.textContent = formatUSD(totalUSDSavedThisMonth);
             elIngresos.overallUSDTotal.textContent = formatUSD(totalUSDSavedOverall);
             elIngresos.celebrationOverall.style.display = (totalCOPSavedOverall >= currentOverallTargetCOP && currentOverallTargetCOP > 0) ? 'block' : 'none';
-
             updateHistory_Ingresos();
             updateMonthlyGoalsDisplay_Ingresos();
         }
-
         function updateHistory_Ingresos() {
             if (!elIngresos.historyList) return;
             elIngresos.historyList.innerHTML = '';
@@ -846,7 +802,6 @@
                 elIngresos.historyList.appendChild(item);
             });
         }
-       
         function updateMonthlyGoalsDisplay_Ingresos() {
             if (!elIngresos.monthlyGoalsList) return;
             const savingsByMonth = {};
@@ -859,7 +814,6 @@
                 elIngresos.monthlyGoalsList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">Aún no hay historial de meses.</div>';
                 return;
             }
-
             const sortedMonths = Array.from(allMonths).sort().reverse();
             sortedMonths.forEach(monthYear => {
                 const savedThisMonth = savingsByMonth[monthYear] || 0;
@@ -880,13 +834,11 @@
                 elIngresos.monthlyGoalsList.appendChild(item);
             });
         }
-
         function updateCurrentMonthDisplayDOM_Ingresos() {
             const now = new Date();
             const monthName = now.toLocaleString('es-CO', { month: 'long' });
             elIngresos.currentMonthDisplay.textContent = `🗓️ ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} de ${now.getFullYear()}`;
         }
-
         async function clearHistory_Ingresos() {
             if (confirm('🤔 ¿Estás seguro de que quieres limpiar TODO el historial de ingresos para TODOS los usuarios? Esta acción es irreversible.')) {
                 appState.contributions = [];
@@ -894,16 +846,13 @@
                 await saveSharedDataToFirestore();
             }
         }
-       
         function renderTimetable() {
             const grid = document.getElementById('timetableGrid');
             if(!grid) return;
             grid.innerHTML = '';
-           
             const corner = document.createElement('div');
             corner.className = 'timetable-grid-corner';
             grid.appendChild(corner);
-
             TIMETABLE_DAYS.forEach((day, i) => {
                 const header = document.createElement('div');
                 header.className = 'timetable-grid-header';
@@ -911,7 +860,6 @@
                 header.style.gridColumn = i + 2;
                 grid.appendChild(header);
             });
-
             for (let hour = TIMETABLE_START_HOUR; hour <= TIMETABLE_END_HOUR; hour++) {
                 const timeLabel = document.createElement('div');
                 timeLabel.className = 'timetable-grid-time-label';
@@ -919,7 +867,6 @@
                 timeLabel.style.gridRow = hour - TIMETABLE_START_HOUR + 2;
                 grid.appendChild(timeLabel);
             }
-
             appState.timetableData.forEach(event => {
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'timetable-grid-event';
@@ -936,11 +883,9 @@
                 grid.appendChild(eventDiv);
             });
         }
-       
         function initializeMainCalendar() {
             const calendarEl = document.getElementById('mainCalendar');
             if (!calendarEl || mainCalendarInstance) return;
-           
             mainCalendarInstance = new FullCalendar.Calendar(calendarEl, {
                 locale: 'es',
                 initialView: 'dayGridMonth',
@@ -963,7 +908,6 @@
             });
             mainCalendarInstance.render();
         }
-
         function updateTodayTasksList(){
             const todayStr = new Date().toISOString().slice(0, 10);
             const tasksListEl = document.getElementById('today-tasks-list');
@@ -984,21 +928,16 @@
                 tasksListEl.innerHTML = '<li style="color: var(--text-secondary);">No hay actividades programadas para hoy.</li>';
             }
         }
-
         function openEventModal(type, id = null, dateStr = null) {
             currentEditingEventType = type;
             currentEditingEventId = id;
             eventForm.reset();
             modalEventIdInput.value = id || '';
             modalEventTypeInput.value = type;
-
             modalTimetableFields.style.display = (type === 'timetable') ? 'block' : 'none';
             modalCalendarFields.style.display = (type === 'calendar') ? 'block' : 'none';
-           
             modalEventStartDateInput.required = (type === 'calendar');
-
             eventModalTitle.textContent = id ? `Editar ${type === 'timetable' ? 'Clase' : 'Actividad'}` : `Añadir Nueva ${type === 'timetable' ? 'Clase' : 'Actividad'}`;
-           
             modalEventColorSelect.innerHTML = '';
             PRESET_PASTEL_COLORS.forEach(colorObj => {
                 const option = document.createElement('option');
@@ -1006,7 +945,6 @@
                 option.textContent = colorObj.name;
                 modalEventColorSelect.appendChild(option);
             });
-
             if (type === 'timetable') {
                 modalEventDaySelect.innerHTML = '';
                 TIMETABLE_DAYS.forEach(d => {
@@ -1016,7 +954,6 @@
                 });
                 populateTimeSelect(modalEventStartTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR);
                 populateTimeSelect(modalEventEndTimeSelect, TIMETABLE_START_HOUR, TIMETABLE_END_HOUR, null, true);
-
                 if (id) {
                     const event = appState.timetableData.find(e => e.id === id);
                     if (event) {
@@ -1042,11 +979,9 @@
             deleteEventBtn.style.display = id ? 'block' : 'none';
             eventModalOverlay.classList.add('active');
         }
-
         function closeEventModal() {
             eventModalOverlay.classList.remove('active');
         }
-
         function populateTimeSelect(selectElement, startHour, endHour, selectedValue = null, isEndTime = false) {
             selectElement.innerHTML = '';
             const limit = isEndTime ? endHour + 1 : endHour;
@@ -1059,23 +994,18 @@
                 selectElement.appendChild(option);
             }
         }
-
-        // --- APP INITIALIZATION ---
         function initializeApp() { 
             showPage('calendario-page');
             updateCurrentMonthDisplayDOM_Ingresos();
             initializeMainCalendar();
             getDailyExchangeRate_Ingresos(); 
             updateMonthlyTimeProgress();
-
             document.querySelectorAll('.nav-button').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
             if(elIngresos.addMoneyButton) elIngresos.addMoneyButton.addEventListener('click', addMoney_Ingresos); 
             if(elIngresos.clearHistoryButton) elIngresos.clearHistoryButton.addEventListener('click', clearHistory_Ingresos);
-           
             addCalendarEventBtn.addEventListener('click', () => openEventModal('calendar'));
             addTimetableEventBtnGlobal.addEventListener('click', () => openEventModal('timetable'));
             cancelEventBtn.addEventListener('click', closeEventModal);
-           
             eventForm.addEventListener('submit', async function(e) { 
                 e.preventDefault();
                 const id = modalEventIdInput.value;
@@ -1083,7 +1013,6 @@
                 const title = modalEventTitleInput.value.trim();
                 const color = modalEventColorSelect.value;
                 if (!title) return alert("El título es obligatorio.");
-
                 if (type === 'timetable') {
                     const newEvent = {
                         id: id || 'tt_' + Date.now(),
@@ -1107,11 +1036,9 @@
                     if(id) appState.calendarEventsData = appState.calendarEventsData.map(e => e.id === id ? newEvent : e);
                     else appState.calendarEventsData.push(newEvent);
                 }
-               
                 await saveSharedDataToFirestore();
                 closeEventModal();
             });
-
             deleteEventBtn.addEventListener('click', async function() {
                 const id = modalEventIdInput.value;
                 const type = modalEventTypeInput.value;
@@ -1126,7 +1053,6 @@
                     closeEventModal();
                 }
             });
-
              elIngresos.overallTargetInput.addEventListener('change', async () => {
                 const newTarget = parseFloat(elIngresos.overallTargetInput.value);
                 if (!isNaN(newTarget) && newTarget > 0) {
@@ -1135,13 +1061,11 @@
                     await saveSharedDataToFirestore();
                 }
             });
-
              elIngresos.currencySelector.addEventListener('change', (event) => {
                 appState.selectedInputCurrencyIngresos = event.target.value;
                 saveSharedDataToFirestore();
             });
         }
-       
         document.addEventListener('DOMContentLoaded', () => {
             initializeApp();
             loadSharedDataFromFirestore();

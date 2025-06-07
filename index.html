@@ -80,29 +80,13 @@
         body {
             font-family: 'Rubik', Arial, sans-serif;
             padding: 15px;
-            background-color: transparent;
+            background-color: var(--bg-dark);
             color: var(--text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
         }
         
-        .background-layer {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-dark);
-            z-index: -2;
-        }
-
-        .floating-emoji-container {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-       
         #loading-indicator {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(var(--bg-dark-rgb), 0.9);
@@ -117,14 +101,25 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            position: relative; /* Contexto para los emojis */
+        }
+        
+        .floating-emoji-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0; /* Detrás del contenido pero dentro del main-container */
+            overflow: hidden;
         }
 
-        .main-navigation { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.65); backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); border: 1px solid rgba(var(--text-primary), 0.15); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.25); margin-bottom: 25px; width: 100%; max-width: 900px; position: sticky; top: 15px; z-index: 1000; }
+        .main-navigation { position: relative; z-index: 10; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.65); backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); border: 1px solid rgba(var(--text-primary), 0.15); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.25); margin-bottom: 25px; width: 100%; max-width: 900px; }
         .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .nav-button:hover { background: var(--accent-blue-info); color: var(--bg-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(var(--glow-color-blue-rgb), 0.3); }
         .nav-button.active {  background: var(--accent-green-neon); color: var(--bg-dark); box-shadow: 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5); font-weight: 700; }
         
         .page-content { 
+            position: relative;
+            z-index: 1; /* Asegura que el contenido esté sobre los emojis */
             display: none; 
             width: 100%; 
             animation: fadeInPage 0.5s ease-out forwards; 
@@ -142,11 +137,14 @@
             width: 100%; 
         }
        
-        /* SOLUCIÓN 2: TÉCNICA DEL PSEUDO-ELEMENTO */
         .widget-card {
-            position: relative; /* Contexto para el ::before */
-            overflow: hidden; /* CLAVE: Recorta el ::before a la forma de la tarjeta */
-            background: transparent; /* El widget en sí es transparente */
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            background: rgba(34, 37, 46, 0.75); /* Usando --bg-card con alpha */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+            position: relative;
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
@@ -156,21 +154,6 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-        }
-
-        .widget-card::before {
-            content: '';
-            position: absolute; /* Relativo al .widget-card */
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1; /* Se coloca detrás del contenido del widget */
-            
-            /* Todas las propiedades visuales y el filtro van aquí */
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border-radius: inherit; /* Hereda el border-radius del padre */
         }
 
         #ingresos-widget-main { 
@@ -414,23 +397,23 @@
     </style>
 </head>
 <body>
-    <div class="background-layer"></div>
-    <div class="floating-emoji-container">
-        <span class="floating-emoji">💰</span>
-        <span class="floating-emoji">🎓</span>
-        <span class="floating-emoji">📅</span>
-        <span class="floating-emoji">✨</span>
-        <span class="floating-emoji">🚀</span>
-        <span class="floating-emoji">🏆</span>
-        <span class="floating-emoji">📈</span>
-        <span class="floating-emoji">🎯</span>
-        <span class="floating-emoji">💡</span>
-        <span class="floating-emoji">📚</span>
-    </div>
-
     <div id="loading-indicator">Cargando datos compartidos...</div>
    
     <div class="main-container">
+    
+        <div class="floating-emoji-container">
+            <span class="floating-emoji">💰</span>
+            <span class="floating-emoji">🎓</span>
+            <span class="floating-emoji">📅</span>
+            <span class="floating-emoji">✨</span>
+            <span class="floating-emoji">🚀</span>
+            <span class="floating-emoji">🏆</span>
+            <span class="floating-emoji">📈</span>
+            <span class="floating-emoji">🎯</span>
+            <span class="floating-emoji">💡</span>
+            <span class="floating-emoji">📚</span>
+        </div>
+
         <div class="main-navigation"> 
             <button class="nav-button" data-page="calendario-page">📅 Calendario</button> 
             <button class="nav-button" data-page="ingresos-page">💰 Ingresos</button> 

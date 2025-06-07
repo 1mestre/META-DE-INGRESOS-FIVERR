@@ -80,13 +80,15 @@
         body {
             font-family: 'Rubik', Arial, sans-serif;
             padding: 15px;
-            background-color: var(--bg-dark);
+            /* CAMBIO: Fondo de toda la página a Crimson */
+            background: #DC143C; 
             color: var(--text-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
-        
+       
         #loading-indicator {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(var(--bg-dark-rgb), 0.9);
@@ -95,59 +97,62 @@
             transition: opacity 0.5s ease;
         }
 
-        .main-container { 
-            width: 100%; 
-            max-width: 1600px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            position: relative; /* Contexto para los emojis */
-        }
+        .main-container { width: 100%; max-width: 1600px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
         
-        .floating-emoji-container {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            pointer-events: none;
-            z-index: 0; /* Detrás del contenido pero dentro del main-container */
-            overflow: hidden;
+        /* CAMBIO: Estilo modo oscuro para .main-navigation */
+        .main-navigation { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            padding: 15px; 
+            background: var(--bg-card); /* Fondo oscuro */
+            /* backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            /* -webkit-backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25); 
+            margin-bottom: 25px; 
+            width: 100%; 
+            max-width: 900px; 
+            position: sticky; 
+            top: 15px; 
+            z-index: 1000; 
         }
-
-        .main-navigation { position: relative; z-index: 10; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background-color: rgba(var(--bg-card-rgb), 0.65); backdrop-filter: blur(18px) saturate(180%); -webkit-backdrop-filter: blur(18px) saturate(180%); border: 1px solid rgba(var(--text-primary), 0.15); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.25); margin-bottom: 25px; width: 100%; max-width: 900px; }
         .nav-button { background: var(--bg-card-light); color: var(--text-primary); border: 1px solid rgba(var(--text-primary), 0.1); padding: 10px 18px; border-radius: 10px; font-size: 0.9em; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .nav-button:hover { background: var(--accent-blue-info); color: var(--bg-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(var(--glow-color-blue-rgb), 0.3); }
         .nav-button.active {  background: var(--accent-green-neon); color: var(--bg-dark); box-shadow: 0 0 15px rgba(var(--accent-green-neon-rgb), 0.5); font-weight: 700; }
         
         .page-content { 
-            position: relative;
-            z-index: 1; /* Asegura que el contenido esté sobre los emojis */
             display: none; 
             width: 100%; 
             animation: fadeInPage 0.5s ease-out forwards; 
             padding: 0 10px; 
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
-
         .page-content.active { display: block;  }
         @keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .page-widget-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 20px; 
-            justify-content: center; 
-            width: 100%; 
-        }
+        .page-widget-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
        
+        /* CAMBIO: Estilo modo oscuro para .widget-card */
         .widget-card {
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            background: rgba(34, 37, 46, 0.75); /* Usando --bg-card con alpha */
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            will-change: transform, box-shadow; /* backdrop-filter ya no es necesario aquí */
+            isolation: isolate;
+            transform: translateZ(0);
+            contain: layout style paint;
+
+            background: var(--bg-card); /* Fondo oscuro */
+            /* backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            /* -webkit-backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            border: 1px solid rgba(255, 255, 255, 0.2); 
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
-            position: relative;
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
+            position: relative;
+            z-index: 10;
             width: 100%;
             max-width: 1150px;
             min-width: 300px;
@@ -155,7 +160,6 @@
             display: flex;
             flex-direction: column;
         }
-
         #ingresos-widget-main { 
             max-width: 700px;
         }
@@ -168,9 +172,11 @@
         .placeholder-page h2, .university-timetable-widget h2, #ingresos-page .title, #calendario-page h2 { font-size: 1.8em; color: var(--accent-blue-info); margin-bottom: 20px; }
         .placeholder-page p { font-size: 1.1em; color: var(--text-secondary); }
         #ingresos-page .money-card.widget-card { padding: 18px; border-radius: 15px; margin-bottom: 0; max-width: none; }
-        #ingresos-page .current-month-display { padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.15); margin-bottom: 15px; background-color: rgba(var(--bg-card-light-rgb), 0.85); color: var(--accent-blue-info); font-size: 1.1em; font-weight: 500;} 
+        /* CAMBIO: Fondo oscuro para current-month-display */
+        #ingresos-page .current-month-display { padding: 8px 12px; border-radius: 10px; box-shadow: 0 0 10px rgba(var(--glow-color-blue-rgb), 0.15); margin-bottom: 15px; background-color: var(--bg-card-light); color: var(--accent-blue-info); font-size: 1.1em; font-weight: 500;} 
         #ingresos-page .title-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; flex-wrap: wrap; }
-        #ingresos-page .target-input-group { display: flex; align-items: center; gap: 8px; background-color: rgba(var(--bg-card-light-rgb), 0.7); padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid rgba(var(--text-primary),0.1); }
+        /* CAMBIO: Fondo oscuro para target-input-group, podría ajustarse si es necesario */
+        #ingresos-page .target-input-group { display: flex; align-items: center; gap: 8px; background-color: var(--bg-card-light); padding: 8px 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid rgba(var(--text-primary),0.1); }
         #ingresos-page .target-input-group label { font-size: 0.9em; color: var(--text-secondary); }
         #ingresos-page #overallTargetInput { width: 120px; padding: 6px 8px; border: 1px solid #4a505e; border-radius: 6px; background-color: var(--bg-dark); color: var(--text-primary); font-family: 'Rubik', sans-serif; text-align: right; font-size: 0.95em; }
         #ingresos-page #overallTargetInput:focus { outline: none; border-color: var(--accent-blue-info); box-shadow: 0 0 8px rgba(var(--glow-color-blue-rgb),0.3); }
@@ -232,11 +238,28 @@
         #ingresos-page .money-card{ transition: transform 0.35s ease, box-shadow 0.35s ease; animation: popIn 0.5s ease-out backwards; padding: 18px; border-radius: 15px; margin-bottom: 0; } 
         #ingresos-page .money-card:nth-child(1) { animation-delay: 0.5s; }  #ingresos-page .money-card:nth-child(2) { animation-delay: 0.6s; }  #ingresos-page .money-card:nth-child(3) { animation-delay: 0.7s; }  #ingresos-page .money-card:nth-child(4) { animation-delay: 0.8s; } @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } } #ingresos-page .money-card:hover{  transform: translateY(-5px) scale(1.02);  box-shadow: 0 6px 15px rgba(0,0,0,0.25), 0 0 20px rgba(var(--glow-color-neutral-rgb), 0.25);  } #ingresos-page .money-label{ color:var(--text-secondary); font-size:0.95em; margin-bottom:6px; font-weight:500; } #ingresos-page .money-value{ color:var(--text-primary); font-size:1.3em; font-weight:700; } #ingresos-page .total-accumulated-cop .money-value {color: var(--accent-green-medium)}  #ingresos-page .overall-target-cop .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-remaining-cop .money-value {color: var(--accent-yellow-green)}  #ingresos-page .current-month-usd-total .money-value {color: var(--accent-blue-info)}  #ingresos-page .overall-usd-total .money-value {color: var(--accent-gold)}  #ingresos-page .exchange-rate-info {font-size: 0.8em; color: var(--text-secondary); margin-top: 4px; font-weight: 400;} #ingresos-page .exchange-rate-source {font-size: 0.7em; color: #777; margin-top: 2px; display: none; } 
         #ingresos-page .celebration-overall{ display:none; margin:20px 0; padding:20px; background: var(--celebration-overall-bg); border-radius:15px; font-size:1.4em; color: var(--celebration-overall-text-color); font-weight:700; animation:bounce 0.7s infinite alternate, celebrateGlowOverallAnim 1.2s infinite alternate; text-shadow: 0 0 8px rgba(0,0,0,0.1); box-shadow: 0 0 20px var(--celebration-overall-glow); position: relative; z-index: 15; } 
-        @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: rgba(var(--bg-dark-rgb), 0.8);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: rgba(var(--bg-card-rgb), 0.7);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: rgba(var(--bg-card-rgb), 0.9); transform: translateX(3px); } #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
+        @keyframes bounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-6px) scale(1.02)}} @keyframes celebrateGlowOverallAnim {  0% { box-shadow: 0 0 15px var(--celebration-overall-glow), 0 0 25px var(--celebration-overall-glow); }  100% { box-shadow: 0 0 30px var(--celebration-overall-glow), 0 0 45px var(--celebration-overall-glow), 0 0 10px #e0ffe0; }  } #ingresos-page .history, #ingresos-page .monthly-goals-section { margin-top:25px; text-align:left;  } #ingresos-page .history-title, #ingresos-page .monthly-goals-title { color:var(--text-primary); font-size:1.15em; font-weight:700; margin-bottom:15px; text-align:center; } 
+        /* CAMBIO: Fondo oscuro para history-list y monthly-goals-list */
+        #ingresos-page .history-list, #ingresos-page .monthly-goals-list { max-height:180px;  overflow-y:auto; background: var(--bg-dark);  border-radius:12px; padding:15px;  scrollbar-width: thin; scrollbar-color: var(--accent-green-medium) rgba(var(--bg-card-light-rgb), 0.5); border: 1px solid rgba(var(--text-primary), 0.1); } 
+        #ingresos-page .history-list::-webkit-scrollbar, #ingresos-page .monthly-goals-list::-webkit-scrollbar { width: 8px; } #ingresos-page .history-list::-webkit-scrollbar-track, #ingresos-page .monthly-goals-list::-webkit-scrollbar-track { background: rgba(var(--bg-card-light-rgb), 0.3); border-radius: 10px;} #ingresos-page .history-list::-webkit-scrollbar-thumb, #ingresos-page .monthly-goals-list::-webkit-scrollbar-thumb { background-color: var(--accent-green-medium); border-radius: 10px; border: 2px solid rgba(var(--bg-card-light-rgb), 0.3);} 
+        /* CAMBIO: Fondo oscuro para history-item y monthly-goal-item y su hover */
+        #ingresos-page .history-item, #ingresos-page .monthly-goal-item { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; margin:5px 0; background: var(--bg-card-light);  border-radius:10px; border-left:4px solid var(--accent-green-medium); transition: background-color 0.3s ease, transform 0.2s ease; } 
+        #ingresos-page .history-item:hover, #ingresos-page .monthly-goal-item:hover { background-color: var(--bg-card); transform: translateX(3px); } 
+        #ingresos-page .history-date, #ingresos-page .monthly-goal-month {font-size:0.9em;color:var(--text-secondary); font-weight: 500;} #ingresos-page .history-amount, #ingresos-page .monthly-goal-status {font-weight:700;color:var(--text-primary)} #ingresos-page .history-rate { font-size: 0.8em; color: var(--accent-blue-info); margin-left: 5px;} #ingresos-page .history-original-amount {  font-size: 0.75em;  color: var(--text-secondary);  margin-left: 8px; } #ingresos-page .monthly-goal-status.achieved { color: var(--accent-green-neon); } #ingresos-page .monthly-goal-status.not-achieved { color: var(--accent-red-clear); } #ingresos-page .monthly-goal-status.pending { color: var(--text-secondary); } #ingresos-page .clear-btn{ background:linear-gradient(135deg, var(--accent-red-clear), #ff4040);  color:var(--text-primary); border:none; padding:10px 18px; border-radius:10px; font-size:0.95em; cursor:pointer; margin-top:15px; transition:all 0.3s ease; font-weight: 700; box-shadow: 0 0 10px rgba(var(--accent-red-clear-rgb), 0.3); } #ingresos-page .clear-btn:hover{ transform:translateY(-2px) scale(1.05);  box-shadow: 0 5px 15px rgba(var(--accent-red-clear-rgb), 0.5), 0 0 15px rgba(var(--accent-red-clear-rgb), 0.4); }
        
-        /* Emojis */
+        .floating-emoji-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0; 
+        }
         .floating-emoji {
-            position: absolute; 
+            position: fixed;
+            pointer-events: none;
             user-select: none;
             animation-name: floatUp;
             animation-timing-function: linear;
@@ -269,7 +292,7 @@
         .floating-emoji:nth-child(10) { left: 75%; animation-delay: 9s; animation-duration: 17s; font-size: 4.0rem; color: var(--accent-gold);}
 
         #timetableGrid { display: grid; grid-template-columns: [times] 60px repeat(5, 1fr); grid-auto-rows: minmax(40px, auto); gap: 3px; padding: 15px; border-radius: 12px; margin-top: 20px; max-width: 100%; overflow-x: auto; }
-        .timetable-grid-header, .timetable-grid-time-label, .timetable-grid-corner { background-color: rgba(var(--bg-card-rgb), 0.95); color: var(--accent-blue-info); font-weight: 600; padding: 10px 5px; text-align: center; position: sticky; z-index: 2; }
+        .timetable-grid-header, .timetable-grid-time-label, .timetable-grid-corner { background-color: var(--bg-card); color: var(--accent-blue-info); font-weight: 600; padding: 10px 5px; text-align: center; position: sticky; z-index: 2; } /* Ajustado a --bg-card */
         .timetable-grid-header { top: 0; }
         .timetable-grid-time-label { left: 0; color: var(--accent-yellow-green); text-align: right; padding-right: 12px; font-size: 0.85em;}
         .timetable-grid-corner { top: 0; left: 0; z-index: 3; }
@@ -350,10 +373,36 @@
             box-shadow: 0 4px 15px rgba(var(--accent-green-neon-rgb), 0.3);
         }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(var(--bg-dark-rgb), 0.75); backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); display: none; justify-content: center; align-items: center; z-index: 2000; animation: modalFadeIn 0.3s ease-out; }
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(var(--bg-dark-rgb), 0.75); 
+            backdrop-filter: blur(8px) saturate(120%); 
+            -webkit-backdrop-filter: blur(8px) saturate(120%);
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 2000; 
+            animation: modalFadeIn 0.3s ease-out; 
+        }
         .modal-overlay.active { display: flex; }
         @keyframes modalFadeIn { from {opacity: 0;} to {opacity: 1;} }
-        .modal-content { background-color: rgba(var(--bg-card-rgb), 0.95); backdrop-filter: blur(15px) saturate(180%); padding: 25px 30px; border-radius: 20px; box-shadow: 0 0 30px rgba(var(--glow-color-blue-rgb),0.25), 0 10px 40px rgba(0,0,0,0.35); width: 90%; max-width: 500px; border: 1px solid rgba(var(--text-primary),0.15); animation: popInModal 0.3s ease-out; z-index: 2010; }
+        
+        /* CAMBIO: Estilo modo oscuro para .modal-content */
+        .modal-content { 
+            background: var(--bg-card); /* Fondo oscuro */
+            /* backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            /* -webkit-backdrop-filter: blur(20px) saturate(180%); (Eliminado) */
+            padding: 25px 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 0 30px rgba(var(--glow-color-blue-rgb),0.25), 0 10px 40px rgba(0,0,0,0.35); 
+            width: 90%; 
+            max-width: 500px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            animation: popInModal 0.3s ease-out; 
+            z-index: 2010; 
+        }
         @keyframes popInModal { from { opacity:0; transform: scale(0.9) translateY(10px); } to { opacity:1; transform: scale(1) translateY(0); } }
         .modal-content h3 { color: var(--accent-blue-info); margin-top: 0; margin-bottom: 20px; text-align: center; font-size: 1.5em; text-shadow: 0 0 5px rgba(var(--glow-color-blue-rgb), 0.3); }
         .modal-form-group { margin-bottom: 18px; }
@@ -381,11 +430,15 @@
             .timetable-grid-header { padding: 8px 3px; }
             .fc .fc-toolbar { flex-direction: column; gap: 5px;}
             #calendar-progress-bars .progress-bar-bg-cal { max-width: 100%; } 
+            /* CAMBIO: En modo oscuro, el backdrop-filter en media query ya no es necesario o se ajusta */
+             .widget-card, .modal-content, .main-navigation { 
+                /* backdrop-filter: blur(8px) saturate(120%); (Eliminado para modo oscuro) */
+                /* -webkit-backdrop-filter: blur(8px) saturate(120%); (Eliminado para modo oscuro) */
+             }
         }
         @media (max-width:480px){ 
             body { padding: 10px; } 
             .floating-emoji { font-size: 3.5rem; opacity: 0.1; }  
-            .widget-card, .modal-content { backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); } 
             #timetableGrid { font-size: 0.8em; grid-template-columns: [times] 40px repeat(5, 1fr); grid-auto-rows: minmax(30px, auto); padding: 5px; }
             .timetable-grid-event { font-size: 0.7em; padding: 4px; min-height: 28px;}
             .timetable-grid-event .subject-name { margin-bottom: 1px; }
@@ -398,22 +451,20 @@
 </head>
 <body>
     <div id="loading-indicator">Cargando datos compartidos...</div>
+    <div class="floating-emoji-container">
+        <span class="floating-emoji">💰</span>
+        <span class="floating-emoji">🎓</span>
+        <span class="floating-emoji">📅</span>
+        <span class="floating-emoji">✨</span>
+        <span class="floating-emoji">🚀</span>
+        <span class="floating-emoji">🏆</span>
+        <span class="floating-emoji">📈</span>
+        <span class="floating-emoji">🎯</span>
+        <span class="floating-emoji">💡</span>
+        <span class="floating-emoji">📚</span>
+    </div>
    
     <div class="main-container">
-    
-        <div class="floating-emoji-container">
-            <span class="floating-emoji">💰</span>
-            <span class="floating-emoji">🎓</span>
-            <span class="floating-emoji">📅</span>
-            <span class="floating-emoji">✨</span>
-            <span class="floating-emoji">🚀</span>
-            <span class="floating-emoji">🏆</span>
-            <span class="floating-emoji">📈</span>
-            <span class="floating-emoji">🎯</span>
-            <span class="floating-emoji">💡</span>
-            <span class="floating-emoji">📚</span>
-        </div>
-
         <div class="main-navigation"> 
             <button class="nav-button" data-page="calendario-page">📅 Calendario</button> 
             <button class="nav-button" data-page="ingresos-page">💰 Ingresos</button> 
@@ -457,7 +508,8 @@
                        </div>
                        <button id="addCalendarEventBtn">➕ Nueva Actividad</button>
                        <div id="mainCalendar"></div>
-                       <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: rgba(var(--bg-card-rgb),0.8); border-radius: 10px;">
+                       <!-- CAMBIO: Fondo oscuro para today-tasks -->
+                       <div id="today-tasks" style="margin-top: 20px; text-align: left; padding:15px; background-color: var(--bg-card); border-radius: 10px;">
                            <h3 style="color: var(--accent-yellow-green); margin-bottom:10px;">📝 Actividades para Hoy:</h3>
                            <ul id="today-tasks-list" style="list-style: none; padding-left: 5px;">
                                <li style="color: var(--text-secondary);">Cargando actividades...</li>
@@ -522,7 +574,7 @@
     <script src='https://cdn.jsdelivr.net/npm/ical.js@2.0.1/build/ical.min.js'></script>
 
     <script>
-        // --- Toda la sección de JavaScript permanece sin cambios ---
+        // --- Toda la sección de JavaScript permanece sin cambios EXCEPTO LA FUNCIÓN updateCalendarProgressBars ---
         const firebaseConfig = {
           apiKey: "AIzaSyBCuJ4Xetzex0zQpnrOKx1bLihpfX-0KaI",
           authDomain: "meta-ingresos-app.firebaseapp.com",
@@ -674,6 +726,7 @@
         }
         function formatUSD(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount); }
         function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount); }
+        
         function updateCalendarProgressBars() {
             const now = new Date();
             const startOfYear = new Date(now.getFullYear(), 0, 1);
@@ -692,23 +745,31 @@
             const monthText = document.getElementById('month-text-cal');
             const dayText = document.getElementById('day-text-cal');
             if(!yearBar || !monthBar || !dayBar) return;
+            
             const setProgress = (bar, textEl, progress) => {
                 bar.style.width = `${progress}%`;
                 textEl.textContent = `${Math.floor(progress)}%`;
                 let gradient, glowRgb;
-                if (progress < 25) {
-                    gradient = `linear-gradient(90deg, var(--red-dark), var(--accent-red-clear))`;
-                    glowRgb = `var(--accent-red-clear-rgb)`;
-                } else if (progress < 50) {
-                    gradient = `linear-gradient(90deg, var(--orange-dark), var(--accent-orange))`;
-                    glowRgb = `var(--accent-orange-rgb)`;
-                } else if (progress < 75) {
-                    gradient = `linear-gradient(90deg, var(--accent-yellow-green), var(--accent-yellow-pale))`;
-                    glowRgb = `var(--accent-yellow-green-rgb)`;
-                } else {
+
+                if (bar.id === 'year-progress-bar-cal') { 
                     gradient = `linear-gradient(90deg, var(--green-dark), var(--accent-green-medium))`;
                     glowRgb = `var(--glow-color-green-rgb)`;
+                } else { 
+                    if (progress < 25) {
+                        gradient = `linear-gradient(90deg, var(--red-dark), var(--accent-red-clear))`;
+                        glowRgb = `var(--accent-red-clear-rgb)`;
+                    } else if (progress < 50) {
+                        gradient = `linear-gradient(90deg, var(--orange-dark), var(--accent-orange))`;
+                        glowRgb = `var(--accent-orange-rgb)`;
+                    } else if (progress < 75) {
+                        gradient = `linear-gradient(90deg, var(--accent-yellow-green), var(--accent-yellow-pale))`;
+                        glowRgb = `var(--accent-yellow-green-rgb)`;
+                    } else {
+                        gradient = `linear-gradient(90deg, var(--green-dark), var(--accent-green-medium))`;
+                        glowRgb = `var(--glow-color-green-rgb)`;
+                    }
                 }
+
                 bar.style.background = gradient;
                 bar.style.boxShadow = `0 0 10px 2px rgba(${glowRgb}, 0.5)`;
             };
@@ -716,6 +777,7 @@
             setProgress(monthBar, monthText, monthProgress);
             setProgress(dayBar, dayText, dayProgress);
         }
+
         function updateMonthlyTimeProgress() {
             const now = new Date();
             const dayOfMonth = now.getDate();
@@ -777,7 +839,7 @@
                 originalAmountUSD: originalGrossAmountUSD, 
                 exchangeRate: currentDailyExchangeRate, 
                 date: now.toISOString(),
-                monthYear: `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`
+                monthYear: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
             });
             elIngresos.moneyInput.value = '';
             await saveSharedDataToFirestore();
